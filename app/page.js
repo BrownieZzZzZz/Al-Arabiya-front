@@ -1,5 +1,9 @@
+import Hero from "@/components/Hero/Hero";
+
 export default function Home() {
   return (
-    <div>Home page</div>
+    <div className="mx-auto flex w-full flex-col">
+      <Hero/>
+    </div>
   );
 }
