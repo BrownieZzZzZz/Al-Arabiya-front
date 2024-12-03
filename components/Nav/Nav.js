@@ -33,12 +33,12 @@ const Nav = () => {
   const closeButton = useRef(null);
   const closeDialog = useRef(null);
   const pathname = usePathname();
-  const [loadingUser, setLoadingUser] = useState(true);
+  const [loadingUser, setLoadingUser] = useState(false);
   const [signed, setSigned] = useState(false);
   const [user, setUser] = useState(null);
   const [loadingPage, setLoadingPage] = useState(true);
   const [isPending, startTransition] = useTransition();
-
+  
   // const checkUser = async () => {
   //   try {
   //     setLoadingUser(true);
