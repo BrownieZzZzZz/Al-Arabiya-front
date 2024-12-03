@@ -9,18 +9,18 @@ const Hero = () => {
       <div dir="rtl" className="grid h-full w-full md:grid-cols-2">
         <div
           className={
-            "absolute z-20 flex h-full md:w-full md:max-w-[700px] xl:max-w-[900px] flex-col  justify-center gap-6 transition-opacity duration-1000 m-3 md:mr-10"
+            "absolute z-20 m-3 flex h-full flex-col justify-center gap-6 transition-opacity duration-1000 md:mr-10 md:w-full md:max-w-[700px] xl:max-w-[900px]"
           }
         >
           <div
             dir="rtl"
-            className="text-5xl font-semibold text-[var(--theme2)] opacity-95 md:text-6xl"
+            className="text-center text-5xl font-semibold text-[var(--theme2)] opacity-95 md:text-start md:text-6xl"
           >
             مرحبًا بك في العربية – وجهتك الأولى للجمال!
           </div>
           <div
             dir="rtl"
-            className="text-3xl font-extralight tracking-wider text-[var(--theme2)] opacity-90 md:text-4xl"
+            className="text-center text-3xl font-extralight tracking-wider text-[var(--theme2)] opacity-90 md:text-start md:text-4xl"
           >
             اكتشفي مجموعة واسعة من مستحضرات التجميل الفاخرة المصممة لإبراز جمالك
             الطبيعي. تسوقي الآن واحصلي على أفضل المنتجات التي تستحقينها.
@@ -28,7 +28,7 @@ const Hero = () => {
           <button
             dir="rtl"
             type="button"
-            className="place-self-start rounded-lg border-2 border-[var(--theme)] bg-transparent px-6 py-3 mt-5 text-center text-xl text-[var(--theme)] transition-all duration-200 hover:scale-110 hover:border-[var(--theme)] hover:bg-[var(--theme)] hover:text-white md:px-12 md:py-4 md:text-3xl"
+            className="mt-5 place-self-center rounded-lg border-2 border-[var(--theme)] bg-transparent px-12 py-4 text-center text-3xl text-[var(--theme)] transition-all duration-200 hover:scale-110 hover:border-[var(--theme)] hover:bg-[var(--theme)] hover:text-white md:place-self-start"
           >
             استكشف
           </button>
