@@ -72,7 +72,7 @@ const FeaturedRecipes = ({ lng }) => {
         <div className="flex w-full flex-row items-center justify-center gap-3">
           <div className="h-[2px] w-8 bg-[var(--theme)] md:w-12"></div>
           <span className="font-lato text-center font-bold text-neutral-800 text-4xl">
-          المنتجات الأكثر شعبية
+          المنتجات الأكثر طلباً 
           </span>
           <div className="h-[2px] w-8 bg-[var(--theme)] md:w-12"></div>
         </div>
