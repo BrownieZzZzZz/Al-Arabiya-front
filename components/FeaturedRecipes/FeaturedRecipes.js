@@ -20,7 +20,7 @@ const FeaturedRecipes = ({ lng }) => {
       image: "/images/product1.jpg",
       logo: "/images/sheglam.png",
       normalPrice: "25.000",
-      soldPrice: "20.000"
+      soldPrice: "20.000",
     },
     {
       title: "Product Title",
@@ -28,7 +28,7 @@ const FeaturedRecipes = ({ lng }) => {
       image: "/images/product2.jpg",
       logo: "/images/sheglam.png",
       normalPrice: "25.000",
-      soldPrice: "20.000"
+      soldPrice: "20.000",
     },
     {
       title: "Product Title",
@@ -36,7 +36,7 @@ const FeaturedRecipes = ({ lng }) => {
       image: "/images/product3.jpg",
       logo: "/images/sheglam.png",
       normalPrice: "25.000",
-      soldPrice: "20.000"
+      soldPrice: "20.000",
     },
     {
       title: "Product Title",
@@ -44,7 +44,7 @@ const FeaturedRecipes = ({ lng }) => {
       image: "/images/product4.jpg",
       logo: "/images/sheglam.png",
       normalPrice: "25.000",
-      soldPrice: "20.000"
+      soldPrice: "20.000",
     },
     {
       title: "Product Title",
@@ -52,7 +52,7 @@ const FeaturedRecipes = ({ lng }) => {
       image: "/images/product5.jpg",
       logo: "/images/sheglam.png",
       normalPrice: "25.000",
-      soldPrice: "20.000"
+      soldPrice: "20.000",
     },
     {
       title: "Product Title",
@@ -60,19 +60,17 @@ const FeaturedRecipes = ({ lng }) => {
       image: "/images/product6.jpg",
       logo: "/images/sheglam.png",
       normalPrice: "25.000",
-      soldPrice: "20.000"
+      soldPrice: "20.000",
     },
-
-  ]
-  
+  ];
 
   return (
-    <section className="mt-10 mx-4">
-      <div className="flex w-full flex-col items-center justify-center gap-2 self-center mb-7">
+    <section className="mx-4 mt-10">
+      <div className="mb-7 flex w-full flex-col items-center justify-center gap-2 self-center">
         <div className="flex w-full flex-row items-center justify-center gap-3">
           <div className="h-[2px] w-8 bg-[var(--theme)] md:w-12"></div>
-          <span className="font-lato text-center font-bold text-neutral-800 text-4xl">
-          المنتجات الأكثر طلباً 
+          <span className="font-lato text-center text-4xl font-bold text-neutral-800">
+            المنتجات الأكثر طلباً
           </span>
           <div className="h-[2px] w-8 bg-[var(--theme)] md:w-12"></div>
         </div>
@@ -80,11 +78,11 @@ const FeaturedRecipes = ({ lng }) => {
 
       <div className="flex w-full items-center justify-center">
         <div className="w-full max-w-[1400px] px-10">
-          <Carousel opts={
-            {
-              loop: true
-            }
-          } >
+          <Carousel
+            opts={{
+              loop: true,
+            }}
+          >
             <CarouselContent className="-ml-1">
               {products.map((product, index) => (
                 <CarouselItem
@@ -92,10 +90,7 @@ const FeaturedRecipes = ({ lng }) => {
                   className="flex w-full pl-1 min-[500px]:basis-1/2 md:basis-1/3 lg:basis-1/4"
                 >
                   <div className="flex w-full p-2">
-                    <ProductCard
-                      className="w-full"
-                      product={product}
-                    />
+                    <ProductCard className="w-full" product={product} />
                   </div>
                 </CarouselItem>
               ))}

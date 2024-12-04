@@ -109,7 +109,6 @@ const ProductsByBrand = ({ lng, ChangeUrl }) => {
   return (
     <section className="mx-4 mt-10">
       <div className="mb-7 flex w-full flex-col items-center justify-center gap-2 self-center">
-
         <div className="mb-2 flex w-full flex-row items-center justify-center gap-3">
           <div className="h-[2px] w-8 bg-[var(--theme)] md:w-12"></div>
           <span className="text-center text-4xl font-bold text-neutral-800">
@@ -118,11 +117,11 @@ const ProductsByBrand = ({ lng, ChangeUrl }) => {
           <div className="h-[2px] w-8 bg-[var(--theme)] md:w-12"></div>
         </div>
 
-        <div className="mt-5 flex-shrink-0 flex w-full flex-row min-[700px]:justify-center gap-6 overflow-x-auto pb-4">
+        <div className="mt-5 flex w-full flex-shrink-0 flex-row gap-6 overflow-x-auto pb-4 min-[700px]:justify-center">
           {brands.map((brand, index) => (
             <div
               className={cn(
-                "w-[100px] flex-shrink-0 font-semibold transition-all duration-200 hover:cursor-pointer hover:scale-105 hover:bg-stone-200 p-3 rounded-lg",
+                "w-[100px] flex-shrink-0 rounded-lg p-3 font-semibold transition-all duration-200 hover:scale-105 hover:cursor-pointer hover:bg-stone-200",
                 selectedBrand === index
                   ? "bg-stone-300 hover:bg-stone-300"
                   : "",
@@ -144,7 +143,11 @@ const ProductsByBrand = ({ lng, ChangeUrl }) => {
           )}
         >
           <div className="w-full max-w-[1400px] px-10">
-            <Carousel>
+            <Carousel
+              opts={{
+                loop: true,
+              }}
+            >
               <CarouselContent className="-ml-1">
                 {product.map((product, index) => (
                   <CarouselItem
