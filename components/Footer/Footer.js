@@ -20,7 +20,7 @@ const Footer = () => {
   return (
     <footer
       className={cn(
-        "bg-white pt-10 font-sans",
+        "mt-14 bg-white pt-10 font-sans",
         pathname.includes("create") && "hidden",
       )}
     >

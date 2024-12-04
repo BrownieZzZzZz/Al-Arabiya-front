@@ -1,0 +1,16 @@
+section {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  gap: 20px;
+  align-items: center;
+}
+
+.section-title {
+  @apply text-neutral-800;
+  font-weight: 400;
+  text-align: center;
+  position: relative;
+}
+
+
