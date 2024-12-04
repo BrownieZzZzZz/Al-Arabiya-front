@@ -67,7 +67,7 @@ const FeaturedRecipes = ({ lng }) => {
   
 
   return (
-    <section className="mt-10">
+    <section className="mt-10 mx-4">
       <div className="flex w-full flex-col items-center justify-center gap-2 self-center mb-7">
         <div className="flex w-full flex-row items-center justify-center gap-3">
           <div className="h-[2px] w-8 bg-[var(--theme)] md:w-12"></div>
@@ -82,7 +82,6 @@ const FeaturedRecipes = ({ lng }) => {
         <div className="w-full max-w-[1400px] px-10">
           <Carousel opts={
             {
-              dragFree: true,
               loop: true
             }
           } >
