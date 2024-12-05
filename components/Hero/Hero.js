@@ -25,10 +25,10 @@ const Hero = () => {
             اكتشفي مجموعة واسعة من مستحضرات التجميل الفاخرة المصممة لإبراز جمالك
             الطبيعي. تسوقي الآن واحصلي على أفضل المنتجات التي تستحقينها.
           </div>
-          <button
+          <button 
             dir="rtl"
             type="button"
-            className="mt-5 place-self-center rounded-lg border-2 border-[var(--theme)] bg-transparent px-12 py-4 text-center text-3xl text-[var(--theme)] transition-all duration-200 hover:scale-110 hover:border-[var(--theme)] hover:bg-[var(--theme)] hover:text-white md:place-self-start"
+            className="mt-5 place-self-center rounded-lg  bg-yellow-600 shdw px-12 py-4 text-center text-3xl text-neutral-100 transition-all duration-200 hover:scale-110 hover:bg-[var(--theme)] hover:text-white md:place-self-start"
           >
             استكشف
           </button>
