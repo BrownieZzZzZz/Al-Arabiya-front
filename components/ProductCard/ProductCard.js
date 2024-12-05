@@ -8,13 +8,13 @@ const ProductCard = ({ product }) => {
         <img src={product.logo} alt="Brand Logo" className="absolute top-2 left-2 w-20 bg-white rounded-full px-1.5"></img>
       </div>
   
-      <div class="p-4">
-        <h2 class="text-lg font-bold text-gray-800">{product.title}</h2>
-        <p class="text-sm text-gray-600 mt-2">{product.desc}</p>
+      <div className="p-4">
+        <h2 className="text-lg font-bold text-gray-800">{product.title}</h2>
+        <p className="text-sm text-gray-600 mt-2">{product.desc}</p>
         
-        <div class="flex items-center mt-4">
-          <span class="text-gray-500 line-through mr-2">{`${product.normalPrice} DT`}</span>
-          <span class="text-[var(--theme)] text-xl font-bold">{`${product.soldPrice} DT`}</span>
+        <div className="flex items-center mt-4">
+          <span className="text-gray-500 line-through mr-2">{`${product.normalPrice} DT`}</span>
+          <span className="text-[var(--theme)] text-xl font-bold">{`${product.soldPrice} DT`}</span>
         </div>
       </div>
     </div>

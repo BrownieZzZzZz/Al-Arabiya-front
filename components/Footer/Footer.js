@@ -1,7 +1,7 @@
 // components/Footer.js
 "use client";
 import React from "react";
-import { FaFacebook, FaYoutube, FaTwitter, FaInstagram } from "react-icons/fa";
+import { FaFacebook, FaInstagram, FaWhatsapp } from "react-icons/fa";
 import { cn } from "@/lib/utils";
 import "./Footer.css";
 import { usePathname, useRouter } from "next/navigation";
@@ -18,12 +18,7 @@ const Footer = () => {
   }, [isPending]);
 
   return (
-    <footer
-      className={cn(
-        "mt-14 bg-white pt-10 font-sans",
-        pathname.includes("create") && "hidden",
-      )}
-    >
+    <footer className={cn("mt-10 bg-white pt-10")}>
       {loadingPage && (
         <div className="fixed inset-0 z-50 flex h-full w-full items-center justify-center bg-white/60 backdrop-blur-sm">
           <div className="h-14 w-14 animate-spin rounded-full border-b-4 border-[var(--theme1)]"></div>
@@ -76,7 +71,7 @@ const Footer = () => {
                 href="#"
                 className="transition-colors duration-300 hover:text-[var(--theme)]"
               >
-                <FaTwitter size={26} />
+                <FaWhatsapp size={26} />
               </a>
             </div>
           </div>

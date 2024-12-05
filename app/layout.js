@@ -5,6 +5,8 @@ import "/public/assets/fontawesome/css/solid.css";
 import "/public/assets/fontawesome/css/all.css";
 import Nav from "@/components/Nav/Nav";
 import Footer from "@/components/Footer/Footer";
+import FastLinks from "@/components/FastLinks/FastLinks";
+import PreFooter from "@/components/PreFooter/PreFooter";
 
 export const metadata = {
   title: "Al-Arabiya",
@@ -21,7 +23,9 @@ export default function RootLayout({ children }) {
       <body className="bg-[var(--theme2)]">
         <Nav></Nav>
         {children}
+        <PreFooter/>
         <Footer />
+        <FastLinks/>
       </body>
     </html>
   );

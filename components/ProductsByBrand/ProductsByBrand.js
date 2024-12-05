@@ -107,7 +107,7 @@ const ProductsByBrand = ({ lng, ChangeUrl }) => {
   }, [selectedBrand]);
   //
   return (
-    <section className="mx-4 mt-10">
+    <section className="mx-4 mt-20">
       <div className="mb-7 flex w-full flex-col items-center justify-center gap-2 self-center">
         <div className="mb-2 flex w-full flex-row items-center justify-center gap-3">
           <div className="h-[2px] w-8 bg-[var(--theme)] md:w-12"></div>
@@ -152,7 +152,7 @@ const ProductsByBrand = ({ lng, ChangeUrl }) => {
                 {product.map((product, index) => (
                   <CarouselItem
                     key={index}
-                    className="flex w-full pl-1 min-[500px]:basis-1/2 md:basis-1/3 lg:basis-1/4"
+                    className="flex w-full pl-1 min-[600px]:basis-1/2 md:basis-1/3 lg:basis-1/4"
                   >
                     <div className="flex w-full p-2">
                       <ProductCard className="w-full" product={product} />

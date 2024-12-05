@@ -111,8 +111,7 @@ const Nav = () => {
   return (
     <div
       className={cn(
-        "mb-10 flex w-full flex-row-reverse items-center justify-between reverse bg-white p-2 pb-4 pt-4 min-[500px]:px-5 md:px-10",
-        (pathname.includes("create") || pathname == "/") && "mb-0",
+        "flex w-full flex-row-reverse items-center justify-between bg-white p-2 pb-4 pt-4 min-[500px]:px-5 md:px-10",
       )}
     >
       {/* <SocketNotifications user={user} /> */}

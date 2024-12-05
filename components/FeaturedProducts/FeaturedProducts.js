@@ -1,6 +1,6 @@
 "use client";
 
-import "./FeaturedRecipes.css";
+import "./FeaturedProducts.css";
 
 import {
   Carousel,
@@ -12,7 +12,7 @@ import {
 
 import ProductCard from "../ProductCard/ProductCard";
 
-const FeaturedRecipes = ({ lng }) => {
+const FeaturedProducts = ({ lng }) => {
   const products = [
     {
       title: "Product Title",
@@ -65,7 +65,7 @@ const FeaturedRecipes = ({ lng }) => {
   ];
 
   return (
-    <section className="mx-4 mt-10">
+    <section className="mx-4 mt-20">
       <div className="mb-7 flex w-full flex-col items-center justify-center gap-2 self-center">
         <div className="flex w-full flex-row items-center justify-center gap-3">
           <div className="h-[2px] w-8 bg-[var(--theme)] md:w-12"></div>
@@ -104,4 +104,4 @@ const FeaturedRecipes = ({ lng }) => {
   );
 };
 
-export default FeaturedRecipes;
+export default FeaturedProducts;
