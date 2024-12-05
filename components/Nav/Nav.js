@@ -144,7 +144,7 @@ const Nav = () => {
       </div>
       <div className="flex flex-row-reverse gap-3">
         {!pathname.includes("recipes") && (
-          <div className="mr-1 hidden flex-row items-center gap-1 rounded-md border px-2 py-2 min-[800px]:mr-4 min-[880px]:flex">
+          <div className="mr-1 hidden flex-row items-center gap-2 rounded-md border px-2 py-2 min-[800px]:mr-4 min-[880px]:flex">
             <i className="fa-solid fa-magnifying-glass text-md px-2 text-neutral-500"></i>
             <input
               dir="rtl"

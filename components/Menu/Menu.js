@@ -85,6 +85,27 @@ const Menu = ({ orientation, closeButton, setLoadingPage, user }) => {
         </a>
       </div>
       <div
+        className={cn(
+          "link text-neutral-700",
+          pathname.includes("about") && "active",
+        )}
+      >
+        <a
+          // onClick={() => {
+          //   setLoadingPage(true);
+          //   startTransition(() => {
+          //     router.push("/about");
+          //   });
+          //   setTimeout(() => {
+          //     closeButton?.current.click();
+          //   }, 500);
+          // }}
+          className="hover:cursor-pointer"
+        >
+          منتجاتنا 
+        </a>
+      </div>
+      <div
         className={cn("link text-neutral-700", pathname === "/" && "active")}
       >
         <a

@@ -150,6 +150,21 @@ const Footer = () => {
                     // }}
                     className="hover:cursor-pointer"
                   >
+                    منتجاتنا 
+                  </a>
+                </div>
+              </li>
+              <li>
+                <div className={cn("link text-neutral-700")}>
+                  <a
+                    // onClick={() => {
+                    //   setLoadingPage(true);
+                    //   startTransition(() => {
+                    //     router.push("/about");
+                    //   });
+                    // }}
+                    className="hover:cursor-pointer"
+                  >
                     من نحن
                   </a>
                 </div>
