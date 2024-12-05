@@ -20,7 +20,7 @@ const FeaturedProducts = ({ lng }) => {
       image: "/images/product1.jpg",
       logo: "/images/sheglam.png",
       normalPrice: "25.000",
-      soldPrice: "20.000",
+      soldPrice: "0",
     },
     {
       title: "Product Title",
@@ -44,7 +44,7 @@ const FeaturedProducts = ({ lng }) => {
       image: "/images/product4.jpg",
       logo: "/images/sheglam.png",
       normalPrice: "25.000",
-      soldPrice: "20.000",
+      soldPrice: "0",
     },
     {
       title: "Product Title",

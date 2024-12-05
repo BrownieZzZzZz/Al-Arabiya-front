@@ -13,8 +13,13 @@ const ProductCard = ({ product }) => {
         <p className="text-sm text-gray-600 mt-2">{product.desc}</p>
         
         <div className="flex items-center mt-4">
-          <span className="text-gray-500 line-through mr-2">{`${product.normalPrice} DT`}</span>
-          <span className="text-[var(--theme)] text-xl font-bold">{`${product.soldPrice} DT`}</span>
+          {product.soldPrice == "0" ? (<>
+            <span className="text-[var(--theme)] text-xl font-bold">{`${product.normalPrice} DT`}</span>
+          </>) : (<>
+            <span className="text-gray-500 line-through mr-2">{`${product.normalPrice} DT`}</span>
+            <span className="text-[var(--theme)] text-xl font-bold">{`${product.soldPrice} DT`}</span>
+            </>
+        )}
         </div>
       </div>
     </div>
