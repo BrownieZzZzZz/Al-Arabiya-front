@@ -8,7 +8,7 @@ const ProductCard = ({ product }) => {
     return parseInt(((parseFloat(x) - parseFloat(y)) / parseFloat(x)) * 100);
   };
   return (
-    <div className="mx-auto max-w-sm overflow-hidden rounded-lg bg-white shadow-md transition-all duration-200 hover:scale-[1.03] hover:cursor-pointer">
+    <div className="select-none mx-auto max-w-sm overflow-hidden rounded-lg bg-white shadow-md transition-all duration-200 hover:scale-[1.03] hover:cursor-pointer">
       <div className="relative overflow-hidden">
         <img
           src={product.image}
