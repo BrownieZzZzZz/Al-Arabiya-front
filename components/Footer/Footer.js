@@ -1,7 +1,7 @@
 // components/Footer.js
 "use client";
 import React from "react";
-import { FaFacebook, FaInstagram, FaWhatsapp } from "react-icons/fa";
+import { FaFacebook, FaInstagram, FaTiktok, FaWhatsapp } from "react-icons/fa";
 import { cn } from "@/lib/utils";
 import "./Footer.css";
 import { usePathname, useRouter } from "next/navigation";
@@ -18,7 +18,7 @@ const Footer = () => {
   }, [isPending]);
 
   return (
-    <footer className={cn("mt-10 bg-white pt-10")}>
+    <footer className={cn("mt-20 bg-white pt-10")}>
       {loadingPage && (
         <div className="fixed inset-0 z-50 flex h-full w-full items-center justify-center bg-white/60 backdrop-blur-sm">
           <div className="h-14 w-14 animate-spin rounded-full border-b-4 border-[var(--theme1)]"></div>
@@ -72,6 +72,12 @@ const Footer = () => {
                 className="transition-colors duration-300 hover:text-[var(--theme)]"
               >
                 <FaWhatsapp size={26} />
+              </a>
+              <a
+                href="#"
+                className="transition-colors duration-300 hover:text-[var(--theme)]"
+              >
+                <FaTiktok size={26} />
               </a>
             </div>
           </div>
@@ -178,6 +184,10 @@ const Footer = () => {
                     //     router.push("/contact");
                     //   });
                     // }}
+
+                    onClick={() => {
+                      router.push('/contact');
+                    }}
                     className="hover:cursor-pointer"
                   >
                     إتصل بنا

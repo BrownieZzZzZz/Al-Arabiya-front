@@ -1,7 +1,11 @@
+"use client";
+import { usePathname } from "next/navigation";
 import React from "react";
 
 const PreFooter = () => {
+  const pathname = usePathname();
   return (
+    !(pathname == "/") ? <></> : 
     <div dir="rtl" className="mt-20 grid md:grid-cols-2 min-[1400px]:grid-cols-4 gap-4 px-4">
       <div
         dir="rtl"
@@ -36,7 +40,7 @@ const PreFooter = () => {
         </div>
         <div className="flex flex-col gap-1">
           <div className="text-xl font-bold text-neutral-800">
-            منتجات ومواد عالية الجودة
+            منتجات عالية الجودة
           </div>
           <div className="text-sm text-neutral-500">
             منتجاتنا تتميز بأعلى معايير الجودة والموثوقية لتلبية توقعات عملائنا.

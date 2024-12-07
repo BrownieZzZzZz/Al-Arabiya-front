@@ -75,3 +75,12 @@
 }
 
 
+.shdw{
+  box-shadow: rgb(202, 138, 4, 0.1) 0px 8px 24px, rgb(202, 138, 4, 0.1) 0px 16px 56px, rgb(202, 138, 4, 0.4) 0px 24px 80px;
+}
+
+.shdw2{
+  box-shadow: rgb(202, 138, 4, 0.2) 0px 8px 24px, rgb(202, 138, 4, 0.2) 0px 16px 56px, rgb(202, 138, 4, 0.3) 0px 24px 80px;
+}
+
+

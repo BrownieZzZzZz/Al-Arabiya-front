@@ -37,6 +37,10 @@ const Menu = ({ orientation, closeButton, setLoadingPage, user }) => {
           //     closeButton?.current.click();
           //   }, 500);
           // }}
+
+          onClick={() => {
+            router.push("/contact");
+          }}
           className="hover:cursor-pointer"
         >
           إتصل بنا 
