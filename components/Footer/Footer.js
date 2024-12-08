@@ -154,6 +154,9 @@ const Footer = () => {
                     //     router.push("/about");
                     //   });
                     // }}
+                    onClick={() => {
+                      router.push("/products")
+                    }}
                     className="hover:cursor-pointer"
                   >
                     منتجاتنا 
@@ -169,6 +172,9 @@ const Footer = () => {
                     //     router.push("/about");
                     //   });
                     // }}
+                    onClick={() => {
+                      router.push("/about")
+                    }}
                     className="hover:cursor-pointer"
                   >
                     من نحن
@@ -203,6 +209,9 @@ const Footer = () => {
                     //     router.push("/services");
                     //   });
                     // }}
+                    onClick={() => {
+                      router.push("/services")
+                    }}
                     className="hover:cursor-pointer"
                   >
                     خدمات

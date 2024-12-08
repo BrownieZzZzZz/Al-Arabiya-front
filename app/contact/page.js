@@ -7,7 +7,7 @@ const page = () => {
       dir="rtl"
       className="mx-auto mt-20 flex w-full items-center justify-center"
     >
-      <div className="mx-6 md:mx-10 grid min-[800px]:grid-cols-2 w-full max-w-[1300px]  gap-10">
+      <div className="mx-6 md:mx-10 grid min-[800px]:grid-cols-2 w-full max-w-[1300px] gap-6  min-[800px]:gap-10">
         <div className="flex w-full flex-col items-center justify-center gap-6">
           {/* <div className="mb-4 flex w-full flex-col gap-2">
             <div className="flex w-full flex-row items-center justify-center min-[800px]:justify-start gap-3">

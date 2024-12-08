@@ -8,6 +8,10 @@ module.exports = {
   ],
   theme: {
   	extend: {
+			screens: {
+  			xsm: '544px',
+  			xxsm: '380px'
+  		},
   		colors: {
   			background: 'hsl(var(--background))',
   			foreground: 'hsl(var(--foreground))',
@@ -50,7 +54,7 @@ module.exports = {
   				'5': 'hsl(var(--chart-5))'
   			}
   		},
-			keyframes: {
+  		keyframes: {
   			'fade-in': {
   				'0%': {
   					opacity: '0'
@@ -124,7 +128,7 @@ module.exports = {
   				}
   			}
   		},
-			animation: {
+  		animation: {
   			textfadein: 'fade-in 0.5s forwards 0.1s 1',
   			textfadeout: 'fade-out 0.2s forwards 0s 1',
   			fadein: 'fade-in 1s forwards 0.15s 1',

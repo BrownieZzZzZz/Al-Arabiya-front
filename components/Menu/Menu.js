@@ -62,6 +62,9 @@ const Menu = ({ orientation, closeButton, setLoadingPage, user }) => {
           //     closeButton?.current.click();
           //   }, 500);
           // }}
+          onClick={() => {
+            router.push("/services")
+          }}
           className="hover:cursor-pointer"
         >
           خدمات 
@@ -83,6 +86,9 @@ const Menu = ({ orientation, closeButton, setLoadingPage, user }) => {
           //     closeButton?.current.click();
           //   }, 500);
           // }}
+          onClick={() => {
+            router.push("/about")
+          }}
           className="hover:cursor-pointer"
         >
           من نحن 
@@ -91,7 +97,7 @@ const Menu = ({ orientation, closeButton, setLoadingPage, user }) => {
       <div
         className={cn(
           "link text-neutral-700",
-          pathname.includes("about") && "active",
+          pathname.includes("products") && "active",
         )}
       >
         <a
@@ -104,6 +110,9 @@ const Menu = ({ orientation, closeButton, setLoadingPage, user }) => {
           //     closeButton?.current.click();
           //   }, 500);
           // }}
+          onClick={() => {
+            router.push("/products")
+          }}
           className="hover:cursor-pointer"
         >
           منتجاتنا 
