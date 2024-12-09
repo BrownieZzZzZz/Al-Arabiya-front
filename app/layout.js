@@ -11,23 +11,26 @@ import { Toaster } from "@/components/ui/toaster";
 
 export const metadata = {
   title: "Al-Arabiya",
-  description:
-    "العربية – متجر إلكتروني رائد متخصص في بيع مستحضرات التجميل عالية الجودة. نقدم لكِ مجموعة متكاملة من منتجات العناية بالبشرة، المكياج، والعطور المصممة لتلبية احتياجاتك اليومية وتعزيز جمالك الطبيعي. في العروبية، نؤمن بأن الجمال يبدأ من الداخل، ولهذا نحرص على تقديم منتجات تجمع بين الفخامة والجودة لتمنحكِ تجربة تسوق استثنائية. اكتشفي الآن جمالكِ مع العربية",
+  description: "العربية – متجر إلكتروني رائد مختص في بيع مستحضرات تجميل عالية الجودة. نقدم لكِ مجموعة متكاملة من منتجات العناية بالبشرة، المكياج، والعطور المصممة لتلبية احتياجاتك اليومية وتعزيز جمالك الطبيعي. في العربية، نؤمن بأن الجمال يبدأ من الداخل، ولهذا نحرص على تقديم منتجات تجمع بين الفخامة والجودة لتمنحكِ تجربة تسوق استثنائية. اكتشفي الآن جمالكِ معنا!"
 };
 
 export default function RootLayout({ children }) {
   return (
     <html lang="ar">
       <head>
-        <link rel="shortcut icon" href="/images/minilogo.png" type="image/x-icon" />
+        <link
+          rel="shortcut icon"
+          href="/images/minilogo.png"
+          type="image/x-icon"
+        />
       </head>
       <body className="bg-[var(--theme2)]">
         <Nav></Nav>
         {children}
-        <PreFooter/>
+        <PreFooter />
         <Footer />
-        <FastLinks/>
-        <Toaster/>
+        <FastLinks />
+        <Toaster />
       </body>
     </html>
   );
