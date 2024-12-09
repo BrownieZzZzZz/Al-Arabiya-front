@@ -7,6 +7,7 @@ import Nav from "@/components/Nav/Nav";
 import Footer from "@/components/Footer/Footer";
 import FastLinks from "@/components/FastLinks/FastLinks";
 import PreFooter from "@/components/PreFooter/PreFooter";
+import { Toaster } from "@/components/ui/toaster";
 
 export const metadata = {
   title: "Al-Arabiya",
@@ -26,6 +27,7 @@ export default function RootLayout({ children }) {
         <PreFooter/>
         <Footer />
         <FastLinks/>
+        <Toaster/>
       </body>
     </html>
   );

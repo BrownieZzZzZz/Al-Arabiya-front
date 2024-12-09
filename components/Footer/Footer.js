@@ -16,7 +16,7 @@ const Footer = () => {
   useEffect(() => {
     setLoadingPage(isPending);
   }, [isPending]);
-
+  if (pathname.includes("sign") || pathname.includes("reset")) return <></>;
   return (
     <footer className={cn("mt-20 bg-white pt-10")}>
       {loadingPage && (
@@ -155,11 +155,11 @@ const Footer = () => {
                     //   });
                     // }}
                     onClick={() => {
-                      router.push("/products")
+                      router.push("/products");
                     }}
                     className="hover:cursor-pointer"
                   >
-                    منتجاتنا 
+                    منتجاتنا
                   </a>
                 </div>
               </li>
@@ -173,7 +173,7 @@ const Footer = () => {
                     //   });
                     // }}
                     onClick={() => {
-                      router.push("/about")
+                      router.push("/about");
                     }}
                     className="hover:cursor-pointer"
                   >
@@ -192,7 +192,7 @@ const Footer = () => {
                     // }}
 
                     onClick={() => {
-                      router.push('/contact');
+                      router.push("/contact");
                     }}
                     className="hover:cursor-pointer"
                   >
@@ -210,7 +210,7 @@ const Footer = () => {
                     //   });
                     // }}
                     onClick={() => {
-                      router.push("/services")
+                      router.push("/services");
                     }}
                     className="hover:cursor-pointer"
                   >
