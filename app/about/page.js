@@ -99,7 +99,7 @@ const page = () => {
   ];
 
   useEffect(() => {
-    document.title = "GoldenBrand: About";
+    document.title = "Al-Arabiya";
   }, []);
   return (
     <div
