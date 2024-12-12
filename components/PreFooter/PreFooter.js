@@ -6,7 +6,7 @@ const PreFooter = () => {
   const pathname = usePathname();
   return (
     !(pathname == "/") ? <></> : 
-    <div dir="rtl" className="mt-20 grid md:grid-cols-2 min-[1400px]:grid-cols-4 gap-4 px-4">
+    <div dir="rtl" className="mt-20 grid md:grid-cols-2 min-[1400px]:grid-cols-4 gap-4 px-4 auto-rows-fr auto-cols-fr">
       <div
         dir="rtl"
         className="flex min-w-full flex-1 flex-row gap-4 p-1 sm:min-w-[320px] lg:min-w-0"

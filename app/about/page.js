@@ -36,26 +36,6 @@ const page = () => {
       question: "هل يتم توفير عينات مجانية مع الطلبات؟",
       answer: "في بعض الحملات الترويجية، نقدم عينات مجانية من منتجات مختارة مع طلبك.",
     },
-    // {
-    //   question: "",
-    //   answer: ".",
-    // },
-    // {
-    //   question: ".",
-    //   answer: ".",
-    // },
-    // {
-    //   question: ".",
-    //   answer: ".",
-    // },
-    // {
-    //   question: ".",
-    //   answer: ".",
-    // },
-    // {
-    //   question: ".",
-    //   answer: ".",
-    // },
   ];
   const aboutCards = [
     {

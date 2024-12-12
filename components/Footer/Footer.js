@@ -225,10 +225,6 @@ const Footer = () => {
           <div dir="rtl">
             <h3 className="text-xl font-semibold">إتصل بنا</h3>
             <ul className="mt-2 space-y-1">
-              <li className="flex flex-row items-center pb-2 text-neutral-700">
-                <i className="fa-solid fa-location-dot ml-2 text-[20px]"></i>
-                مدنين، 4100
-              </li>
               <li
                 className="flex flex-row items-center pb-2 text-neutral-700 transition-all duration-100 hover:cursor-pointer hover:text-[var(--theme1)]"
                 onClick={() => {
@@ -240,9 +236,6 @@ const Footer = () => {
               </li>
               <li
                 className="flex flex-row items-center text-neutral-700 transition-all duration-100 hover:cursor-pointer hover:text-[var(--theme1)]"
-                onClick={() => {
-                  window.open("mailto:recipevault@gmail.com");
-                }}
               >
                 <i className="fa-solid fa-phone ml-2 text-[20px]"></i>
                 <span dir="ltr">+216 12 345 678</span>
