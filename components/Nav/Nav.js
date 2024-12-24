@@ -141,7 +141,7 @@ const Nav = () => {
         />
       </div>
       <div className="flex flex-row-reverse gap-3">
-        {!pathname.includes("recipes") && (
+        {!pathname.includes("products") && (
           <div className="mr-1 hidden flex-row items-center gap-2 rounded-md border px-2 py-2 min-[800px]:mr-4 min-[880px]:flex">
             <i className="fa-solid fa-magnifying-glass text-md px-2 text-neutral-500"></i>
             <input
@@ -167,7 +167,7 @@ const Nav = () => {
             </button>
           </div>
         )}
-        {!pathname.includes("recipes") && (
+        {!pathname.includes("products") && (
           <Dialog>
             <DialogTrigger>
               <div className="flex items-center justify-center rounded-md p-2 transition-all duration-200 active:scale-105 active:bg-zinc-100 min-[880px]:hidden">
