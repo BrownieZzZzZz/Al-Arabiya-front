@@ -7,7 +7,7 @@ import ProductsByBrand from "@/components/ProductsByBrand/ProductsByBrand";
 import SpecialOffers from "@/components/SpecialOffers/SpecialOffers";
 
 import { useState, useEffect, useTransition } from "react";
-import { usePathname, useRouter } from "next/navigation";
+import { useRouter } from "next/navigation";
 
 export default function Home() {
   const router = useRouter();

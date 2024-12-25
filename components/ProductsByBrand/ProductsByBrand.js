@@ -9,12 +9,11 @@ import {
   CarouselPrevious,
 } from "@/components/ui/carousel";
 import React, { useEffect, useState } from "react";
-import Image from "next/image";
 import ProductCard from "../ProductCard/ProductCard";
 
-const ProductsByBrand = ({ lng, ChangeUrl }) => {
+const ProductsByBrand = ({ ChangeUrl }) => {
   const [selectedBrand, setSelectedBrand] = useState(0);
-  const [loadingProducts, setloadingProducts] = useState(false);
+  const [loadingProducts, setloadingProducts] = useState(true);
 
   const [brands, setBrands] = useState([
     {
@@ -47,8 +46,9 @@ const ProductsByBrand = ({ lng, ChangeUrl }) => {
     },
   ]);
 
-  const [product, setproduct] = useState([
+  const [products, setproducts] = useState([
     {
+      id: 12345,
       title: "Product Title",
       desc: "Lorem ipsum dolor sit amet consectetur, adipisicing elit. Eaque rerum ullam nesciunt optio! Libero nostrum ducimus temporibus. Magnam, ullam nobis.",
       image: "/images/product1.jpg",
@@ -57,6 +57,7 @@ const ProductsByBrand = ({ lng, ChangeUrl }) => {
       soldPrice: "20.000",
     },
     {
+      id: 12345,
       title: "Product Title",
       desc: "Lorem ipsum dolor sit amet consectetur, adipisicing elit. Eaque rerum ullam nesciunt optio! Libero nostrum ducimus temporibus. Magnam, ullam nobis.",
       image: "/images/product2.jpg",
@@ -65,6 +66,7 @@ const ProductsByBrand = ({ lng, ChangeUrl }) => {
       soldPrice: "20.000",
     },
     {
+      id: 12345,
       title: "Product Title",
       desc: "Lorem ipsum dolor sit amet consectetur, adipisicing elit. Eaque rerum ullam nesciunt optio! Libero nostrum ducimus temporibus. Magnam, ullam nobis.",
       image: "/images/product3.jpg",
@@ -73,6 +75,7 @@ const ProductsByBrand = ({ lng, ChangeUrl }) => {
       soldPrice: "20.000",
     },
     {
+      id: 12345,
       title: "Product Title",
       desc: "Lorem ipsum dolor sit amet consectetur, adipisicing elit. Eaque rerum ullam nesciunt optio! Libero nostrum ducimus temporibus. Magnam, ullam nobis.",
       image: "/images/product4.jpg",
@@ -81,6 +84,7 @@ const ProductsByBrand = ({ lng, ChangeUrl }) => {
       soldPrice: "0",
     },
     {
+      id: 12345,
       title: "Product Title",
       desc: "Lorem ipsum dolor sit amet consectetur, adipisicing elit. Eaque rerum ullam nesciunt optio! Libero nostrum ducimus temporibus. Magnam, ullam nobis.",
       image: "/images/product5.jpg",
@@ -89,6 +93,7 @@ const ProductsByBrand = ({ lng, ChangeUrl }) => {
       soldPrice: "20.000",
     },
     {
+      id: 12345,
       title: "Product Title",
       desc: "Lorem ipsum dolor sit amet consectetur, adipisicing elit. Eaque rerum ullam nesciunt optio! Libero nostrum ducimus temporibus. Magnam, ullam nobis.",
       image: "/images/product6.jpg",
@@ -105,7 +110,7 @@ const ProductsByBrand = ({ lng, ChangeUrl }) => {
       setloadingProducts(false);
     }, 2000);
   }, [selectedBrand]);
-  //
+
   return (
     <section className="mx-4 mt-20">
       <div className="mb-7 flex w-full flex-col items-center justify-center gap-2 self-center">
@@ -149,12 +154,17 @@ const ProductsByBrand = ({ lng, ChangeUrl }) => {
               }}
             >
               <CarouselContent className="-ml-1">
-                {product.map((product, index) => (
+                {products.map((product, index) => (
                   <CarouselItem
                     key={index}
                     className="flex w-full pl-1 min-[600px]:basis-1/2 md:basis-1/3 lg:basis-1/4"
                   >
-                    <div className="flex w-full p-2">
+                    <div
+                      className="flex w-full p-2"
+                      onClick={() => {
+                        ChangeUrl(`/products/${product.id}`);
+                      }}
+                    >
                       <ProductCard className="w-full" product={product} />
                     </div>
                   </CarouselItem>

@@ -1,9 +1,4 @@
-"use client";
-import { useRouter } from "next/navigation";
-import React from "react";
-
-const LookingFor = () => {
-  const router = useRouter();
+const LookingFor = ({ ChangeUrl }) => {
   return (
     <div
       dir="rtl"
@@ -23,7 +18,7 @@ const LookingFor = () => {
         <div className="mt-3 text-center text-3xl font-medium text-neutral-700">
           يمكنك التحصل علينا هنا
         </div>
-        <div className="mt-3 tracking-wider max-w-[600px] text-center text-lg text-neutral-500">
+        <div className="mt-3 max-w-[600px] text-center text-lg tracking-wider text-neutral-500">
           نحن نفتخر بتقديم خدمة دعم عملاء استثنائية تضع احتياجاتكم في المقدمة.
           فريقنا المتخصص جاهز دائمًا للإجابة على استفساراتكم وحل مشاكلكم بسرعة
           واحترافية، لضمان رضاكم التام وتعزيز ثقتكم بنا.
@@ -31,9 +26,9 @@ const LookingFor = () => {
         <div className="mb-6 mt-5 flex w-full items-center justify-center">
           <button
             onClick={() => {
-              router.push('/contact');
+              ChangeUrl("/contact");
             }}
-            className="w-fit self-center rounded-md border-2 shdw2 border-transparent bg-yellow-600 px-6 py-2 text-xl text-neutral-100 transition-all duration-200 hover:bg-[var(--theme)] hover:scale-110 hover:text-white active:scale-95"
+            className="shdw2 w-fit self-center rounded-md border-2 border-transparent bg-yellow-600 px-6 py-2 text-xl text-neutral-100 transition-all duration-200 hover:scale-110 hover:bg-[var(--theme)] hover:text-white active:scale-95"
             type="button"
           >
             إتصل بنا

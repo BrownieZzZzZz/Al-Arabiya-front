@@ -11,9 +11,10 @@ import {
 } from "@/components/ui/carousel";
 
 import ProductCard from "../ProductCard/ProductCard";
+import { useState } from "react";
 
 const FeaturedProducts = ({ ChangeUrl }) => {
-  const products = [
+  const [products, setProducts] = useState([
     {
       id: 1234,
       title: "Product Title",
@@ -68,7 +69,7 @@ const FeaturedProducts = ({ ChangeUrl }) => {
       normalPrice: "25.000",
       soldPrice: "20.000",
     },
-  ];
+  ]);
 
   return (
     <section className="mx-4 mt-20">
