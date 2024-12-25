@@ -1,7 +1,8 @@
 "use client";
-import React, { startTransition, useRef, useState } from "react";
 import "./page.css";
+
 import { cn } from "@/lib/utils";
+import { useState, useEffect, useTransition, useRef } from "react";
 import { useRouter } from "next/navigation";
 import { useToast } from "@/hooks/use-toast";
 
@@ -13,6 +14,7 @@ const page = () => {
   const emailInput = useRef(null);
   const passwordInput = useRef(null);
   const confirmPasswordInput = useRef(null);
+  const [check, setCheck] = useState(false);
 
   const handleSignUp = () => {
     if (firstNameInput.current.value.trim() === "") {
@@ -63,7 +65,10 @@ const page = () => {
       });
       return;
     }
-    if (passwordInput.current.value.trim() == confirmPasswordInput.current.value.trim()) {
+    if (
+      passwordInput.current.value.trim() ==
+      confirmPasswordInput.current.value.trim()
+    ) {
       toast({
         description: "الرجاء التحقق من كلمة المرور  !",
         variant: "destructive",
@@ -72,22 +77,32 @@ const page = () => {
       return;
     }
 
-
     // write backend logic here
   };
 
   const router = useRouter();
-  const ChangeUrl = (url) => {
+  const [isPending, startTransition] = useTransition();
+  const [loadingPage, setLoadingPage] = useState(false);
+
+  const ChangeUrl = (url, options = {}) => {
     startTransition(() => {
-      router.push(url);
+      router.push(url, options);
     });
   };
-  const [check, setCheck] = useState(false);
+
+  useEffect(() => {
+    setLoadingPage(isPending);
+  }, [isPending]);
   return (
     <div
       dir="rtl"
       className="image relative flex min-h-[100dvh] items-center justify-center bg-cover bg-left md:bg-center"
     >
+      {loadingPage && (
+        <div className="fixed inset-0 z-50 flex h-full w-full items-center justify-center bg-white/60 backdrop-blur-sm">
+          <div className="h-14 w-14 animate-spin rounded-full border-b-4 border-[var(--theme)]"></div>
+        </div>
+      )}
       <div className="absolute left-0 top-0 z-10 h-full w-full bg-yellow-800 opacity-[0.25]"></div>
       <div className="z-20 mx-5 my-8 flex w-full max-w-[500px] flex-col items-center gap-4 rounded-xl border-2 border-yellow-500 bg-gray-400 bg-opacity-20 bg-clip-padding px-5 pb-10 pt-6 backdrop-blur-sm backdrop-filter sm:px-10 md:px-14 md:pb-16 md:pt-12">
         <div className="inline-block self-start bg-gradient-to-r from-yellow-400 to-yellow-600 bg-clip-text pb-2 text-4xl font-semibold text-transparent md:text-5xl">
