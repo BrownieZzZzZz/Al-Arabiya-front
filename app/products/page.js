@@ -24,6 +24,7 @@ const page = () => {
   const router = useRouter();
   const products = [
     {
+      id: 1234,
       title: "Product Title",
       desc: "Lorem ipsum dolor sit amet consectetur, adipisicing elit. Eaque rerum ullam nesciunt optio! Libero nostrum ducimus temporibus. Magnam, ullam nobis.",
       image: "/images/product1.jpg",
@@ -32,6 +33,7 @@ const page = () => {
       soldPrice: "0",
     },
     {
+      id: 5678,
       title: "Product Title",
       desc: "Lorem ipsum dolor sit amet consectetur, adipisicing elit. Eaque rerum ullam nesciunt optio! Libero nostrum ducimus temporibus. Magnam, ullam nobis.",
       image: "/images/product2.jpg",
@@ -40,6 +42,7 @@ const page = () => {
       soldPrice: "20.000",
     },
     {
+      id: 8765,
       title: "Product Title",
       desc: "Lorem ipsum dolor sit amet consectetur, adipisicing elit. Eaque rerum ullam nesciunt optio! Libero nostrum ducimus temporibus. Magnam, ullam nobis.",
       image: "/images/product3.jpg",
@@ -48,6 +51,7 @@ const page = () => {
       soldPrice: "20.000",
     },
     {
+      id: 4321,
       title: "Product Title",
       desc: "Lorem ipsum dolor sit amet consectetur, adipisicing elit. Eaque rerum ullam nesciunt optio! Libero nostrum ducimus temporibus. Magnam, ullam nobis.",
       image: "/images/product4.jpg",
@@ -56,6 +60,7 @@ const page = () => {
       soldPrice: "0",
     },
     {
+      id: 9101,
       title: "Product Title",
       desc: "Lorem ipsum dolor sit amet consectetur, adipisicing elit. Eaque rerum ullam nesciunt optio! Libero nostrum ducimus temporibus. Magnam, ullam nobis.",
       image: "/images/product5.jpg",
@@ -64,6 +69,7 @@ const page = () => {
       soldPrice: "20.000",
     },
     {
+      id: 2131,
       title: "Product Title",
       desc: "Lorem ipsum dolor sit amet consectetur, adipisicing elit. Eaque rerum ullam nesciunt optio! Libero nostrum ducimus temporibus. Magnam, ullam nobis.",
       image: "/images/product6.jpg",
@@ -153,7 +159,7 @@ const page = () => {
               <NotFoundComp text="لا يوجد منتجات "/>
             )}
             {products?.map((product, index) => (
-              <ProductCard key={index} product={product} />
+              <ProductCard key={index} ChangeUrl={ChangeUrl} product={product} />
             ))}
           </div>
         </div>

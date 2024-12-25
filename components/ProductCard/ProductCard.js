@@ -1,6 +1,6 @@
 import React from "react";
 
-const ProductCard = ({ product }) => {
+const ProductCard = ({ product, ChangeUrl }) => {
   const parsePrice = (price) => {
     return price.slice(0, 4);
   };
@@ -8,7 +8,12 @@ const ProductCard = ({ product }) => {
     return parseInt(((parseFloat(x) - parseFloat(y)) / parseFloat(x)) * 100);
   };
   return (
-    <div className="mx-auto max-w-sm select-none overflow-hidden rounded-lg bg-white shadow-md transition-all duration-200 hover:scale-[1.03] hover:cursor-pointer">
+    <div
+      onClick={() => {
+        ChangeUrl(`/products/${product.id}`);
+      }}
+      className="mx-auto max-w-sm select-none overflow-hidden rounded-lg bg-white shadow-md transition-all duration-200 hover:scale-[1.03] hover:cursor-pointer"
+    >
       <div className="relative overflow-hidden">
         <img
           src={product.image}

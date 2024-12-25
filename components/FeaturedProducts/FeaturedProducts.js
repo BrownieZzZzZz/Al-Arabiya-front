@@ -98,11 +98,8 @@ const FeaturedProducts = ({ ChangeUrl }) => {
                 >
                   <div
                     className="flex w-full p-2"
-                    onClick={() => {
-                      ChangeUrl(`/products/${product.id}`);
-                    }}
                   >
-                    <ProductCard className="w-full" product={product} />
+                    <ProductCard className="w-full" ChangeUrl={ChangeUrl} product={product} />
                   </div>
                 </CarouselItem>
               ))}
