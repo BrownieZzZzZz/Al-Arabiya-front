@@ -9,25 +9,25 @@ const page = () => {
       title: "خدمة التوصيل السريع",
       description:
         "نوفر لك تجربة توصيل استثنائية تعتمد على السرعة والكفاءة. نعمل على ضمان وصول طلباتك بأمان وفي الوقت المناسب لتلبية توقعاتك. خدمة التوصيل تغطي كافة أنحاء المملكة لتبسيط تجربتك معنا.",
-      logo: "fa-solid fa-clipboard fa-flip-horizontal",
+      logo: "fa-solid fa-truck-fast fa-flip-horizontal",
     },
     {
       title: "استشارات تجميلية",
       description:
         "لأننا نؤمن بأن كل شخص يحتاج إلى حلول تجميلية مخصصة، نوفر استشارات متخصصة مع خبراء تجميل محترفين. هدفنا مساعدتك في اختيار المنتجات التي تناسب احتياجاتك وتعكس شخصيتك.",
-      logo: "fa-solid fa-screwdriver-wrench fa-flip-horizontal",
+      logo: "fa-solid fa-clipboard fa-flip-horizontal",
     },
     {
       title: "ضمان جودة المنتج",
       description:
         "منتجاتنا تأتي مباشرة من العلامات التجارية المعروفة. نحن نضمن لك أن جميع المنتجات أصلية ومعتمدة، مما يضمن جودة عالية ونتائج فعالة.",
-      logo: "fa-solid fa-industry fa-flip-horizontal",
+      logo: "fa-solid fa-star fa-flip-horizontal",
     },
     {
       title: "عروض وخصومات حصرية",
       description:
         "استفد من التخفيضات المميزة التي نقدمها باستمرار. نحن نهتم بأن تحصل على أفضل قيمة مقابل ما تدفعه، مع مجموعة واسعة من العروض الموسمية والخصومات المستمرة.",
-      logo: "fa-solid fa-wrench fa-flip-horizontal",
+      logo: "fa-solid fa-tags fa-flip-horizontal",
     },
   ];
 

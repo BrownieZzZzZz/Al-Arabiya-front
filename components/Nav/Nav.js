@@ -25,7 +25,6 @@ import {
 import { cn } from "@/lib/utils";
 import Cookies from "js-cookie";
 
-
 const Nav = () => {
   const searchInputPC = useRef("");
   const searchInputMB = useRef("");
@@ -38,7 +37,7 @@ const Nav = () => {
   const [user, setUser] = useState(null);
   const [loadingPage, setLoadingPage] = useState(true);
   const [isPending, startTransition] = useTransition();
-  
+
   // const checkUser = async () => {
   //   try {
   //     setLoadingUser(true);
@@ -83,7 +82,6 @@ const Nav = () => {
   //   setLoadingPage(isPending);
   // }, [isPending]);
 
-
   // const menu = useRef(null);
   // const [isVisible, setIsVisible] = useState(true);
 
@@ -99,7 +97,7 @@ const Nav = () => {
   //   }
 
   //   window.addEventListener('scroll', handleScroll);
-    
+
   //   handleScroll();
 
   //   return () => {
@@ -107,7 +105,7 @@ const Nav = () => {
   //   };
 
   // }, []);
-
+  if (pathname.includes("sign") || pathname.includes("reset")) return <></>;
   return (
     <div
       className={cn(
@@ -123,7 +121,7 @@ const Nav = () => {
 
       <div className="flex flex-row-reverse items-center gap-12 text-lg font-semibold">
         <div
-          className="flex justify-center items-center hover:cursor-pointer "
+          className="flex items-center justify-center hover:cursor-pointer"
           onClick={() => {
             setLoadingPage(true);
 
@@ -143,7 +141,7 @@ const Nav = () => {
         />
       </div>
       <div className="flex flex-row-reverse gap-3">
-        {!pathname.includes("recipes") && (
+        {!pathname.includes("products") && (
           <div className="mr-1 hidden flex-row items-center gap-2 rounded-md border px-2 py-2 min-[800px]:mr-4 min-[880px]:flex">
             <i className="fa-solid fa-magnifying-glass text-md px-2 text-neutral-500"></i>
             <input
@@ -169,7 +167,7 @@ const Nav = () => {
             </button>
           </div>
         )}
-        {!pathname.includes("recipes") && (
+        {!pathname.includes("products") && (
           <Dialog>
             <DialogTrigger>
               <div className="flex items-center justify-center rounded-md p-2 transition-all duration-200 active:scale-105 active:bg-zinc-100 min-[880px]:hidden">
@@ -178,17 +176,17 @@ const Nav = () => {
             </DialogTrigger>
             <DialogContent className="flex items-center justify-center px-2 py-12">
               <DialogTitle></DialogTitle>
-              <div className="flex flex-col w-full items-center justify-center gap-4">
+              <div className="flex w-full flex-col items-center justify-center gap-4">
                 <div className="text-xl font-semibold text-neutral-500">
-                تريد البحث عن ماذا ؟ 
+                  تريد البحث عن ماذا ؟
                 </div>
-                <div className="flex-row w-full flex items-center gap-2 rounded-md border px-2 py-2">
+                <div className="flex w-full flex-row items-center gap-2 rounded-md border px-2 py-2">
                   {/* <i className="fa-solid fa-magnifying-glass text-md px-1 text-neutral-500"></i> */}
-                  
+
                   <input
                     dir="rtl"
                     placeholder={"ابحث عن منتج "}
-                    className="placeholder-neutral-500 w-full outline-none"
+                    className="w-full placeholder-neutral-500 outline-none"
                     ref={searchInputMB}
                   />
                   <button
@@ -262,12 +260,16 @@ const Nav = () => {
                 //     }
                 //   }
                 // }}
+                onClick={() => {
+                  startTransition(() => {
+                    router.push('/sign-in');
+                  })
+                }}
                 className={cn(
                   "flex flex-row items-center gap-2 rounded-lg p-2 transition-all duration-200 hover:scale-105 hover:cursor-pointer hover:bg-zinc-100",
                   loadingUser && "hover:cursor-not-allowed",
                 )}
               >
-                
                 <div className="hidden text-lg min-[800px]:block">
                   {loadingUser ? (
                     <div className="flex items-center justify-center">
@@ -320,7 +322,7 @@ const Nav = () => {
 
         <Sheet>
           <SheetTrigger asChild>
-            <div className="flex p-2 self-center min-[1180px]:hidden">
+            <div className="flex self-center p-2 min-[1180px]:hidden">
               <i className="fa-solid fa-bars self-center text-2xl"></i>
             </div>
           </SheetTrigger>

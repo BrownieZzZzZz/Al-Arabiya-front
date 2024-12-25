@@ -9,15 +9,6 @@ const page = () => {
     >
       <div className="mx-6 md:mx-10 grid min-[800px]:grid-cols-2 w-full max-w-[1300px] gap-6  min-[800px]:gap-10">
         <div className="flex w-full flex-col items-center justify-center gap-6">
-          {/* <div className="mb-4 flex w-full flex-col gap-2">
-            <div className="flex w-full flex-row items-center justify-center min-[800px]:justify-start gap-3">
-              <div className="h-[2px] w-8 bg-[var(--theme)] md:w-12"></div>
-              <span className="font-lato text-center text-4xl font-bold text-neutral-800">
-                اتصل بنا
-              </span>
-              <div className="h-[2px] w-8 bg-[var(--theme)] md:w-12"></div>
-            </div>
-          </div> */}
           <div className="min-[800px]:self-start min-[800px]:mr-10 mb-4 relative font-lato text-4xl font-semibold before:absolute before:left-full before:top-3 before:h-10 before:w-10 before:border-b-2 before:border-r-2 before:border-[var(--theme)] before:content-[''] after:absolute after:-left-10 after:-top-2 after:h-10 after:w-10 after:border-l-2 after:border-t-2 after:border-[var(--theme)] after:bg-transparent after:transition-all after:content-['']">
             <span>اتصل بنا</span>
           </div>
@@ -31,10 +22,6 @@ const page = () => {
           <div className="grid w-full min-[550px]:w-fit min-[550px]:grid-cols-2 min-[800px]:grid-cols-1 gap-6 min-[800px]:self-start">
             <div className="flex flex-col gap-4 rounded-xl items-center bg-white p-8">
               <div className="flex flex-col gap-4">
-              <div className="flex flex-row items-center gap-3">
-                <i className="fa-solid fa-location-dot text-xl text-[var(--theme)]"></i>
-                <div>مدنين، وسط المدينة، عمارة ....، طابق عدد 4</div>
-              </div>
               <div className="flex flex-row items-center gap-3">
                 <i className="fa-solid fa-phone-flip text-xl text-[var(--theme)]"></i>
                 <div dir="ltr">+ 216 12 345 678</div>

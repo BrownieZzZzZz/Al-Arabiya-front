@@ -16,7 +16,7 @@ const Footer = () => {
   useEffect(() => {
     setLoadingPage(isPending);
   }, [isPending]);
-
+  if (pathname.includes("sign") || pathname.includes("reset")) return <></>;
   return (
     <footer className={cn("mt-20 bg-white pt-10")}>
       {loadingPage && (
@@ -45,12 +45,12 @@ const Footer = () => {
               ></img>
             </div>
             <p className="mx-auto mt-4 max-w-screen-sm text-center text-neutral-700">
-              العربية – متجر إلكتروني رائد متخصص في بيع مستحضرات التجميل عالية
+            العربية – متجر إلكتروني رائد مختص في بيع مستحضرات تجميل عالية
               الجودة. نقدم لكِ مجموعة متكاملة من منتجات العناية بالبشرة،
               المكياج، والعطور المصممة لتلبية احتياجاتك اليومية وتعزيز جمالك
               الطبيعي. في العربية، نؤمن بأن الجمال يبدأ من الداخل، ولهذا نحرص
               على تقديم منتجات تجمع بين الفخامة والجودة لتمنحكِ تجربة تسوق
-              استثنائية. اكتشفي الآن جمالكِ مع العربية!
+              استثنائية. اكتشفي الآن جمالكِ معنا!
             </p>
             {/* Social Media Icons */}
             <div className="mb-5 mt-4 flex justify-center gap-5">
@@ -155,11 +155,11 @@ const Footer = () => {
                     //   });
                     // }}
                     onClick={() => {
-                      router.push("/products")
+                      router.push("/products");
                     }}
                     className="hover:cursor-pointer"
                   >
-                    منتجاتنا 
+                    منتجاتنا
                   </a>
                 </div>
               </li>
@@ -173,7 +173,7 @@ const Footer = () => {
                     //   });
                     // }}
                     onClick={() => {
-                      router.push("/about")
+                      router.push("/about");
                     }}
                     className="hover:cursor-pointer"
                   >
@@ -192,7 +192,7 @@ const Footer = () => {
                     // }}
 
                     onClick={() => {
-                      router.push('/contact');
+                      router.push("/contact");
                     }}
                     className="hover:cursor-pointer"
                   >
@@ -210,7 +210,7 @@ const Footer = () => {
                     //   });
                     // }}
                     onClick={() => {
-                      router.push("/services")
+                      router.push("/services");
                     }}
                     className="hover:cursor-pointer"
                   >
@@ -225,10 +225,6 @@ const Footer = () => {
           <div dir="rtl">
             <h3 className="text-xl font-semibold">إتصل بنا</h3>
             <ul className="mt-2 space-y-1">
-              <li className="flex flex-row items-center pb-2 text-neutral-700">
-                <i className="fa-solid fa-location-dot ml-2 text-[20px]"></i>
-                مدنين، 4100
-              </li>
               <li
                 className="flex flex-row items-center pb-2 text-neutral-700 transition-all duration-100 hover:cursor-pointer hover:text-[var(--theme1)]"
                 onClick={() => {
@@ -240,9 +236,6 @@ const Footer = () => {
               </li>
               <li
                 className="flex flex-row items-center text-neutral-700 transition-all duration-100 hover:cursor-pointer hover:text-[var(--theme1)]"
-                onClick={() => {
-                  window.open("mailto:recipevault@gmail.com");
-                }}
               >
                 <i className="fa-solid fa-phone ml-2 text-[20px]"></i>
                 <span dir="ltr">+216 12 345 678</span>

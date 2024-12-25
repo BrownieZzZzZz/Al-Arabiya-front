@@ -1,10 +1,12 @@
 "use client";
 
+import { usePathname } from "next/navigation";
 import "./FastLinks.css";
 
 import { useRef, useEffect } from "react";
 
 const FastLinks = () => {
+  const pathname = usePathname();
   const Go_Top = useRef(null);
 
   const handleScroll = () => {
@@ -16,9 +18,9 @@ const FastLinks = () => {
       document.body.scrollTop > 20 ||
       document.documentElement.scrollTop > 20
     ) {
-      Go_Top.current.classList.add("showGoTop");
+      Go_Top?.current?.classList?.add("showGoTop");
     } else {
-      Go_Top.current.classList.remove("showGoTop");
+      Go_Top?.current?.classList?.remove("showGoTop");
     }
   };
 
@@ -27,7 +29,7 @@ const FastLinks = () => {
       check();
     };
   }, []);
-
+  if (pathname.includes("sign") || pathname.includes("reset")) return <></>;
   return (
     <div>
       <div
