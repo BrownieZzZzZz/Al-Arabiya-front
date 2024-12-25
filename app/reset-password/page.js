@@ -9,19 +9,62 @@ import { cn } from "@/lib/utils";
 
 const page = () => {
   const { toast } = useToast();
+  const [loading, setLoading] = useState(false);
   const emailInput = useRef(null);
 
-  const handleSend = () => {
+  const handleSend = async () => {
     if (emailInput.current.value === "") {
       toast({
-        description: "الرجاء التحقق من البريد الإلكتروني !",
+        title: "خطأ",
+        description: "الرجاء التحقق من البريد الإلكتروني!",
         variant: "destructive",
         duration: 2000,
       });
       return;
     }
 
-    // write backend logic here
+    try {
+      setLoading(true);
+
+      const response = await fetch(
+        `${process.env.NEXT_PUBLIC_API_URL}/users/recoverpass/${emailInput.current.value.trim()}`,
+        {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+          },
+        },
+      );
+      const responseData = await response.json();
+
+      if (responseData.statusCode !== 200) {
+        if (responseData.message === "Email not found") {
+          toast({
+            title: "خطأ",
+            description: "البريد الإلكتروني غير موجود",
+            variant: "destructive",
+          });
+          setLoading(false);
+          return;
+        }
+        throw new Error(responseData.message || "حدث خطأ ما");
+      }
+      toast({
+        title: "نجاح",
+        description: "تم إرسال البريد الإلكتروني بنجاح، تحقق من بريدك الوارد!",
+        variant: "success",
+      });
+      setLoading(false);
+    } catch (error) {
+      console.log(error);
+      setLoading(false);
+      toast({
+        title: "خطأ",
+        description: "حدث خطأ ما، الرجاء المحاولة مرة أخرى",
+        variant: "destructive",
+      });
+    }
+    setLoading(false);
   };
 
   const router = useRouter();
@@ -78,10 +121,20 @@ const page = () => {
         </label>
         <button
           onClick={() => handleSend()}
+          disabled={loading}
           type="button"
-          className="mt-4 w-full rounded-3xl bg-yellow-500 py-3 text-2xl font-semibold text-white outline-none transition-all duration-200 hover:bg-yellow-400"
+          className={cn(
+            "mt-4 w-full rounded-3xl bg-yellow-500 py-3 text-2xl font-semibold text-white outline-none transition-all duration-200 hover:bg-yellow-400",
+            loading && "hover:cursor-not-allowed",
+          )}
         >
-          أرسل
+          {loading ? (
+            <div className="flex items-center justify-center">
+              <div className="h-5 w-5 animate-spin rounded-full border-b-2 border-white"></div>
+            </div>
+          ) : (
+            "أرسل"
+          )}
         </button>
       </div>
     </div>

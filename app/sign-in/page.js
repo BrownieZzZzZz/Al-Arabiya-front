@@ -1,6 +1,8 @@
 "use client";
 import "./page.css";
 
+import Cookies from "js-cookie";
+
 import { useState, useEffect, useTransition, useRef } from "react";
 import { useRouter } from "next/navigation";
 import { useToast } from "@/hooks/use-toast";
@@ -12,26 +14,93 @@ const page = () => {
   const passwordInput = useRef(null);
   const checkInput = useRef(null);
   const [check, setCheck] = useState(false);
+  const [loading, setLoading] = useState(false);
 
-  const handleSignIn = () => {
+  const handleSignIn = async () => {
     if (emailInput.current.value === "") {
       toast({
-        description: "الرجاء التحقق من البريد الإلكتروني !",
-        variant: "destructive",
-        duration: 2000,
-      });
-      return;
-    }
-    if (passwordInput.current.value === "") {
-      toast({
-        description: "الرجاء التحقق من كلمة المرور  !",
+        title: "خطأ",
+        description: "الرجاء التحقق من البريد الإلكتروني!",
         variant: "destructive",
         duration: 2000,
       });
       return;
     }
 
-    // write backend logic here
+    if (passwordInput.current.value === "") {
+      toast({
+        title: "خطأ",
+        description: "الرجاء التحقق من كلمة المرور!",
+        variant: "destructive",
+        duration: 2000,
+      });
+      return;
+    }
+
+    try {
+      setLoading(true);
+
+      const response = await fetch(
+        `${process.env.NEXT_PUBLIC_API_URL}/users/signin`,
+        {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify({
+            email: emailInput.current.value,
+            password: passwordInput.current.value,
+          }),
+        },
+      );
+
+      if (response.ok) {
+        const data = await response.json();
+
+        if (data.data === null) {
+          toast({
+            title: "غير موجود",
+            description: "بيانات الاعتماد غير صحيحة، يرجى التحقق من التفاصيل!",
+            variant: "destructive",
+            duration: 2500,
+          });
+          setLoading(false);
+          return;
+        }
+
+        let expires = 3;
+        if (check) {
+          expires = 30;
+        }
+
+        Cookies.set("access_token", data.data.access_token, { expires });
+
+        toast({
+          title: "نجاح",
+          description: "لقد تم تسجيل الدخول بنجاح.",
+          variant: "success",
+          duration: 2500,
+        });
+        setLoadingPage(true);
+        document.location.href = "/";
+        setLoading(false);
+      }
+      setLoading(false);
+    } catch (error) {
+      console.log(error);
+
+      setLoading(false);
+
+      toast({
+        title: "خطأ",
+        description: "حدث خطأ أثناء تسجيل الدخول.",
+        variant: "destructive",
+        duration: 2500,
+      });
+
+      console.log(error);
+    }
+    setLoading(false);
   };
 
   const router = useRouter();
@@ -59,8 +128,21 @@ const page = () => {
       )}
       <div className="absolute left-0 top-0 z-10 h-full w-full bg-yellow-800 opacity-[0.25]"></div>
       <div className="z-20 mx-5 my-8 flex w-full max-w-[500px] flex-col items-center gap-4 rounded-xl border-2 border-yellow-500 bg-gray-400 bg-opacity-20 bg-clip-padding px-5 pb-10 pt-6 backdrop-blur-sm backdrop-filter sm:px-10 md:px-14 md:pb-16 md:pt-12">
-        <div className="inline-block self-start bg-gradient-to-r from-yellow-400 to-yellow-600 bg-clip-text pb-2 text-4xl font-semibold text-transparent md:text-5xl">
+        {/* <div className="inline-block self-start bg-gradient-to-r from-yellow-400 to-yellow-600 bg-clip-text pb-2 text-4xl font-semibold text-transparent md:text-5xl">
           تسجيل الدخول
+        </div> */}
+        <div className="flex w-full max-w-[400px] flex-row items-center justify-between">
+          <div
+            className="group hover:cursor-pointer"
+            onClick={() => {
+              ChangeUrl("/");
+            }}
+          >
+            <i className="fa-solid fa-arrow-left fa-flip-horizontal text-4xl text-[#ffffff] transition-colors duration-200 group-hover:text-yellow-500"></i>
+          </div>
+          <div className="inline-block self-start bg-gradient-to-r from-yellow-400 to-yellow-600 bg-clip-text pb-2 text-4xl font-semibold text-transparent md:text-5xl">
+            تسجيل الدخول
+          </div>
         </div>
         <label
           className="flex w-full flex-col gap-1.5 hover:cursor-text"
@@ -91,12 +173,26 @@ const page = () => {
         <button
           onClick={() => handleSignIn()}
           type="button"
-          className="mt-4 w-full rounded-3xl bg-yellow-500 py-3 text-2xl font-semibold text-white outline-none transition-all duration-200 hover:bg-yellow-400"
+          disabled={loading}
+          className={cn(
+            "mt-4 w-full rounded-3xl bg-yellow-500 py-3 text-2xl font-semibold text-white outline-none transition-all duration-200 hover:bg-yellow-400",
+            loading && "hover:cursor-not-allowed",
+          )}
         >
-          تسجيل الدخول
+          {loading ? (
+            <div className="flex items-center justify-center">
+              <div className="h-5 w-5 animate-spin rounded-full border-b-2 border-white"></div>
+            </div>
+          ) : (
+            "تسجيل الدخول"
+          )}
         </button>
         <a
-          onClick={() => ChangeUrl("sign-up")}
+          onClick={() => {
+            if (!loading) {
+              ChangeUrl("sign-up");
+            }
+          }}
           className="-mt-1 font-bold text-[#ffffff] transition-colors duration-200 hover:cursor-pointer hover:text-yellow-400"
         >
           ليس لديك حساب؟
@@ -124,7 +220,9 @@ const page = () => {
           <span
             className="mt-[2px] font-medium text-[#ffffff] transition-colors duration-200 hover:cursor-pointer hover:text-yellow-400"
             onClick={() => {
-              ChangeUrl("./reset-password");
+              if (!loading) {
+                ChangeUrl("./reset-password");
+              }
             }}
           >
             هل نسيت كلمة المرور؟
