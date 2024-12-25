@@ -2,31 +2,31 @@
   padding-bottom: 5px;
   overflow-x: hidden;
 }
+
 .link.active {
- @apply text-neutral-900
+  @apply text-neutral-900;
 }
 
 .link a {
   position: relative;
-  /* overflow-x: hidden; */
-  transition: all 0.4s;
+  transition: all 0.5s;
 }
 
-.link a::before {
+.link a::after {
   content: "";
   position: absolute;
   height: 2px;
-  transition: all 0.4s;
+  transition: all 0.5s;
   width: 100%;
   bottom: -5px;
   left: 100%;
   background: var(--theme);
 }
 
-.link.active a::before {
+.link.active a::after {
   left: 0%;
 }
 
-.link a:hover::before {
+.link a:hover::after {
   left: 0%;
 }
