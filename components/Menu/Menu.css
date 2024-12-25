@@ -1,18 +1,18 @@
-.link {
+.menu .link {
   padding-bottom: 5px;
   overflow-x: hidden;
 }
 
-.link.active {
+.menu .link.active {
   @apply text-neutral-900;
 }
 
-.link a {
+.menu .link a {
   position: relative;
   transition: all 0.5s;
 }
 
-.link a::after {
+.menu .link a::after {
   content: "";
   position: absolute;
   height: 2px;
@@ -23,10 +23,10 @@
   background: var(--theme);
 }
 
-.link.active a::after {
+.menu .link.active a::after {
   left: 0%;
 }
 
-.link a:hover::after {
+.menu .link a:hover::after {
   left: 0%;
 }
