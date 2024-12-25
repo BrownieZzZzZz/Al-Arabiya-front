@@ -37,6 +37,7 @@ const page = () => {
   useEffect(() => {
     setLoadingPage(isPending);
   }, [isPending]);
+
   return (
     <div
       dir="rtl"
