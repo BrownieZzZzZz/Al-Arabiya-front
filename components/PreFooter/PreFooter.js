@@ -4,9 +4,13 @@ import React from "react";
 
 const PreFooter = () => {
   const pathname = usePathname();
-  return (
-    !(pathname == "/") ? <></> : 
-    <div dir="rtl" className="mt-20 grid md:grid-cols-2 min-[1400px]:grid-cols-4 gap-4 px-4 auto-rows-fr auto-cols-fr">
+  return !(pathname == "/") ? (
+    <></>
+  ) : (
+    <div
+      dir="rtl"
+      className="mt-20 grid auto-cols-fr auto-rows-fr gap-4 px-4 md:grid-cols-2 min-[1400px]:grid-cols-4"
+    >
       <div
         dir="rtl"
         className="flex min-w-full flex-1 flex-row gap-4 p-1 sm:min-w-[320px] lg:min-w-0"
@@ -67,14 +71,16 @@ const PreFooter = () => {
       </div>
       <div className="flex min-w-full flex-1 flex-row gap-4 p-1 sm:min-w-[320px] lg:min-w-0">
         <div className="">
-        <i className="fa-solid fa-money-bills text-neutral-600 text-9xl"></i>
+          <i className="fa-solid fa-money-bills text-9xl text-neutral-600"></i>
         </div>
         <div className="flex flex-col gap-1">
           <div className="text-xl font-bold text-neutral-800">
-          بيع بلجملة والتفصيل
+            بيع بلجملة والتفصيل
           </div>
           <div className="text-sm text-neutral-500">
-          نقدم خدمات البيع بالجملة والتجزئة لتلبية احتياجات عملائنا بكل مرونة وسهولة. سواء كنتم تبحثون عن كميات كبيرة أو مشتريات فردية، نضمن لكم أفضل الأسعار وجودة لا تُضاهى.
+            نقدم خدمات البيع بالجملة والتجزئة لتلبية احتياجات عملائنا بكل مرونة
+            وسهولة. سواء كنتم تبحثون عن كميات كبيرة أو مشتريات فردية، نضمن لكم
+            أفضل الأسعار وجودة لا تُضاهى.
           </div>
         </div>
       </div>

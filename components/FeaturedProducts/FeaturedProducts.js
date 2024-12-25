@@ -12,9 +12,10 @@ import {
 
 import ProductCard from "../ProductCard/ProductCard";
 
-const FeaturedProducts = ({ lng }) => {
+const FeaturedProducts = ({ ChangeUrl }) => {
   const products = [
     {
+      id: 1234,
       title: "Product Title",
       desc: "Lorem ipsum dolor sit amet consectetur, adipisicing elit. Eaque rerum ullam nesciunt optio! Libero nostrum ducimus temporibus. Magnam, ullam nobis.",
       image: "/images/product1.jpg",
@@ -23,6 +24,7 @@ const FeaturedProducts = ({ lng }) => {
       soldPrice: "0",
     },
     {
+      id: 5678,
       title: "Product Title",
       desc: "Lorem ipsum dolor sit amet consectetur, adipisicing elit. Eaque rerum ullam nesciunt optio! Libero nostrum ducimus temporibus. Magnam, ullam nobis.",
       image: "/images/product2.jpg",
@@ -31,6 +33,7 @@ const FeaturedProducts = ({ lng }) => {
       soldPrice: "20.000",
     },
     {
+      id: 8765,
       title: "Product Title",
       desc: "Lorem ipsum dolor sit amet consectetur, adipisicing elit. Eaque rerum ullam nesciunt optio! Libero nostrum ducimus temporibus. Magnam, ullam nobis.",
       image: "/images/product3.jpg",
@@ -39,6 +42,7 @@ const FeaturedProducts = ({ lng }) => {
       soldPrice: "20.000",
     },
     {
+      id: 4321,
       title: "Product Title",
       desc: "Lorem ipsum dolor sit amet consectetur, adipisicing elit. Eaque rerum ullam nesciunt optio! Libero nostrum ducimus temporibus. Magnam, ullam nobis.",
       image: "/images/product4.jpg",
@@ -47,6 +51,7 @@ const FeaturedProducts = ({ lng }) => {
       soldPrice: "0",
     },
     {
+      id: 9101,
       title: "Product Title",
       desc: "Lorem ipsum dolor sit amet consectetur, adipisicing elit. Eaque rerum ullam nesciunt optio! Libero nostrum ducimus temporibus. Magnam, ullam nobis.",
       image: "/images/product5.jpg",
@@ -55,6 +60,7 @@ const FeaturedProducts = ({ lng }) => {
       soldPrice: "20.000",
     },
     {
+      id: 2131,
       title: "Product Title",
       desc: "Lorem ipsum dolor sit amet consectetur, adipisicing elit. Eaque rerum ullam nesciunt optio! Libero nostrum ducimus temporibus. Magnam, ullam nobis.",
       image: "/images/product6.jpg",
@@ -89,7 +95,12 @@ const FeaturedProducts = ({ lng }) => {
                   key={index}
                   className="flex w-full pl-1 min-[500px]:basis-1/2 md:basis-1/3 lg:basis-1/4"
                 >
-                  <div className="flex w-full p-2">
+                  <div
+                    className="flex w-full p-2"
+                    onClick={() => {
+                      ChangeUrl(`/products/${product.id}`);
+                    }}
+                  >
                     <ProductCard className="w-full" product={product} />
                   </div>
                 </CarouselItem>

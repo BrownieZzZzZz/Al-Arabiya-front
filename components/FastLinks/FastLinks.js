@@ -1,8 +1,8 @@
 "use client";
 
-import { usePathname } from "next/navigation";
 import "./FastLinks.css";
 
+import { usePathname } from "next/navigation";
 import { useRef, useEffect } from "react";
 
 const FastLinks = () => {

@@ -8,7 +8,7 @@ const ProductCard = ({ product }) => {
     return parseInt(((parseFloat(x) - parseFloat(y)) / parseFloat(x)) * 100);
   };
   return (
-    <div className="select-none mx-auto max-w-sm overflow-hidden rounded-lg bg-white shadow-md transition-all duration-200 hover:scale-[1.03] hover:cursor-pointer">
+    <div className="mx-auto max-w-sm select-none overflow-hidden rounded-lg bg-white shadow-md transition-all duration-200 hover:scale-[1.03] hover:cursor-pointer">
       <div className="relative overflow-hidden">
         <img
           src={product.image}
@@ -34,12 +34,21 @@ const ProductCard = ({ product }) => {
         <div className="mt-4 flex items-center">
           {product.soldPrice[0] == "0" ? (
             <>
-              <span className="text-xl font-bold text-[var(--theme)]">{parsePrice(product.normalPrice)}<font className="text-[15px]"> DT</font></span>
+              <span className="text-xl font-bold text-[var(--theme)]">
+                {parsePrice(product.normalPrice)}
+                <font className="text-[15px]"> DT</font>
+              </span>
             </>
           ) : (
             <>
-              <span className="mr-2 text-gray-500 line-through">{parsePrice(product.normalPrice)}<font className="text-[15px]"> DT</font></span>
-              <span className="text-xl font-bold text-[var(--theme)]">{parsePrice(product.soldPrice)}<font className="text-[15px]"> DT</font></span>
+              <span className="mr-2 text-gray-500 line-through">
+                {parsePrice(product.normalPrice)}
+                <font className="text-[15px]"> DT</font>
+              </span>
+              <span className="text-xl font-bold text-[var(--theme)]">
+                {parsePrice(product.soldPrice)}
+                <font className="text-[15px]"> DT</font>
+              </span>
             </>
           )}
         </div>

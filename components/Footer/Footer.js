@@ -1,9 +1,9 @@
-// components/Footer.js
 "use client";
-import React from "react";
+
+import "./Footer.css";
+
 import { FaFacebook, FaInstagram, FaTiktok, FaWhatsapp } from "react-icons/fa";
 import { cn } from "@/lib/utils";
-import "./Footer.css";
 import { usePathname, useRouter } from "next/navigation";
 import { useState, useEffect, useTransition } from "react";
 
@@ -16,12 +16,19 @@ const Footer = () => {
   useEffect(() => {
     setLoadingPage(isPending);
   }, [isPending]);
+
+  const ChangeUrl = (url, options = {}) => {
+    startTransition(() => {
+      router.push(url, options);
+    });
+  };
+
   if (pathname.includes("sign") || pathname.includes("reset")) return <></>;
   return (
     <footer className={cn("mt-20 bg-white pt-10")}>
       {loadingPage && (
         <div className="fixed inset-0 z-50 flex h-full w-full items-center justify-center bg-white/60 backdrop-blur-sm">
-          <div className="h-14 w-14 animate-spin rounded-full border-b-4 border-[var(--theme1)]"></div>
+          <div className="h-14 w-14 animate-spin rounded-full border-b-4 border-[var(--theme)]"></div>
         </div>
       )}
       <div className="mx-auto px-6">
@@ -33,9 +40,7 @@ const Footer = () => {
             <div
               className="flex items-center justify-center hover:cursor-pointer"
               onClick={() => {
-                startTransition(() => {
-                  router.push("/");
-                });
+                ChangeUrl("/");
               }}
             >
               <img
@@ -45,14 +50,13 @@ const Footer = () => {
               ></img>
             </div>
             <p className="mx-auto mt-4 max-w-screen-sm text-center text-neutral-700">
-            العربية – متجر إلكتروني رائد مختص في بيع مستحضرات تجميل عالية
+              العربية – متجر إلكتروني رائد مختص في بيع مستحضرات تجميل عالية
               الجودة. نقدم لكِ مجموعة متكاملة من منتجات العناية بالبشرة،
               المكياج، والعطور المصممة لتلبية احتياجاتك اليومية وتعزيز جمالك
               الطبيعي. في العربية، نؤمن بأن الجمال يبدأ من الداخل، ولهذا نحرص
               على تقديم منتجات تجمع بين الفخامة والجودة لتمنحكِ تجربة تسوق
               استثنائية. اكتشفي الآن جمالكِ معنا!
             </p>
-            {/* Social Media Icons */}
             <div className="mb-5 mt-4 flex justify-center gap-5">
               <a
                 href="https://www.facebook.com/arabiya.cosmetics"
@@ -89,11 +93,9 @@ const Footer = () => {
                 <div className={cn("link text-neutral-700")}>
                   <a
                     className="hover:cursor-pointer"
-                    // onClick={() => {
-                    //   startTransition(() => {
-                    //     router.push("/about#faq");
-                    //   });
-                    // }}
+                    onClick={() => {
+                      ChangeUrl("/about#faq");
+                    }}
                   >
                     دعم الحريف
                   </a>
@@ -103,11 +105,9 @@ const Footer = () => {
                 <div className={cn("link text-neutral-700")}>
                   <a
                     className="hover:cursor-pointer"
-                    // onClick={() => {
-                    //   startTransition(() => {
-                    //     router.push("/terms-and-conditions#privacy");
-                    //   });
-                    // }}
+                    onClick={() => {
+                      ChangeUrl("/terms-and-conditions#privacy");
+                    }}
                   >
                     سياسة الخصوصية
                   </a>
@@ -115,11 +115,9 @@ const Footer = () => {
               </li>
               <li>
                 <div
-                  // onClick={() => {
-                  //   startTransition(() => {
-                  //     router.push("/terms-and-conditions");
-                  //   });
-                  // }}
+                  onClick={() => {
+                    ChangeUrl("/terms-and-conditions");
+                  }}
                   className={cn("link text-neutral-700")}
                 >
                   <a className="hover:cursor-pointer">الشروط والأحكام</a>
@@ -134,10 +132,7 @@ const Footer = () => {
                 <div className={cn("link text-neutral-700")}>
                   <a
                     onClick={() => {
-                      setLoadingPage(true);
-                      startTransition(() => {
-                        router.push("/");
-                      });
+                      ChangeUrl("/");
                     }}
                     className="hover:cursor-pointer"
                   >
@@ -148,14 +143,8 @@ const Footer = () => {
               <li>
                 <div className={cn("link text-neutral-700")}>
                   <a
-                    // onClick={() => {
-                    //   setLoadingPage(true);
-                    //   startTransition(() => {
-                    //     router.push("/about");
-                    //   });
-                    // }}
                     onClick={() => {
-                      router.push("/products");
+                      ChangeUrl("/products");
                     }}
                     className="hover:cursor-pointer"
                   >
@@ -166,14 +155,8 @@ const Footer = () => {
               <li>
                 <div className={cn("link text-neutral-700")}>
                   <a
-                    // onClick={() => {
-                    //   setLoadingPage(true);
-                    //   startTransition(() => {
-                    //     router.push("/about");
-                    //   });
-                    // }}
                     onClick={() => {
-                      router.push("/about");
+                      ChangeUrl("/about");
                     }}
                     className="hover:cursor-pointer"
                   >
@@ -184,15 +167,8 @@ const Footer = () => {
               <li>
                 <div className={cn("link text-neutral-700")}>
                   <a
-                    // onClick={() => {
-                    //   setLoadingPage(true);
-                    //   startTransition(() => {
-                    //     router.push("/contact");
-                    //   });
-                    // }}
-
                     onClick={() => {
-                      router.push("/contact");
+                      ChangeUrl("/contact");
                     }}
                     className="hover:cursor-pointer"
                   >
@@ -203,14 +179,8 @@ const Footer = () => {
               <li>
                 <div className={cn("link text-neutral-700")}>
                   <a
-                    // onClick={() => {
-                    //   setLoadingPage(true);
-                    //   startTransition(() => {
-                    //     router.push("/services");
-                    //   });
-                    // }}
                     onClick={() => {
-                      router.push("/services");
+                      ChangeUrl("/services");
                     }}
                     className="hover:cursor-pointer"
                   >
@@ -234,9 +204,7 @@ const Footer = () => {
                 <i className="fa-solid fa-envelope ml-2 text-[20px]"></i>
                 Example@gmail.com
               </li>
-              <li
-                className="flex flex-row items-center text-neutral-700 transition-all duration-100 hover:cursor-pointer hover:text-[var(--theme1)]"
-              >
+              <li className="flex flex-row items-center text-neutral-700 transition-all duration-100 hover:cursor-pointer hover:text-[var(--theme1)]">
                 <i className="fa-solid fa-phone ml-2 text-[20px]"></i>
                 <span dir="ltr">+216 12 345 678</span>
               </li>
@@ -249,10 +217,7 @@ const Footer = () => {
           حقوق الطبع والنشر © 2024{" "}
           <a
             onClick={() => {
-              setLoadingPage(true);
-              startTransition(() => {
-                router.push("/");
-              });
+              ChangeUrl("/");
             }}
             className="text-lg font-bold text-[var(--theme)] hover:cursor-pointer"
           >

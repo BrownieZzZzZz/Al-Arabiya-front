@@ -1,18 +1,10 @@
 "use client";
-import { usePathname, useRouter } from "next/navigation";
-import { useEffect, useRef, useState, useTransition } from "react";
+import { usePathname } from "next/navigation";
 import { cn } from "@/lib/utils";
 import "./Menu.css";
 
-const Menu = ({ orientation, closeButton, setLoadingPage, user }) => {
-  const router = useRouter();
+const Menu = ({ orientation, ChangeUrl, user }) => {
   const pathname = usePathname();
-  const [isPending, startTransition] = useTransition();
-
-  useEffect(() => {
-    setLoadingPage(isPending);
-  }, [isPending]);
-
 
   return (
     <div
@@ -28,22 +20,12 @@ const Menu = ({ orientation, closeButton, setLoadingPage, user }) => {
         )}
       >
         <a
-          // onClick={() => {
-          //   setLoadingPage(true);
-          //   startTransition(() => {
-          //     router.push("/contact");
-          //   });
-          //   setTimeout(() => {
-          //     closeButton?.current.click();
-          //   }, 500);
-          // }}
-
           onClick={() => {
-            router.push("/contact");
+            ChangeUrl("/contact");
           }}
           className="hover:cursor-pointer"
         >
-          إتصل بنا 
+          إتصل بنا
         </a>
       </div>
       <div
@@ -53,21 +35,12 @@ const Menu = ({ orientation, closeButton, setLoadingPage, user }) => {
         )}
       >
         <a
-          // onClick={() => {
-          //   setLoadingPage(true);
-          //   startTransition(() => {
-          //     router.push("/services");
-          //   });
-          //   setTimeout(() => {
-          //     closeButton?.current.click();
-          //   }, 500);
-          // }}
           onClick={() => {
-            router.push("/services")
+            ChangeUrl("/services");
           }}
           className="hover:cursor-pointer"
         >
-          خدمات 
+          خدمات
         </a>
       </div>
       <div
@@ -77,21 +50,12 @@ const Menu = ({ orientation, closeButton, setLoadingPage, user }) => {
         )}
       >
         <a
-          // onClick={() => {
-          //   setLoadingPage(true);
-          //   startTransition(() => {
-          //     router.push("/about");
-          //   });
-          //   setTimeout(() => {
-          //     closeButton?.current.click();
-          //   }, 500);
-          // }}
           onClick={() => {
-            router.push("/about")
+            ChangeUrl("/about");
           }}
           className="hover:cursor-pointer"
         >
-          من نحن 
+          من نحن
         </a>
       </div>
       <div
@@ -101,21 +65,12 @@ const Menu = ({ orientation, closeButton, setLoadingPage, user }) => {
         )}
       >
         <a
-          // onClick={() => {
-          //   setLoadingPage(true);
-          //   startTransition(() => {
-          //     router.push("/about");
-          //   });
-          //   setTimeout(() => {
-          //     closeButton?.current.click();
-          //   }, 500);
-          // }}
           onClick={() => {
-            router.push("/products")
+            ChangeUrl("/products");
           }}
           className="hover:cursor-pointer"
         >
-          منتجاتنا 
+          منتجاتنا
         </a>
       </div>
       <div
@@ -123,20 +78,13 @@ const Menu = ({ orientation, closeButton, setLoadingPage, user }) => {
       >
         <a
           onClick={() => {
-            setLoadingPage(true);
-            startTransition(() => {
-              router.push("/");
-            });
-            setTimeout(() => {
-              closeButton?.current.click();
-            }, 500);
+            ChangeUrl("/");
           }}
           className="hover:cursor-pointer"
         >
-           الصفحة الرئيسية 
+          الصفحة الرئيسية
         </a>
       </div>
-      
     </div>
   );
 };

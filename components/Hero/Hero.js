@@ -1,8 +1,6 @@
-"use client";
-import React from "react";
 import "./Hero.css";
 
-const Hero = () => {
+const Hero = ({ ChangeUrl }) => {
   return (
     <div className="image relative flex h-[700px] w-full flex-col items-center justify-center bg-cover bg-center bg-no-repeat">
       <div className="absolute left-0 top-0 z-10 h-[700px] w-full bg-neutral-900 opacity-40"></div>
@@ -25,10 +23,13 @@ const Hero = () => {
             اكتشفي مجموعة واسعة من مستحضرات التجميل الفاخرة المصممة لإبراز جمالك
             الطبيعي. تسوقي الآن واحصلي على أفضل المنتجات التي تستحقينها.
           </div>
-          <button 
+          <button
             dir="rtl"
             type="button"
-            className="mt-5 place-self-center rounded-lg  bg-yellow-600 shdw px-12 py-4 text-center text-3xl text-neutral-100 transition-all duration-200 hover:scale-110 hover:bg-[var(--theme)] hover:text-white md:place-self-start"
+            className="shdw mt-5 place-self-center rounded-lg bg-yellow-600 px-12 py-4 text-center text-3xl text-neutral-100 transition-all duration-200 hover:scale-110 hover:bg-[var(--theme)] hover:text-white md:place-self-start"
+            onClick={() => {
+              ChangeUrl("/products");
+            }}
           >
             استكشف
           </button>

@@ -1,7 +1,9 @@
 "use client";
+
+import "./Nav.css";
+
 import { usePathname, useRouter } from "next/navigation";
 import { useState, useEffect, useRef, useTransition } from "react";
-import "./Nav.css";
 import Menu from "../Menu/Menu";
 import {
   Sheet,
@@ -26,17 +28,33 @@ import { cn } from "@/lib/utils";
 import Cookies from "js-cookie";
 
 const Nav = () => {
-  const searchInputPC = useRef("");
-  const searchInputMB = useRef("");
+  const searchInputPC = useRef(null);
+  const searchInputMB = useRef(null);
   const router = useRouter();
   const closeButton = useRef(null);
   const closeDialog = useRef(null);
   const pathname = usePathname();
   const [loadingUser, setLoadingUser] = useState(false);
   const [signed, setSigned] = useState(false);
-  const [user, setUser] = useState(null);
+  const [user, setUser] = useState({});
   const [loadingPage, setLoadingPage] = useState(true);
   const [isPending, startTransition] = useTransition();
+
+  const ChangeUrl = (url, options = {}) => {
+    startTransition(() => {
+      router.push(url, options);
+    });
+  };
+
+  useEffect(() => {
+    setLoadingPage(isPending);
+  }, [isPending]);
+
+  const logout = () => {
+    Cookies.remove("access_token");
+    setLoadingPage(true);
+    location.href = "/sign-in";
+  };
 
   // const checkUser = async () => {
   //   try {
@@ -67,44 +85,19 @@ const Nav = () => {
   //   setLoadingUser(false);
   // };
 
-  // const logout = () => {
-  //   Cookies.remove("access_token");
-  //   setLoadingPage(true);
-  //   location.href = "/sign-in";
-  // };
+  useEffect(() => {
+    // checkUser();
+  }, []);
 
-  // useEffect(() => {
-  //   checkUser();
-  //   setLoadingPage(false);
-  // }, []);
+  useEffect(() => {
+    if (closeButton.current) {
+      closeButton.current.click();
+    }
+    if (closeDialog.current) {
+      closeDialog.current.click();
+    }
+  });
 
-  // useEffect(() => {
-  //   setLoadingPage(isPending);
-  // }, [isPending]);
-
-  // const menu = useRef(null);
-  // const [isVisible, setIsVisible] = useState(true);
-
-  // useEffect(() => {
-  //   const handleScroll = () => {
-  //     const scrollTop = window.scrollY;
-  //     if(scrollTop >= 90){
-  //       setIsVisible(false)
-  //     }
-  //     else{
-  //       setIsVisible(true);
-  //     }
-  //   }
-
-  //   window.addEventListener('scroll', handleScroll);
-
-  //   handleScroll();
-
-  //   return () => {
-  //     window.removeEventListener('scroll', handleScroll);
-  //   };
-
-  // }, []);
   if (pathname.includes("sign") || pathname.includes("reset")) return <></>;
   return (
     <div
@@ -112,7 +105,6 @@ const Nav = () => {
         "flex w-full flex-row-reverse items-center justify-between bg-white p-2 pb-4 pt-4 min-[500px]:px-5 md:px-10",
       )}
     >
-      {/* <SocketNotifications user={user} /> */}
       {loadingPage && (
         <div className="fixed inset-0 z-50 flex h-full w-full items-center justify-center bg-white/60 backdrop-blur-sm">
           <div className="h-14 w-14 animate-spin rounded-full border-b-4 border-[var(--theme)]"></div>
@@ -123,11 +115,7 @@ const Nav = () => {
         <div
           className="flex items-center justify-center hover:cursor-pointer"
           onClick={() => {
-            setLoadingPage(true);
-
-            startTransition(() => {
-              router.push("/");
-            });
+            ChangeUrl("/");
           }}
         >
           <img src="/images/logo.png" alt="logo" className="w-[100px]"></img>
@@ -135,8 +123,8 @@ const Nav = () => {
         <Menu
           user={user}
           orientation="row"
-          setLoadingPage={(boolean) => {
-            setLoadingPage(boolean);
+          ChangeUrl={(url, option = {}) => {
+            ChangeUrl(url, option);
           }}
         />
       </div>
@@ -152,13 +140,7 @@ const Nav = () => {
             />
             <button
               onClick={() => {
-                setLoadingPage(true);
-
-                startTransition(() => {
-                  router.push(
-                    `/recipes/?search=${searchInputPC.current.value}`,
-                  );
-                });
+                ChangeUrl(`/recipes/?search=${searchInputPC.current.value}`);
               }}
               type="button"
               className="mr-1 rounded-xl bg-[var(--theme)] px-2.5 py-2 text-white transition-all duration-200 hover:scale-105"
@@ -191,16 +173,9 @@ const Nav = () => {
                   />
                   <button
                     onClick={() => {
-                      setTimeout(() => {
-                        closeDialog.current?.click();
-                      }, 500);
-                      setLoadingPage(true);
-
-                      startTransition(() => {
-                        router.push(
-                          `/recipes/?search=${searchInputMB.current.value}`,
-                        );
-                      });
+                      ChangeUrl(
+                        `/recipes/?search=${searchInputMB.current.value}`,
+                      );
                     }}
                     type="button"
                     className="mr-4 rounded-md bg-[var(--theme)] px-2.5 py-2 text-white transition-all duration-200 hover:scale-105"
@@ -219,51 +194,18 @@ const Nav = () => {
           </Dialog>
         )}
 
-        {/* <TooltipProvider>
-          <Tooltip>
-            <TooltipTrigger asChild>
-              <div
-                onClick={() => {
-                  console.log("notification Bar");
-                }}
-                className={cn(
-                  "flex-row items-center gap-2 rounded-lg px-2 transition-all duration-200 hover:scale-105 hover:cursor-pointer hover:bg-zinc-100",
-                  signed ? "flex" : "hidden",
-                )}
-              >
-                <i className="fa-regular fa-bell text-2xl min-[500px]:text-xl"></i>
-              </div>
-            </TooltipTrigger>
-            <TooltipContent>
-              <p>Notifications</p>
-            </TooltipContent>
-          </Tooltip>
-        </TooltipProvider> */}
         <TooltipProvider>
           <Tooltip>
             <TooltipTrigger asChild>
               <div
-                // onClick={() => {
-                //   if (!loadingUser) {
-                //     if (signed) {
-                //       setLoadingPage(true);
-
-                //       startTransition(() => {
-                //         router.push("/profile");
-                //       });
-                //     } else {
-                //       setLoadingPage(true);
-
-                //       startTransition(() => {
-                //         router.push("/sign-in");
-                //       });
-                //     }
-                //   }
-                // }}
                 onClick={() => {
-                  startTransition(() => {
-                    router.push('/sign-in');
-                  })
+                  if (!loadingUser) {
+                    if (signed) {
+                      ChangeUrl("/profile");
+                    } else {
+                      ChangeUrl("/sign-in");
+                    }
+                  }
                 }}
                 className={cn(
                   "flex flex-row items-center gap-2 rounded-lg p-2 transition-all duration-200 hover:scale-105 hover:cursor-pointer hover:bg-zinc-100",
@@ -331,9 +273,8 @@ const Nav = () => {
             <Menu
               user={user}
               orientation="col"
-              closeButton={closeButton}
-              setLoadingPage={(boolean) => {
-                setLoadingPage(boolean);
+              ChangeUrl={(url, option = {}) => {
+                ChangeUrl(url, option);
               }}
             />
             <SheetClose>
