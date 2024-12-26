@@ -1,32 +1,32 @@
-.link {
+.menu .link {
   padding-bottom: 5px;
   overflow-x: hidden;
 }
-.link.active {
- @apply text-neutral-900
+
+.menu .link.active {
+  @apply text-neutral-900;
 }
 
-.link a {
+.menu .link a {
   position: relative;
-  /* overflow-x: hidden; */
-  transition: all 0.4s;
+  transition: all 0.5s;
 }
 
-.link a::before {
+.menu .link a::after {
   content: "";
   position: absolute;
   height: 2px;
-  transition: all 0.4s;
+  transition: all 0.5s;
   width: 100%;
   bottom: -5px;
   left: 100%;
   background: var(--theme);
 }
 
-.link.active a::before {
+.menu .link.active a::after {
   left: 0%;
 }
 
-.link a:hover::before {
+.menu .link a:hover::after {
   left: 0%;
 }

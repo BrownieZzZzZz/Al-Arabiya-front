@@ -34,7 +34,7 @@ const Nav = () => {
   const closeButton = useRef(null);
   const closeDialog = useRef(null);
   const pathname = usePathname();
-  const [loadingUser, setLoadingUser] = useState(false);
+  const [loadingUser, setLoadingUser] = useState(true);
   const [signed, setSigned] = useState(false);
   const [user, setUser] = useState({});
   const [loadingPage, setLoadingPage] = useState(true);
@@ -56,37 +56,37 @@ const Nav = () => {
     location.href = "/sign-in";
   };
 
-  // const checkUser = async () => {
-  //   try {
-  //     setLoadingUser(true);
+  const checkUser = async () => {
+    try {
+      setLoadingUser(true);
 
-  //     const response = await fetch(
-  //       `${process.env.NEXT_PUBLIC_API_URL}/users/account`,
-  //       {
-  //         method: "GET",
-  //         headers: {
-  //           access_token: Cookies.get("access_token"),
-  //           "Content-Type": "application/json",
-  //         },
-  //       },
-  //     );
-  //     const data = await response.json();
+      const response = await fetch(
+        `${process.env.NEXT_PUBLIC_API_URL}/users/account`,
+        {
+          method: "GET",
+          headers: {
+            access_token: Cookies.get("access_token"),
+            "Content-Type": "application/json",
+          },
+        },
+      );
+      const data = await response.json();
 
-  //     if (data.data === null) {
-  //       throw new Error(data.message);
-  //     }
+      if (data.data === null) {
+        throw new Error(data.message);
+      }
 
-  //     setLoadingUser(false);
-  //     setSigned(true);
-  //     setUser(data.data);
-  //   } catch (error) {
-  //     setLoadingUser(false);
-  //   }
-  //   setLoadingUser(false);
-  // };
+      setLoadingUser(false);
+      setSigned(true);
+      setUser(data.data);
+    } catch (error) {
+      setLoadingUser(false);
+    }
+    setLoadingUser(false);
+  };
 
   useEffect(() => {
-    // checkUser();
+    checkUser();
   }, []);
 
   useEffect(() => {
@@ -140,7 +140,7 @@ const Nav = () => {
             />
             <button
               onClick={() => {
-                ChangeUrl(`/recipes/?search=${searchInputPC.current.value}`);
+                ChangeUrl(`/products/?search=${searchInputPC.current.value}`);
               }}
               type="button"
               className="mr-1 rounded-xl bg-[var(--theme)] px-2.5 py-2 text-white transition-all duration-200 hover:scale-105"
@@ -174,7 +174,7 @@ const Nav = () => {
                   <button
                     onClick={() => {
                       ChangeUrl(
-                        `/recipes/?search=${searchInputMB.current.value}`,
+                        `/products/?search=${searchInputMB.current.value}`,
                       );
                     }}
                     type="button"
