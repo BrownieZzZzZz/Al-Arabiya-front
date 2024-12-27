@@ -12,6 +12,10 @@ module.exports = {
   			xsm: '544px',
   			xxsm: '380px'
   		},
+			fontFamily: {
+				cairo: ['Cairo'],
+				rubik: ['Rubik']
+			},
   		colors: {
   			background: 'hsl(var(--background))',
   			foreground: 'hsl(var(--foreground))',

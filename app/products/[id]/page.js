@@ -1,18 +1,27 @@
 "use client";
 
-import { useParams } from "next/navigation";
+import { cn } from "@/lib/utils";
+import { useParams, useRouter } from "next/navigation";
 import React, { useEffect, useState, useTransition } from "react";
+import "./page.css";
 
 const page = () => {
   const [loadingPage, setLoadingPage] = useState(true);
   const [isPending, startTransition] = useTransition();
   const params = useParams();
+  const router = useRouter();
   // const id = params.id;
   const product = {
     id: 1234,
-    title: "Product Title",
-    desc: "Lorem ipsum dolor sit amet consectetur, adipisicing elit. Eaque rerum ullam nesciunt optio! Libero nostrum ducimus temporibus. Magnam, ullam nobis.",
+    title: "مرطب الوجه الطبيعي",
+    desc: "مرطب طبيعي خفيف مناسب لجميع أنواع البشرة.",
     images: [
+      "/images/product1.jpg",
+      "/images/product2.jpg",
+      "/images/product3.jpg",
+      "/images/product4.jpg",
+      "/images/product5.jpg",
+      "/images/product6.jpg",
       "/images/product1.jpg",
       "/images/product2.jpg",
       "/images/product3.jpg",
@@ -21,10 +30,34 @@ const page = () => {
       "/images/product6.jpg",
     ],
     logo: "/images/sheglam.png",
-    normalPrice: "25.000",
-    soldPrice: "0",
+    onSold: true,
+    soldPercentage: 15,
+    normalSinglePrice: 45.0,
+    soldSinglePrice: 38.25,
+    normalMultiPrice: 40,
+    soldMultiPrice: 34,
+    in_Stock: true,
+    category: "العناية بالبشرة",
   };
   const [imageIndex, setImageIndex] = useState(0);
+  const handleNextImage = () => {
+    if (imageIndex == product.images.length - 1) {
+      setImageIndex(0);
+    } else {
+      setImageIndex(imageIndex + 1);
+    }
+  };
+  const handlePrevImage = () => {
+    if (imageIndex == 0) {
+      setImageIndex(product.images.length - 1);
+    } else {
+      setImageIndex(imageIndex - 1);
+    }
+  };
+
+  const handleCategoryClick = (category) => {
+    // SEND USER TO PRODUCTS PAGE WITH THAT CATEGORY SELECTED.
+  };
   useEffect(() => {
     setLoadingPage(isPending);
   }, [isPending]);
@@ -38,28 +71,126 @@ const page = () => {
           <div className="h-14 w-14 animate-spin rounded-full border-b-4 border-[var(--theme)]"></div>
         </div>
       )}
-      <div className="relative mx-5 flex w-full justify-center gap-10 xsm:mx-8 sm:mx-10">
-        <div className="sticky top-5 flex h-fit flex-row gap-5">
-          <img
-            src={product.images[imageIndex]}
-            alt="Image"
-            className="h-[700px] w-[700px] object-cover"
-          ></img>
-          <div className="flex flex-col gap-2">
+      <div className="relative mx-5 flex w-full justify-center gap-10 max-md:flex-col xsm:mx-8 sm:mx-10">
+        <div className="top-5 px-4 flex h-fit w-full max-w-[700px] flex-col gap-5 md:sticky lg:flex-row-reverse">
+          <div className="relative w-full max-w-[600px] overflow-hidden rounded-lg shadow-lg">
+            <img
+              src={product.images[imageIndex]}
+              alt="Image"
+              className="h-[600px] w-full  rounded-lg object-cover transition-all duration-200 hover:scale-[1.15] hover:cursor-zoom-in"
+            ></img>
+            <img
+              src={product.logo}
+              alt="logo"
+              className="absolute left-6 top-6 w-[150px] rounded-full bg-white px-3 py-2 shadow-md"
+            ></img>
+            <div className="absolute bottom-6 right-6 flex flex-row gap-1.5">
+              <div
+                onClick={() => handleNextImage()}
+                className="grid size-[40px] place-items-center rounded-full bg-white shadow-md hover:cursor-pointer"
+              >
+                <i className="fa-solid fa-chevron-right text-xl text-neutral-900"></i>
+              </div>
+              <div
+                onClick={() => handlePrevImage()}
+                className="grid size-[40px] place-items-center rounded-full bg-white shadow-md hover:cursor-pointer"
+              >
+                <i className="fa-solid fa-chevron-left text-xl text-neutral-900"></i>
+              </div>
+            </div>
+          </div>
+          <div
+            dir="ltr"
+            className="images-scroll flex max-lg:w-full max-lg:max-w-[600px] gap-3 max-lg:h-full max-lg:overflow-x-auto   max-lg:py-3 lg:h-[600px] lg:w-full lg:max-w-[110px] lg:flex-col lg:overflow-y-auto lg:px-3"
+          >
             {product.images.map((image, index) => (
-              <img
-                onClick={() => {
-                  setImageIndex(index);
-                }}
-                src={image}
-                key={index}
-                alt="image"
-                className="size-[50px] object-cover hover:cursor-pointer"
-              ></img>
+              <div className="relative w-[75px] h-[75px] flex-shrink-0">
+                <img
+                  src={image}
+                  key={index}
+                  alt="image"
+                  className={cn(
+                    "size-full rounded-sm object-cover transition-all duration-200",
+                    imageIndex == index && "scale-110",
+                  )}
+                ></img>
+                <div
+                  onMouseOver={() => {
+                    setImageIndex(index);
+                  }}
+                  className={cn(
+                    "absolute left-0 top-0 z-10 w-[75px] h-[75px] rounded-sm bg-transparent opacity-20 shadow-md transition-all duration-200 hover:cursor-pointer",
+                    imageIndex == index && "scale-110 bg-neutral-950",
+                  )}
+                ></div>
+              </div>
             ))}
           </div>
         </div>
-        <div className="h-[1400px] w-[600px] bg-emerald-500"></div>
+        <div className="flex px-4 w-fit flex-col gap-3">
+          <div className="flex flex-col gap-1">
+            <div className="text-2xl font-semibold text-neutral-900">
+              {product.title}
+            </div>
+            <div
+              onClick={() => handleCategoryClick(product.category)}
+              dir="rtl"
+              className="text-lg font-medium text-neutral-500 transition-all duration-200 hover:cursor-pointer hover:text-neutral-400"
+            >{`منتوجات ${product.category}`}</div>
+          </div>
+          <div className="text-lg tracking-wide text-neutral-700">
+            {product.desc}
+          </div>
+          <div className="text-xl font-semibold text-neutral-700">
+            سعر بالتفصيل{" "}
+          </div>
+          <div className="-mt-2 flex flex-row gap-2">
+            {product.onSold ? (
+              <>
+                <div
+                  dir="ltr"
+                  className="text-lg font-bold"
+                >{`${product.soldSinglePrice} DT`}</div>
+                <div
+                  dir="ltr"
+                  className="text-lg font-medium text-neutral-500 line-through"
+                >{` ${product.normalSinglePrice} DT`}</div>
+                <div className="text-lg font-medium text-emerald-600">{`${product.soldPercentage}% تخفيض `}</div>
+              </>
+            ) : (
+              <div
+                dir="ltr"
+                className="text-lg font-bold"
+              >{`${product.normalSinglePrice} DT`}</div>
+            )}
+          </div>
+          <div className="text-xl font-semibold text-neutral-700">
+            سعر بالجملة{" "}
+            <font className="text-[15px] font-medium tracking-wide text-neutral-500">
+              ( 5 منتوجات وما فوق )
+            </font>
+          </div>
+          <div className="-mt-2 flex flex-row gap-2">
+            {product.onSold ? (
+              <>
+                <div
+                  dir="ltr"
+                  className="text-lg font-bold"
+                >{`${product.soldMultiPrice} DT`}</div>
+                <div
+                  dir="ltr"
+                  className="text-lg font-medium text-neutral-500 line-through"
+                >{` ${product.normalMultiPrice} DT`}</div>
+                <div className="text-lg font-medium text-emerald-600">{`${product.soldPercentage}% تخفيض `}</div>
+              </>
+            ) : (
+              <div
+                dir="ltr"
+                className="text-lg font-bold"
+              >{`${product.normalMultiPrice} DT`}</div>
+            )}
+          </div>
+        </div>
       </div>
     </div>
   );
