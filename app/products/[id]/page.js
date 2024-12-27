@@ -38,18 +38,24 @@ const page = () => {
           <div className="h-14 w-14 animate-spin rounded-full border-b-4 border-[var(--theme)]"></div>
         </div>
       )}
-      <div className="relative mx-5 flex w-full flex-row justify-center gap-10 xsm:mx-8 sm:mx-10">
-        <div className="sticky top-10 flex flex-row gap-5">
+      <div className="relative mx-5 flex w-full justify-center gap-10 xsm:mx-8 sm:mx-10">
+        <div className="sticky top-5 flex h-fit flex-row gap-5">
           <img
             src={product.images[imageIndex]}
             alt="Image"
-            className="w-[700px] h-[700px] object-cover"
+            className="h-[700px] w-[700px] object-cover"
           ></img>
           <div className="flex flex-col gap-2">
             {product.images.map((image, index) => (
-              <img onClick={() => {
-                setImageIndex(index)
-              }} src={image} key={index} alt="image" className="size-[50px] object-cover hover:cursor-pointer"></img>
+              <img
+                onClick={() => {
+                  setImageIndex(index);
+                }}
+                src={image}
+                key={index}
+                alt="image"
+                className="size-[50px] object-cover hover:cursor-pointer"
+              ></img>
             ))}
           </div>
         </div>
