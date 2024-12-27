@@ -3,11 +3,14 @@ import "/public/assets/fontawesome/css/fontawesome.css";
 import "/public/assets/fontawesome/css/brands.css";
 import "/public/assets/fontawesome/css/solid.css";
 import "/public/assets/fontawesome/css/all.css";
+
 import Nav from "@/components/Nav/Nav";
 import Footer from "@/components/Footer/Footer";
 import FastLinks from "@/components/FastLinks/FastLinks";
 import PreFooter from "@/components/PreFooter/PreFooter";
 import { Toaster } from "@/components/ui/toaster";
+
+import { Analytics } from "@vercel/analytics/react";
 
 export const metadata = {
   title: "Al-Arabiya",
@@ -32,6 +35,7 @@ export default function RootLayout({ children }) {
         <Footer />
         <FastLinks />
         <Toaster />
+        <Analytics />
       </body>
     </html>
   );
