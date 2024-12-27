@@ -12,6 +12,7 @@ import React, {
 import { useRouter } from "next/navigation";
 import { useSearchParams } from "next/navigation";
 import { toast } from "@/hooks/use-toast";
+import { cn } from "@/lib/utils";
 
 import { Button } from "@/components/ui/button";
 import {
@@ -21,6 +22,15 @@ import {
   SheetTitle,
   SheetTrigger,
 } from "@/components/ui/sheet";
+import {
+  Pagination,
+  PaginationContent,
+  PaginationEllipsis,
+  PaginationItem,
+  PaginationLink,
+  PaginationNext,
+  PaginationPrevious,
+} from "@/components/ui/pagination";
 import ProductCard from "@/components/ProductCard/ProductCard";
 import NotFoundComp from "@/components/NotFoundComp/NotFoundComp";
 import SelectSortInterface from "@/components/SelectSortInterface/SelectSortInterface";
@@ -36,14 +46,16 @@ const ProductPage = () => {
 
   const [products, setProducts] = useState([]);
   const [categories, setCategories] = useState([]);
-  const [brands, setBrands] = useState("");
+  const [brands, setBrands] = useState([]);
   const searchInputRef = useRef(null);
 
   let selectedCategories = searchParams.get("selectedCategories")
     ? JSON.parse(decodeURIComponent(searchParams.get("selectedCategories")))
     : {};
 
-  let brandOption = searchParams.get("selectedBrand") || null;
+  const [brandOption, setBrandOption] = useState(
+    searchParams.get("brandOption") || "allBrands",
+  );
   let sortOption = searchParams.get("sortOption") || "nameAsc";
   let minPrice = searchParams.get("minPrice") || 0;
   let maxPrice = searchParams.get("maxPrice") || 50000;
@@ -51,7 +63,7 @@ const ProductPage = () => {
   const [totalItems, setTotalItems] = useState(0);
   const [totalPages, setTotalPages] = useState(1);
   const [CurrentPage, setCurrentPage] = useState(1);
-  const [limit, setLimit] = useState(12);
+  const [limit, setLimit] = useState(10);
   const [loadingProducts, setLoadingProducts] = useState(true);
   const [loadingCategories, setLoadingCategories] = useState(true);
   const [loadingBrands, setLoadingBrands] = useState(true);
@@ -67,7 +79,7 @@ const ProductPage = () => {
   };
 
   const changeBrandOption = (option) => {
-    brandOption = option;
+    setBrandOption(option);
   };
 
   const resetFilters = () => {
@@ -159,7 +171,7 @@ const ProductPage = () => {
               >
                 نوع المنتج
               </span>
-              <div className="category-scroll flex flex-col gap-2 px-2 lg:max-h-[433px] lg:overflow-auto">
+              <div className="category-scroll flex flex-col gap-2 px-2">
                 {categories.map((categorie) => (
                   <CategorieItem
                     key={categorie.id}
@@ -178,9 +190,13 @@ const ProductPage = () => {
                 className="duration-400 w-full rounded-md border-2 border-[var(--theme)] bg-[var(--theme)] py-2 text-xl font-semibold text-white transition-all active:scale-95"
                 onClick={() => {
                   ChangeUrl(
-                    `?sortOption=${sortOption}&brandOption=${brandOption}&selectedCategories=${encodeURIComponent(
-                      JSON.stringify(selectedCategories),
-                    )}`,
+                    `?${searchInputRef.current.value.trim() && `search=${searchInputRef.current.value.trim()}`}${sortOption && sortOption !== "nameAsc" ? `&sortOption=${sortOption}` : ``}${minPrice && minPrice !== 0 ? `&minPrice=${minPrice}` : ``}${maxPrice && maxPrice !== 50000 ? `&maxPrice=${maxPrice}` : ``}${
+                      isEmpty(selectedCategories)
+                        ? ""
+                        : `&selectedCategories=${encodeURIComponent(
+                            JSON.stringify(selectedCategories),
+                          )}`
+                    }${brandOption && brandOption !== "allBrands" ? `&brand=${brandOption}` : ""}`,
                     { scroll: false },
                   );
                 }}
@@ -233,8 +249,11 @@ const ProductPage = () => {
       );
       const categoriesString = encodeURIComponent(categories.join(","));
 
+      console.log("brandOption");
+      console.log(brandOption);
+
       const res = await fetch(
-        `${process.env.NEXT_PUBLIC_API_URL}/product/search?${searchInputRef.current.value.trim() && `name=${searchInputRef.current.value.trim()}`}${categoriesString && `&categories=${categoriesString}`}${brandOption && brandOption !== "allBrands" && `&brand=${brandOption}`}${sortBy && `&sortBy=${sortBy}`}${sort_order && `&sortOrder=${sort_order}`}${CurrentPage && `&page=${CurrentPage}`}${limit && `&limit=${limit}`}`,
+        `${process.env.NEXT_PUBLIC_API_URL}/product/search?${searchInputRef.current.value.trim() ? `name=${searchInputRef.current.value.trim()}` : ""}${categoriesString ? `&categories=${categoriesString}` : ""}${brandOption && brandOption !== "allBrands" ? `&brand=${brandOption}` : ""}${sortBy ? `&sortBy=${sortBy}` : ""}${sort_order ? `&sortOrder=${sort_order}` : ""}${CurrentPage ? `&page=${CurrentPage}` : ""}${limit ? `&limit=${limit}` : ""}`,
         {
           method: "GET",
         },
@@ -351,18 +370,16 @@ const ProductPage = () => {
   };
 
   useEffect(() => {
+    if (!isPending) {
+      fetchProducts();
+    }
     setLoadingPage(isPending);
   }, [isPending]);
 
-  useEffect(() => {
-    fetchProducts();
-  }, [CurrentPage]);
+  // useEffect(() => {}, [CurrentPage]);
 
   useEffect(() => {
     fetchProducts();
-  }, [router]);
-
-  useEffect(() => {
     createPageNumbers();
   }, [CurrentPage, totalPages]);
 
@@ -403,11 +420,11 @@ const ProductPage = () => {
                     changeSortOption(sortOption);
                   }}
                   values={[
-                    ["date", "ترتيب حسب: الأحدث "],
-                    ["nameAsc", "ترتيب حسب: الأدنى حرف للاعلى  "],
-                    ["nameDesc", "ترتيب حسب: الأعلى حرف للادنى  "],
-                    ["priceAsc", "ترتيب حسب: الأدنى سعر للاعلى  "],
-                    ["priceDesc", "ترتيب حسب: الأعلى سعر للادنى  "],
+                    ["date", "الأحدث"],
+                    ["nameAsc", "الأدنى حرف للاعلى"],
+                    ["nameDesc", "الأعلى حرف للادنى"],
+                    ["priceAsc", "الأدنى سعر للاعلى"],
+                    ["priceDesc", "الأعلى سعر للادنى"],
                   ]}
                 />
               </div>
@@ -422,10 +439,7 @@ const ProductPage = () => {
                   changeBrandOption={(brandOption) => {
                     changeBrandOption(brandOption);
                   }}
-                  values={[
-                    ["allBrands", "كل الماركات "],
-                    ["sheglam", "شقلام"],
-                  ]}
+                  values={brands}
                 />
               </div>
             </div>
@@ -436,7 +450,7 @@ const ProductPage = () => {
               >
                 نوع المنتج
               </span>
-              <div className="category-scroll flex flex-col gap-2 px-2 lg:max-h-[433px] lg:overflow-auto">
+              <div className="category-scroll flex flex-col gap-2 px-2">
                 {categories.map((categorie) => (
                   <CategorieItem
                     key={categorie.id}
@@ -455,9 +469,13 @@ const ProductPage = () => {
                 className="duration-400 w-full rounded-md border-2 border-[var(--theme)] bg-[var(--theme)] py-2 text-xl font-semibold text-white transition-all active:scale-95"
                 onClick={() => {
                   ChangeUrl(
-                    `?sortOption=${sortOption}&brandOption=${brandOption}&selectedCategories=${encodeURIComponent(
-                      JSON.stringify(selectedCategories),
-                    )}`,
+                    `?${searchInputRef.current.value.trim() && `search=${searchInputRef.current.value.trim()}`}${sortOption && sortOption !== "nameAsc" ? `&sortOption=${sortOption}` : ``}${minPrice && minPrice !== 0 ? `&minPrice=${minPrice}` : ``}${maxPrice && maxPrice !== 50000 ? `&maxPrice=${maxPrice}` : ``}${
+                      isEmpty(selectedCategories)
+                        ? ""
+                        : `&selectedCategories=${encodeURIComponent(
+                            JSON.stringify(selectedCategories),
+                          )}`
+                    }${brandOption && brandOption !== "allBrands" ? `&brand=${brandOption}` : ""}`,
                     { scroll: false },
                   );
                 }}
@@ -484,11 +502,24 @@ const ProductPage = () => {
             </div>
             <input
               placeholder="ابحث عن منتج "
+              defaultValue={searchParams.get("search") || ""}
               type="text"
               ref={searchInputRef}
               className="min-h-full w-full flex-1 bg-transparent focus:outline-none"
             ></input>
-            <button className="rounded-lg bg-[var(--theme)] px-2.5 py-1 text-lg text-neutral-100 transition-all duration-300 hover:scale-95">
+            <button
+              className="rounded-lg bg-[var(--theme)] px-2.5 py-1 text-lg text-neutral-100 transition-all duration-300 hover:scale-95"
+              onClick={() => {
+                if (
+                  loadingProducts ||
+                  loadingPage ||
+                  loadingCategories ||
+                  loadingBrands
+                )
+                  return;
+                fetchProducts();
+              }}
+            >
               <span className="hidden xsm:block">ابحث </span>
               <div className="xsm:hidden">
                 <i className="fa-solid fa-magnifying-glass text-neutral-100"></i>
@@ -517,6 +548,96 @@ const ProductPage = () => {
               <NotFoundComp text="لا يوجد منتجات " />
             )}
           </div>
+          {/* <PaginationComp /> */}
+          {!loadingProducts && products.length > 0 && (
+            <Pagination dir="rtl">
+              <PaginationContent className="flex items-center justify-center gap-2">
+                {/* Previous Button */}
+                <PaginationItem>
+                  <PaginationPrevious
+                    className={cn(
+                      "rounded-md px-3 py-2 transition-all duration-200 hover:cursor-pointer",
+                      CurrentPage === 1
+                        ? "hover:cursor-not-allowed"
+                        : "bg-white text-black hover:bg-[var(--theme)] hover:text-white",
+                    )}
+                    onClick={() => handlePageChange(CurrentPage - 1)}
+                    disabled={CurrentPage === 1}
+                  >
+                    
+                  </PaginationPrevious>
+                </PaginationItem>
+
+                {/* First Page and Ellipsis */}
+                {pages[0] > 1 && (
+                  <>
+                    <PaginationItem>
+                      <PaginationLink
+                        className="rounded-md bg-white px-3 py-2 text-black transition-all duration-200 hover:cursor-pointer hover:bg-[var(--theme)] hover:text-white"
+                        onClick={() => handlePageChange(1)}
+                      >
+                        ١
+                      </PaginationLink>
+                    </PaginationItem>
+                    {pages[0] > 2 && (
+                      <PaginationEllipsis>...</PaginationEllipsis>
+                    )}
+                  </>
+                )}
+
+                {/* Page Numbers */}
+                {pages.map((page) => (
+                  <PaginationItem key={page}>
+                    <PaginationLink
+                      className={cn(
+                        "rounded-md px-3 py-2 transition-all duration-200 hover:cursor-pointer",
+                        page === CurrentPage
+                          ? "bg-[var(--theme)] text-white"
+                          : "bg-white text-black hover:bg-[var(--theme)] hover:text-white",
+                      )}
+                      isActive={page === CurrentPage}
+                      onClick={() => handlePageChange(page)}
+                    >
+                      {page}
+                    </PaginationLink>
+                  </PaginationItem>
+                ))}
+
+                {/* Last Page and Ellipsis */}
+                {pages[pages.length - 1] < totalPages && (
+                  <>
+                    {pages[pages.length - 1] < totalPages - 1 && (
+                      <PaginationEllipsis>...</PaginationEllipsis>
+                    )}
+                    <PaginationItem>
+                      <PaginationLink
+                        className="rounded-md bg-white px-3 py-2 text-black transition-all duration-200 hover:cursor-pointer hover:bg-[var(--theme)] hover:text-white"
+                        onClick={() => handlePageChange(totalPages)}
+                      >
+                        {totalPages}
+                      </PaginationLink>
+                    </PaginationItem>
+                  </>
+                )}
+
+                {/* Next Button */}
+                <PaginationItem>
+                  <PaginationNext
+                    className={cn(
+                      "rounded-md px-3 py-2 transition-all duration-200 hover:cursor-pointer",
+                      CurrentPage === totalPages
+                        ? "hover:cursor-not-allowed"
+                        : "bg-white text-black hover:bg-[var(--theme)] hover:text-white",
+                    )}
+                    onClick={() => handlePageChange(CurrentPage + 1)}
+                    disabled={CurrentPage === totalPages}
+                  >
+                    
+                  </PaginationNext>
+                </PaginationItem>
+              </PaginationContent>
+            </Pagination>
+          )}
         </div>
       </div>
     </div>
