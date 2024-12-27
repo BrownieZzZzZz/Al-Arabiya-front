@@ -1,32 +1,31 @@
 "use client";
 
-import React, { useRef, useEffect, useState } from "react";
+import React, { useEffect, useState } from "react";
 import {
   Select,
   SelectContent,
   SelectGroup,
   SelectItem,
-  SelectLabel,
   SelectTrigger,
   SelectValue,
 } from "@/components/ui/select";
 import { useSearchParams } from "next/navigation";
 
-const SelectSortInterface = ({changeSortOption, values }) => {
+const SelectSortInterface = ({ changeSortOption, values }) => {
   const useParams = useSearchParams();
   let optionParam = useParams.get("sortOption") || "date";
 
-  const [value, setValue] = useState(optionParam)
+  const [value, setValue] = useState(optionParam);
   useEffect(() => {
     changeSortOption(value);
   }, [value]);
   useEffect(() => {
-    setValue(optionParam)
-  }, [optionParam])
-  
+    setValue(optionParam);
+  }, [optionParam]);
+
   return (
     <div>
-      <Select value={value} onValueChange={setValue} dir="rtl">
+      <Select key={321} value={value} onValueChange={setValue} dir="rtl">
         <SelectTrigger className="w-[180px] focus:ring-[var(--theme)]">
           <SelectValue />
         </SelectTrigger>

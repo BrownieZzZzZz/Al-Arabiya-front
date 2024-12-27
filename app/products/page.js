@@ -37,6 +37,7 @@ import SelectSortInterface from "@/components/SelectSortInterface/SelectSortInte
 import CategorieItem from "@/components/CategorieItem/CategorieItem";
 import SelectBrandInterface from "@/components/SelectBrandInterface/SelectBrandInterface";
 import SkeletonProductCard from "@/components/ProductCard/SkeletonProductCard";
+import SkeletonCategorieItem from "@/components/CategorieItem/SkeletonCategorieItem";
 
 const ProductPage = () => {
   const router = useRouter();
@@ -53,9 +54,7 @@ const ProductPage = () => {
     ? JSON.parse(decodeURIComponent(searchParams.get("selectedCategories")))
     : {};
 
-  const [brandOption, setBrandOption] = useState(
-    searchParams.get("brandOption") || "allBrands",
-  );
+  let brandOption = searchParams.get("brandOption") || "allBrands";
   let sortOption = searchParams.get("sortOption") || "nameAsc";
   let minPrice = searchParams.get("minPrice") || 0;
   let maxPrice = searchParams.get("maxPrice") || 50000;
@@ -79,7 +78,7 @@ const ProductPage = () => {
   };
 
   const changeBrandOption = (option) => {
-    setBrandOption(option);
+    brandOption = option;
   };
 
   const resetFilters = () => {
@@ -109,12 +108,12 @@ const ProductPage = () => {
     return (
       <Sheet>
         <SheetTrigger asChild>
-          <Button
+          <button
             variant="outline"
-            className="flex items-center justify-center rounded-lg bg-[var(--theme)] px-2 lg:hidden"
+            className="flex items-center justify-center rounded-lg bg-[var(--theme)] px-2 transition-all duration-300 hover:scale-95 lg:hidden"
           >
             <i className="fa-solid fa-filter text-xl text-neutral-100"></i>
-          </Button>
+          </button>
         </SheetTrigger>
         <SheetContent className="w-[280px] overflow-auto">
           <SheetTitle></SheetTitle>
@@ -138,11 +137,11 @@ const ProductPage = () => {
                     changeSortOption(sortOption);
                   }}
                   values={[
-                    ["date", "ترتيب حسب: الأحدث "],
-                    ["nameAsc", "ترتيب حسب: الأدنى حرف للاعلى  "],
-                    ["nameDesc", "ترتيب حسب: الأعلى حرف للادنى  "],
-                    ["priceAsc", "ترتيب حسب: الأدنى سعر للاعلى  "],
-                    ["priceDesc", "ترتيب حسب: الأعلى سعر للادنى  "],
+                    ["date", "الأحدث"],
+                    ["nameAsc", "الأدنى حرف للاعلى"],
+                    ["nameDesc", "الأعلى حرف للادنى"],
+                    ["priceAsc", "الأدنى سعر للاعلى"],
+                    ["priceDesc", "الأعلى سعر للادنى"],
                   ]}
                 />
               </div>
@@ -154,13 +153,11 @@ const ProductPage = () => {
               </span>
               <div dir="rtl" className="px-2">
                 <SelectBrandInterface
+                  key={123123}
                   changeBrandOption={(brandOption) => {
                     changeBrandOption(brandOption);
                   }}
-                  values={[
-                    ["allBrands", "كل الماركات "],
-                    ["sheglam", "شقلام"],
-                  ]}
+                  values={brands}
                 />
               </div>
             </div>
@@ -172,16 +169,20 @@ const ProductPage = () => {
                 نوع المنتج
               </span>
               <div className="category-scroll flex flex-col gap-2 px-2">
-                {categories.map((categorie) => (
-                  <CategorieItem
-                    key={categorie.id}
-                    active={selectedCategories[categorie.name]}
-                    changeSelectedCategorie={(categorie) =>
-                      changeSelectedCategorie(categorie)
-                    }
-                    item={categorie}
-                  />
-                ))}
+                {loadingCategories
+                  ? Array.from({ length: 6 }).map((_, index) => (
+                      <SkeletonCategorieItem key={index} />
+                    ))
+                  : categories.map((categorie) => (
+                      <CategorieItem
+                        key={categorie.id}
+                        active={selectedCategories[categorie.name]}
+                        changeSelectedCategorie={(categorie) =>
+                          changeSelectedCategorie(categorie)
+                        }
+                        item={categorie}
+                      />
+                    ))}
               </div>
             </div>
             <div className="mt-2 flex flex-col gap-1">
@@ -196,7 +197,7 @@ const ProductPage = () => {
                         : `&selectedCategories=${encodeURIComponent(
                             JSON.stringify(selectedCategories),
                           )}`
-                    }${brandOption && brandOption !== "allBrands" ? `&brand=${brandOption}` : ""}`,
+                    }${brandOption && brandOption !== "allBrands" ? `&brandOption=${brandOption}` : ""}`,
                     { scroll: false },
                   );
                 }}
@@ -436,6 +437,7 @@ const ProductPage = () => {
               </span>
               <div dir="rtl" className="px-2">
                 <SelectBrandInterface
+                  key={321321}
                   changeBrandOption={(brandOption) => {
                     changeBrandOption(brandOption);
                   }}
@@ -451,16 +453,20 @@ const ProductPage = () => {
                 نوع المنتج
               </span>
               <div className="category-scroll flex flex-col gap-2 px-2">
-                {categories.map((categorie) => (
-                  <CategorieItem
-                    key={categorie.id}
-                    active={selectedCategories[categorie.name]}
-                    changeSelectedCategorie={(categorie) =>
-                      changeSelectedCategorie(categorie)
-                    }
-                    item={categorie}
-                  />
-                ))}
+                {loadingCategories
+                  ? Array.from({ length: 6 }).map((_, index) => (
+                      <SkeletonCategorieItem key={index} />
+                    ))
+                  : categories.map((categorie) => (
+                      <CategorieItem
+                        key={categorie.id}
+                        active={selectedCategories[categorie.name]}
+                        changeSelectedCategorie={(categorie) =>
+                          changeSelectedCategorie(categorie)
+                        }
+                        item={categorie}
+                      />
+                    ))}
               </div>
             </div>
             <div className="mt-2 flex flex-col gap-1">
@@ -475,7 +481,7 @@ const ProductPage = () => {
                         : `&selectedCategories=${encodeURIComponent(
                             JSON.stringify(selectedCategories),
                           )}`
-                    }${brandOption && brandOption !== "allBrands" ? `&brand=${brandOption}` : ""}`,
+                    }${brandOption && brandOption !== "allBrands" ? `&brandOption=${brandOption}` : ""}`,
                     { scroll: false },
                   );
                 }}
@@ -563,9 +569,7 @@ const ProductPage = () => {
                     )}
                     onClick={() => handlePageChange(CurrentPage - 1)}
                     disabled={CurrentPage === 1}
-                  >
-                    
-                  </PaginationPrevious>
+                  ></PaginationPrevious>
                 </PaginationItem>
 
                 {/* First Page and Ellipsis */}
@@ -631,9 +635,7 @@ const ProductPage = () => {
                     )}
                     onClick={() => handlePageChange(CurrentPage + 1)}
                     disabled={CurrentPage === totalPages}
-                  >
-                    
-                  </PaginationNext>
+                  ></PaginationNext>
                 </PaginationItem>
               </PaginationContent>
             </Pagination>

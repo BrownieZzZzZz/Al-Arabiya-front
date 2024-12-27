@@ -1,12 +1,11 @@
 "use client";
 
-import React, { useRef, useEffect, useState } from "react";
+import React, { useEffect, useState } from "react";
 import {
   Select,
   SelectContent,
   SelectGroup,
   SelectItem,
-  SelectLabel,
   SelectTrigger,
   SelectValue,
 } from "@/components/ui/select";
@@ -26,7 +25,7 @@ const SelectBrandInterface = ({ changeBrandOption, values }) => {
 
   return (
     <div>
-      <Select value={value} onValueChange={setValue} dir="rtl">
+      <Select key={123} value={value} onValueChange={setValue} dir="rtl">
         <SelectTrigger className="w-[180px] focus:ring-[var(--theme)]">
           <SelectValue />
         </SelectTrigger>
