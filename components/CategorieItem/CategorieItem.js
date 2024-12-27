@@ -9,30 +9,29 @@ const CategorieItem = ({ item, changeSelectedCategorie }) => {
   const selectedCategories = searchParams.get("selectedCategories")
     ? JSON.parse(decodeURIComponent(searchParams.get("selectedCategories")))
     : {};
-  const [active, setActive] = useState(selectedCategories[item] == true);
-
+  const [active, setActive] = useState(selectedCategories[item.name] == true);
 
   useEffect(() => {
-    setActive(selectedCategories[item] == true);
-  }, [selectedCategories[item]]);
-
+    setActive(selectedCategories[item.name] == true);
+  }, [selectedCategories[item.name]]);
 
   return (
-    <label dir="rtl"
+    <label
+      dir="rtl"
       className={cn(
-        "border-2 border-neutral-300 px-1 bg-[#ffffff] duration-300 transition-all shadow-sm drop-shadow-sm active:scale-95 lg:hover:scale-105 hover:bg-neutral-100 text-center font-semibold text-neutral-300 hover:cursor-pointer rounded-md text-xl py-1",
+        "rounded-md border-2 border-neutral-300 bg-[#ffffff] px-1 py-1 text-center text-xl font-semibold text-neutral-300 shadow-sm drop-shadow-sm transition-all duration-300 hover:cursor-pointer hover:bg-neutral-100 active:scale-95 lg:hover:scale-105",
         active
-          ? "border-[var(--theme)] text-[var(--theme)] bg-[var(--hover-theme)] hover:bg-[var(--hover-theme)]"
-          : ""
+          ? "border-[var(--theme)] bg-[var(--hover-theme)] text-[var(--theme)] hover:bg-[var(--hover-theme)]"
+          : "",
       )}
       onClick={(e) => {
         e.preventDefault();
         setActive(!active);
-        changeSelectedCategorie(item);
+        changeSelectedCategorie(item.name);
       }}
     >
       <input type="radio" style={{ display: "none" }} />
-      {item}
+      {item.name}
     </label>
   );
 };

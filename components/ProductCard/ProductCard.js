@@ -1,57 +1,53 @@
-import React from "react";
-
 const ProductCard = ({ product, ChangeUrl }) => {
-  const parsePrice = (price) => {
-    return price.slice(0, 4);
-  };
-  const parsePercentage = (x, y) => {
-    return parseInt(((parseFloat(x) - parseFloat(y)) / parseFloat(x)) * 100);
-  };
   return (
     <div
       onClick={() => {
         ChangeUrl(`/products/${product.id}`);
       }}
-      className="mx-auto max-w-sm select-none overflow-hidden rounded-lg bg-white shadow-md transition-all duration-200 hover:scale-[1.03] hover:cursor-pointer"
+      className="mx-auto flex w-full max-w-sm select-none flex-col overflow-hidden rounded-lg bg-white shadow-md transition-all duration-200 hover:scale-[1.03] hover:cursor-pointer"
     >
       <div className="relative overflow-hidden">
         <img
-          src={product.image}
+          src={product.img[0]}
           alt="Product Image"
           className="h-48 w-full object-cover transition-all duration-200 hover:scale-110"
         ></img>
         <img
-          src={product.logo}
+          src={product.brand.img}
           alt="Brand Logo"
-          className="absolute left-2 top-2 w-20 rounded-full bg-white px-1.5"
+          className="absolute left-2 top-2 h-[40px] w-[90px] rounded-full bg-white object-contain px-1.5"
         ></img>
-        {product.soldPrice[0] != "0" && (
+        {product.onSold && (
           <>
-            <div className="absolute right-0 top-0 rounded-bl-full bg-rose-500 pb-3 pl-3 pr-1.5 pt-1.5 font-semibold text-white">{`%${parsePercentage(product.normalPrice, product.soldPrice)}`}</div>
+            <div className="absolute right-0 top-0 rounded-bl-full bg-rose-500 pb-3 pl-3 pr-1.5 pt-1.5 font-semibold text-white">{`%${product.soldPercentage}`}</div>
           </>
         )}
       </div>
 
-      <div className="p-4">
-        <h2 className="text-lg font-bold text-gray-800">{product.title}</h2>
-        <p className="mt-2 text-sm text-gray-600">{product.desc}</p>
+      <div className="flex flex-1 flex-col p-4">
+        <h2 dir="rtl" className="text-lg font-bold text-gray-800">
+          {product.name}
+        </h2>
+        <p dir="rtl" className="mt-2 text-sm text-gray-600">
+          {product.description}
+        </p>
 
-        <div className="mt-4 flex items-center">
-          {product.soldPrice[0] == "0" ? (
+        <div className="mt-auto flex items-center">
+          {!product.onSold ? (
             <>
               <span className="text-xl font-bold text-[var(--theme)]">
-                {parsePrice(product.normalPrice)}
+                {product.normalSinglePrice}
                 <font className="text-[15px]"> DT</font>
               </span>
             </>
           ) : (
             <>
               <span className="mr-2 text-gray-500 line-through">
-                {parsePrice(product.normalPrice)}
+                {product.normalSinglePrice}
                 <font className="text-[15px]"> DT</font>
               </span>
               <span className="text-xl font-bold text-[var(--theme)]">
-                {parsePrice(product.soldPrice)}
+                {product.soldSinglePrice}
                 <font className="text-[15px]"> DT</font>
               </span>
             </>

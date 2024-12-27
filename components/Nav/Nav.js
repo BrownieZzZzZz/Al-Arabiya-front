@@ -98,7 +98,23 @@ const Nav = () => {
     }
   });
 
-  if (pathname.includes("sign") || pathname.includes("reset")) return <></>;
+  useEffect(() => {
+    if (signed && (pathname.includes("sign") || pathname.includes("reset"))) {
+      ChangeUrl("/");
+    } else {
+    }
+  }, [signed]);
+
+  if (pathname.includes("sign") || pathname.includes("reset"))
+    return (
+      <>
+        {(loadingPage || loadingUser) && (
+          <div className="fixed inset-0 z-50 flex h-full w-full items-center justify-center bg-white/60 backdrop-blur-sm">
+            <div className="h-14 w-14 animate-spin rounded-full border-b-4 border-[var(--theme)]"></div>
+          </div>
+        )}
+      </>
+    );
   return (
     <div
       className={cn(
