@@ -157,9 +157,9 @@ const page = () => {
           <div className="h-14 w-14 animate-spin rounded-full border-b-4 border-[var(--theme)]"></div>
         </div>
       )}
-      <div className="relative mx-5 flex w-full justify-center gap-6 max-md:flex-col lg:gap-12">
-        <div className="top-5 flex h-fit w-full max-w-[500px] flex-col gap-5 max-md:px-4 md:sticky lg:max-w-[700px] lg:flex-row-reverse">
-          <div className="relative w-full max-w-[600px] overflow-hidden rounded-lg shadow-lg">
+      <div className="relative max-md:items-center mx-5 flex w-full justify-center gap-6 max-md:flex-col lg:gap-12">
+        <div className="top-5 flex h-fit w-full  md:max-w-[450px] flex-col gap-5 max-md:px-4 md:sticky lg:max-w-[700px] lg:flex-row-reverse">
+          <div className="relative w-full  md:max-w-[450px] lg:max-w-[500px] overflow-hidden rounded-lg shadow-lg">
             <img
               src={product.img[imageIndex]}
               alt="Image"
@@ -216,7 +216,7 @@ const page = () => {
             ))}
           </div>
         </div>
-        <div className="flex w-full max-w-[400px] flex-col gap-3 max-md:px-5">
+        <div className="flex w-full md:max-w-[400px] flex-col gap-3 max-md:px-5">
           <div className="flex flex-col gap-1">
             <div className="-mb-2 font-semibold">{product.brand.name}</div>
             <div className="text-3xl font-semibold text-neutral-900">
@@ -284,7 +284,7 @@ const page = () => {
               >{`${product.normalMultiPrice} DT`}</div>
             )}
           </div>
-          <div className="border-mask my-2 h-[1px] w-full bg-stone-300"></div>
+          <div className=" my-2 h-[1px] w-full bg-neutral-500"></div>
           <div className="text-2xl font-bold text-neutral-900">كمية:</div>
           <div className="flex flex-row items-center gap-2">
             <div className="flex flex-row items-center gap-4">
