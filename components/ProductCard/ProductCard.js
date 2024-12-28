@@ -15,7 +15,7 @@ const ProductCard = ({ product, ChangeUrl }) => {
         <img
           src={product.brand.img}
           alt="Brand Logo"
-          className="absolute left-2 top-2 h-[40px] w-[90px] rounded-full bg-white object-contain px-1.5"
+          className="absolute left-2 top-2 h-[50px] w-[100px] rounded-full bg-white object-scale-down px-1.5 py-1"
         ></img>
         {product.onSold && (
           <>

@@ -104,8 +104,8 @@ const FeaturedProducts = ({ ChangeUrl }) => {
       },
       brand: {
         id: "42121eb5-dc07-4f80-bc5d-01952b832a2b",
-        name: "HudaBeauty",
-        img: "/images/brands/hudabeauty.png",
+        name: "Victoria",
+        img: "/images/brands/victoria.png",
       },
     },
     {
@@ -135,8 +135,8 @@ const FeaturedProducts = ({ ChangeUrl }) => {
       },
       brand: {
         id: "1af2ff8d-9f8e-4942-9c19-aa87a0d8e0af",
-        name: "La Roche Posay",
-        img: "/images/brands/la_roche_posay.png",
+        name: "Latafa ",
+        img: "/images/brands/latafa.png",
       },
     },
     {

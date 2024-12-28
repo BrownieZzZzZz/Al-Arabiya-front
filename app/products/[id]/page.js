@@ -152,7 +152,7 @@ const page = () => {
             <img
               src={product.brand.img}
               alt="logo"
-              className="absolute left-6 top-6 w-[150px] rounded-full bg-white px-3 py-2 shadow-md"
+              className="absolute left-6 top-6 w-[150px] h-[60px] object-scale-down rounded-full bg-white px-3 py-1.5 shadow-md"
             ></img>
             <div className="absolute bottom-6 right-6 flex flex-row gap-1.5">
               <div
