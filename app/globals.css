@@ -3,14 +3,10 @@
 @tailwind utilities;
 @layer base {
   :root {
-    --theme:#d99814;
+    --theme: #d99814;
     --theme2: #f7f6f1;
     --theme3: #895f0c;
     --theme4: #2f2f2f;
-    
-
-
-
 
     --background: 0 0% 100%;
     --foreground: 20 14.3% 4.1%;
@@ -36,7 +32,7 @@
     --chart-3: 197 37% 24%;
     --chart-4: 43 74% 66%;
     --chart-5: 27 87% 67%;
-    --radius: 0.5rem
+    --radius: 0.5rem;
   }
   .dark {
     --background: 20 14.3% 4.1%;
@@ -62,7 +58,7 @@
     --chart-2: 160 60% 45%;
     --chart-3: 30 80% 55%;
     --chart-4: 280 65% 60%;
-    --chart-5: 340 75% 55%
+    --chart-5: 340 75% 55%;
   }
 }
 @layer base {
@@ -74,15 +70,19 @@
   }
 }
 
-
-.shdw{
-  box-shadow: rgb(202, 138, 4, 0.1) 0px 8px 24px, rgb(202, 138, 4, 0.1) 0px 16px 56px, rgb(202, 138, 4, 0.4) 0px 24px 80px;
+.shdw {
+  box-shadow:
+    rgb(202, 138, 4, 0.1) 0px 8px 24px,
+    rgb(202, 138, 4, 0.1) 0px 16px 56px,
+    rgb(202, 138, 4, 0.4) 0px 24px 80px;
 }
 
-.shdw2{
-  box-shadow: rgb(202, 138, 4, 0.2) 0px 8px 24px, rgb(202, 138, 4, 0.2) 0px 16px 56px, rgb(202, 138, 4, 0.3) 0px 24px 80px;
+.shdw2 {
+  box-shadow:
+    rgb(202, 138, 4, 0.2) 0px 8px 24px,
+    rgb(202, 138, 4, 0.2) 0px 16px 56px,
+    rgb(202, 138, 4, 0.3) 0px 24px 80px;
 }
-
 
 ::-webkit-scrollbar {
   width: 10px;
@@ -92,12 +92,10 @@
   background: #f1f1f1;
 }
 
-
 ::-webkit-scrollbar-thumb {
-  @apply bg-zinc-300
+  @apply bg-zinc-300;
 }
 
 ::-webkit-scrollbar-thumb:hover {
-  @apply bg-zinc-400
+  @apply bg-zinc-400;
 }
-
