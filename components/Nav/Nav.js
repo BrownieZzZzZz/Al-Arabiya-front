@@ -113,8 +113,12 @@ const Nav = () => {
       } else if (pathname.includes("sign") || pathname.includes("reset")) {
         ChangeUrl("/");
       }
+    } else {
+      if (pathname.includes("dashboard") && !loadingUser) {
+        ChangeUrl("/admin/sign-in");
+      }
     }
-  }, [signed]);
+  }, [signed, loadingUser]);
 
   if (
     pathname.includes("sign") ||
