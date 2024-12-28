@@ -287,10 +287,11 @@ const ProductPage = () => {
     } catch (error) {
       console.log(error);
       toast({
-        title: "Error",
-        description: "Something went wrong, Please Try Again!",
+        title: "خطأ",
+        description: "حدث خطأ ما، يرجى المحاولة مرة أخرى!",
         variant: "destructive",
       });
+
       setLoadingProducts(false);
     }
     setLoadingProducts(false);
@@ -317,10 +318,11 @@ const ProductPage = () => {
     } catch (error) {
       console.log(error);
       toast({
-        title: "Error",
-        description: "Something went wrong, Please Try Again!",
+        title: "خطأ",
+        description: "حدث خطأ ما، يرجى المحاولة مرة أخرى!",
         variant: "destructive",
       });
+
       setLoadingCategories(false);
     }
     setLoadingCategories(false);
@@ -347,10 +349,11 @@ const ProductPage = () => {
     } catch (error) {
       console.log(error);
       toast({
-        title: "Error",
-        description: "Something went wrong, Please Try Again!",
+        title: "خطأ",
+        description: "حدث خطأ ما، يرجى المحاولة مرة أخرى!",
         variant: "destructive",
       });
+
       setLoadingBrands(false);
     }
     setLoadingBrands(false);

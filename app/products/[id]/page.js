@@ -109,10 +109,11 @@ const page = () => {
     } catch (error) {
       console.log(error);
       toast({
-        title: "Error",
-        description: "Something went wrong, Please Try Again!",
+        title: "خطأ",
+        description: "حدث خطأ ما، يرجى المحاولة مرة أخرى!",
         variant: "destructive",
       });
+
       setLoadingProduct(false);
     }
     setLoadingProduct(false);
