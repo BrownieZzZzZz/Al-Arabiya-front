@@ -73,16 +73,23 @@ const page = () => {
   if (product.category) {
     cat[product.category?.name] = true;
   }
-
+  const [currentPrice, setCurrentPrice] = useState(product.onSold ? product.soldSinglePrice : product.normalSinglePrice);
+  const [productNumber, setProductNumber] = useState(1);
   const increaseProductNumber = () => {
     if (productNumber < 99) {
       setProductNumber(productNumber + 1);
+      if(productNumber >= 4){
+        setCurrentPrice(product.onSold ? product.soldMultiPrice : product.normalMultiPrice);
+      }
     }
   };
 
   const decreaseProductNumber = () => {
     if (productNumber > 1) {
       setProductNumber(productNumber - 1);
+      if(productNumber < 6){
+        setCurrentPrice(product.onSold ? product.soldSinglePrice : product.normalSinglePrice);
+      }
     }
   };
 
@@ -122,6 +129,15 @@ const page = () => {
   useEffect(() => {
     fetchProduct();
   }, []);
+  const handleAddToCart = () => {
+    toast({
+      title: "تمت الإضافة",
+      description: "تمت إضافة المنتوج إلى السلة بنجاح!",
+      variant: "success",
+    });
+  };
+
+  const handleBuyDirectly = () => {};
 
   useEffect(() => {
     document.title = `Al-Arabiya: ${product.name ? product.name : "Loading..."}`;
@@ -141,8 +157,8 @@ const page = () => {
           <div className="h-14 w-14 animate-spin rounded-full border-b-4 border-[var(--theme)]"></div>
         </div>
       )}
-      <div className="relative mx-5 flex w-full justify-center gap-10 max-md:flex-col xsm:mx-8 sm:mx-10">
-        <div className="top-5 flex h-fit w-full max-w-[700px] flex-col gap-5 px-4 md:sticky lg:flex-row-reverse">
+      <div className="relative mx-5 flex w-full justify-center gap-6 max-md:flex-col lg:gap-12">
+        <div className="top-5 flex h-fit w-full max-w-[500px] flex-col gap-5 max-md:px-4 md:sticky lg:max-w-[700px] lg:flex-row-reverse">
           <div className="relative w-full max-w-[600px] overflow-hidden rounded-lg shadow-lg">
             <img
               src={product.img[imageIndex]}
@@ -152,7 +168,7 @@ const page = () => {
             <img
               src={product.brand.img}
               alt="logo"
-              className="absolute left-6 top-6 w-[150px] h-[60px] object-scale-down rounded-full bg-white px-3 py-1.5 shadow-md"
+              className="absolute left-6 top-6 h-[60px] w-[150px] rounded-full bg-white object-scale-down p-2.5 shadow-md"
             ></img>
             <div className="absolute bottom-6 right-6 flex flex-row gap-1.5">
               <div
@@ -200,9 +216,10 @@ const page = () => {
             ))}
           </div>
         </div>
-        <div className="flex w-fit flex-col gap-3 px-4">
+        <div className="flex w-full max-w-[400px] flex-col gap-3 max-md:px-5">
           <div className="flex flex-col gap-1">
-            <div className="text-2xl font-semibold text-neutral-900">
+            <div className="-mb-2 font-semibold">{product.brand.name}</div>
+            <div className="text-3xl font-semibold text-neutral-900">
               {product.name}
             </div>
             <div
@@ -243,8 +260,8 @@ const page = () => {
           </div>
           <div className="text-xl font-semibold text-neutral-700">
             سعر بالجملة{" "}
-            <font className="text-[15px] font-medium tracking-wide text-neutral-500">
-              ( 5 منتوجات وما فوق )
+            <font className="text-[15px] font-normal tracking-wide text-neutral-500">
+              5 منتوجات وما فوق
             </font>
           </div>
           <div className="-mt-2 flex flex-row gap-2">
@@ -267,10 +284,34 @@ const page = () => {
               >{`${product.normalMultiPrice} DT`}</div>
             )}
           </div>
+          <div className="border-mask my-2 h-[1px] w-full bg-stone-300"></div>
+          <div className="text-2xl font-bold text-neutral-900">كمية:</div>
+          <div className="flex flex-row items-center gap-2">
+            <div className="flex flex-row items-center gap-4">
+              <div
+                onClick={() => decreaseProductNumber()}
+                className="group grid size-[50px] place-items-center border-2 active:scale-90 border-neutral-700 bg-transparent shadow-md transition-all duration-200 hover:cursor-pointer hover:border-transparent hover:bg-neutral-700"
+              >
+                <i className="fa-solid fa-minus text-xl text-neutral-700 transition-all duration-200 group-hover:text-white"></i>
+              </div>
+              <div className="text-2xl text-center w-4 font-semibold text-neutral-700">
+                {productNumber}
+              </div>
+              <div
+                onClick={() => increaseProductNumber()}
+                className="group grid size-[50px] active:scale-90 place-items-center border-2 border-neutral-700 bg-transparent shadow-md transition-all duration-200 hover:cursor-pointer hover:border-transparent hover:bg-neutral-700"
+              >
+                <i className="fa-solid fa-plus text-xl transition-all duration-20 group-hover:text-white text-neutral-700"></i>
+              </div>
+            </div>
+          </div>
+          <div className="text-sm font-medium text-neutral-700 tracking-wide">مدة التسليم من يومين إلى أربعة أيام عمل.</div>
+          <button onClick={() => handleAddToCart()} className="w-full active:scale-95 py-3 mt-2 border-2 border-transparent text-2xl font-semibold text-[#ffffff] transition-all duration-200 hover:cursor-pointer bg-neutral-700 hover:bg-transparent hover:border-neutral-700 hover:text-neutral-700">ضع فالسلة</button>
+          <button onClick={() => handleBuyDirectly()} className="w-full active:scale-95 py-3 border-2 border-transparent text-2xl font-semibold text-[#ffffff] transition-all duration-200 hover:cursor-pointer bg-neutral-700 hover:bg-transparent hover:border-neutral-700 hover:text-neutral-700">اشتري الآن </button>
         </div>
       </div>
     </div>
   );
-};
+}
 
-export default page;
+export default page; 
