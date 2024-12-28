@@ -38,6 +38,7 @@ import CategorieItem from "@/components/CategorieItem/CategorieItem";
 import SelectBrandInterface from "@/components/SelectBrandInterface/SelectBrandInterface";
 import SkeletonProductCard from "@/components/ProductCard/SkeletonProductCard";
 import SkeletonCategorieItem from "@/components/CategorieItem/SkeletonCategorieItem";
+import MultiRangeSlider from "@/components/multiRangeSlider/multiRangeSlider";
 
 const ProductPage = () => {
   const router = useRouter();
@@ -57,7 +58,7 @@ const ProductPage = () => {
   let brandOption = searchParams.get("brandOption") || "allBrands";
   let sortOption = searchParams.get("sortOption") || "nameAsc";
   let minPrice = searchParams.get("minPrice") || 0;
-  let maxPrice = searchParams.get("maxPrice") || 50000;
+  let maxPrice = searchParams.get("maxPrice") || 500;
 
   const [totalItems, setTotalItems] = useState(0);
   const [totalPages, setTotalPages] = useState(1);
@@ -160,6 +161,19 @@ const ProductPage = () => {
                   values={brands}
                 />
               </div>
+              <span
+                dir="rtl"
+                className="text-xl font-semibold text-neutral-800"
+              >
+                السعر
+              </span>
+              <div dir="rtl" className="px-2">
+                <MultiRangeSlider
+                  min={minPrice}
+                  changePrice={(MIN, MAX) => changePrice(MIN, MAX)}
+                  max={maxPrice}
+                />
+              </div>
             </div>
             <div dir="rtl" className="mt-2 flex flex-col gap-4">
               <span
@@ -254,7 +268,7 @@ const ProductPage = () => {
       console.log(brandOption);
 
       const res = await fetch(
-        `${process.env.NEXT_PUBLIC_API_URL}/product/search?${searchInputRef.current.value.trim() ? `name=${searchInputRef.current.value.trim()}` : ""}${categoriesString ? `&categories=${categoriesString}` : ""}${brandOption && brandOption !== "allBrands" ? `&brand=${brandOption}` : ""}${sortBy ? `&sortBy=${sortBy}` : ""}${sort_order ? `&sortOrder=${sort_order}` : ""}${CurrentPage ? `&page=${CurrentPage}` : ""}${limit ? `&limit=${limit}` : ""}`,
+        `${process.env.NEXT_PUBLIC_API_URL}/product/search?${searchInputRef.current.value.trim() ? `name=${searchInputRef.current.value.trim()}` : ""}${categoriesString ? `&categories=${categoriesString}` : ""}${brandOption && brandOption !== "allBrands" ? `&brand=${brandOption}` : ""}${sortBy ? `&sortBy=${sortBy}` : ""}${sort_order ? `&sortOrder=${sort_order}` : ""}${minPrice !== 0 ? `&min_price=${minPrice}` : ""}${maxPrice !== 0 ? `&max_price=${maxPrice}` : ""}${CurrentPage ? `&page=${CurrentPage}` : ""}${limit ? `&limit=${limit}` : ""}`,
         {
           method: "GET",
         },
@@ -444,7 +458,21 @@ const ProductPage = () => {
                   values={brands}
                 />
               </div>
+              <span
+                dir="rtl"
+                className="text-xl font-semibold text-neutral-800"
+              >
+                السعر
+              </span>
+              <div dir="rtl" className="px-2">
+                <MultiRangeSlider
+                  min={minPrice}
+                  changePrice={(MIN, MAX) => changePrice(MIN, MAX)}
+                  max={maxPrice}
+                />
+              </div>
             </div>
+
             <div dir="rtl" className="mt-2 flex flex-col gap-4">
               <span
                 dir="rlt"
