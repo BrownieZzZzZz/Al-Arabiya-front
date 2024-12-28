@@ -7,7 +7,7 @@ const AddCategory = () => {
         <div className="grid place-items-center text-center size-[40px] rounded-full border-2 text-2xl text-neutral-300 font-semibold border-neutral-300">
           <div className="mb-1">+</div>
         </div>
-        <div className="font-semibold text-xl text-neutral-300 text-center">Add a new category</div>
+        <div className="font-semibold text-xl text-neutral-300 text-center">أضف فئة جديدة </div>
       </div>
     </div>
   );

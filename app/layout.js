@@ -11,6 +11,7 @@ import PreFooter from "@/components/PreFooter/PreFooter";
 import { Toaster } from "@/components/ui/toaster";
 
 import { Analytics } from "@vercel/analytics/react";
+import { cn } from "@/lib/utils";
 
 export const metadata = {
   title: "Al-Arabiya",
@@ -28,7 +29,7 @@ export default function RootLayout({ children }) {
           type="image/x-icon"
         />
       </head>
-      <body className="bg-[var(--theme2)]">
+      <body className="site bg-[var(--theme2)]">
         <Nav />
         {children}
         <PreFooter />

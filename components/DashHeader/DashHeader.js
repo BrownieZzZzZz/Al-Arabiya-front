@@ -2,18 +2,18 @@ import React from "react";
 
 const DashHeader = () => {
   return (
-    <div className="flex flex-row items-center justify-center gap-3">
+    <div dir="rtl" className="flex flex-row items-center justify-center gap-3">
       <img
-        src="/images/dash-icon.png"
+        src="/images/logo.png"
         alt="mini-logo"
-        className="size-[70px]"
+        className="size-[120px] object-scale-down"
       ></img>
       <div className="flex flex-col">
-        <div className="inline-block bg-gradient-to-br from-amber-300 to-amber-600 bg-clip-text text-lg font-bold tracking-wider text-transparent">
-          Golden B.
+        <div className="text-sm font-semibold tracking-wide text-[var(--dash-theme5)]">
+          إدارة
         </div>
-        <div className="text-sm font-semibold tracking-widest text-[var(--dash-theme5)]">
-          Management
+        <div className="inline-block bg-gradient-to-br from-amber-300 to-amber-600 bg-clip-text text-lg font-bold tracking-wide text-transparent">
+          العربية
         </div>
       </div>
     </div>

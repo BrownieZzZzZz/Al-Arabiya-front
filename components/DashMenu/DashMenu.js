@@ -9,27 +9,27 @@ const DashMenu = ({ closeButton, ChangeUrl, setLoadingPage }) => {
 
   const dashMenuItems = [
     {
-      title: "Dashboard",
+      title: "إعدادات",
       path: "",
       icon: "fa-solid fa-gear",
     },
     {
-      title: "Profile",
+      title: "حسابك",
       path: "/profile",
       icon: "fa-regular fa-user",
     },
     {
-      title: "Products",
+      title: "منتجات",
       path: "/products",
       icon: "fa-solid fa-layer-group",
     },
     {
-      title: "Categories",
+      title: "فئات",
       path: "/categories",
       icon: "fa-solid fa-sliders",
     },
     {
-      title: "Logout",
+      title: "الخروج",
       path: "/sign-in",
       icon: "fa-solid fa-arrow-right-from-bracket",
     },

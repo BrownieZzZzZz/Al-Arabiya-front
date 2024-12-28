@@ -44,7 +44,7 @@ const DashNav = () => {
             <i className="fa-solid fa-bars-staggered text-2xl text-white"></i>
           </SheetTrigger>
           <SheetContent
-            side="left"
+            side="right"
             className="w-[250px] border-transparent bg-[var(--dash-theme)]"
           >
             <SheetTitle></SheetTitle>
@@ -77,7 +77,7 @@ const DashNav = () => {
 
       <div
         className={cn(
-          "sticky left-0 top-0 mr-10 hidden min-h-[100vh] w-[250px] flex-col items-center gap-8 border-r border-[#2c2d33] bg-transparent px-5 py-8 md:flex lg:mr-20",
+          "sticky left-0 top-0 ml-10 hidden min-h-[100vh] w-[250px] flex-col items-center gap-8 border-l border-[#2c2d33] bg-transparent px-5 py-8 md:flex lg:ml-20",
         )}
       >
         <DashHeader />

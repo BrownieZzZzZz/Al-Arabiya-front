@@ -35,9 +35,9 @@ const DashSearch = ({ placeholder }) => {
       </label>
       <button
         type="button"
-        className="my-2.5 mr-2.5 rounded-lg bg-[var(--dash-theme5)] px-3 py-1.5 text-center text-lg font-semibold text-white transition-all duration-200 hover:bg-[var(--dash-theme6)] active:scale-95"
+        className="my-2.5 ml-2.5 rounded-lg bg-[var(--dash-theme5)] px-3 py-1.5 text-center text-lg font-semibold text-white transition-all duration-200 hover:bg-[var(--dash-theme6)] active:scale-95"
       >
-        Search
+        ابحث 
       </button>
     </div>
   );

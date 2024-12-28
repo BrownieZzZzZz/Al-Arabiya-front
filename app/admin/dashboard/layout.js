@@ -10,7 +10,7 @@ export const metadata = {
 export default function RootLayout({ children }) {
   return (
     <>
-      <div className="flex flex-col bg-[var(--dash-theme)] md:flex-row">
+      <div dir="rtl" className="flex flex-col bg-[var(--dash-theme)] md:flex-row">
         <DashNav />
         <>{children}</>
       </div>

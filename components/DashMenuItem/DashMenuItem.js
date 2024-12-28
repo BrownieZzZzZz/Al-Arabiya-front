@@ -11,7 +11,7 @@ const DashMenuItem = ({
   setLoadingPage,
   ChangeUrl,
 }) => {
-  const lighter = title == "Logout";
+  const lighter = title == "الخروج";
 
   const menuTransition = (path) => {
     setMenuState(`/admin${path}`);

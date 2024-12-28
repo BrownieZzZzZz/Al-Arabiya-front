@@ -125,12 +125,12 @@ const page = () => {
     >
       {loadingPage && (
         <div className="fixed inset-0 z-50 flex h-full w-full items-center justify-center bg-white/60 backdrop-blur-sm">
-          <div className="h-14 w-14 animate-spin rounded-full border-b-4 border-purple-400"></div>
+          <div className="h-14 w-14 animate-spin rounded-full border-b-4 border-yellow-400"></div>
         </div>
       )}
-      <div className="mx-5 my-8 flex w-full max-w-[500px] flex-col items-center gap-4 rounded-xl border-2 border-purple-300 bg-gray-400 bg-opacity-20 bg-clip-padding px-5 pb-10 pt-6 backdrop-blur-sm backdrop-filter sm:px-10 md:px-14 md:pb-16 md:pt-12">
+      <div className="mx-5 my-8 flex w-full max-w-[500px] flex-col items-center gap-4 rounded-xl border-2 border-yellow-500 bg-gray-400 bg-opacity-20 bg-clip-padding px-5 pb-10 pt-6 backdrop-blur-sm backdrop-filter sm:px-10 md:px-14 md:pb-16 md:pt-12">
         <DashSignHeader />
-        <div className="inline-block self-start bg-gradient-to-tr from-purple-300 to-purple-400 bg-clip-text pb-2 text-4xl font-semibold text-transparent md:text-5xl">
+        <div className="inline-block self-start bg-gradient-to-r from-yellow-300 to-yellow-600 bg-clip-text pb-2 text-4xl font-semibold text-transparent md:text-5xl">
           تسجيل الدخول
         </div>
         <label
@@ -143,7 +143,7 @@ const page = () => {
             id="email"
             type="text"
             placeholder="example@domain.com"
-            className="outstl w-full rounded-3xl border-0 bg-[#ffffff] px-6 py-3 text-lg outline-purple-400"
+            className="outstl w-full rounded-3xl border-0 bg-[#ffffff] px-6 py-3 text-lg outline-yellow-500"
           />
         </label>
         <label
@@ -156,7 +156,7 @@ const page = () => {
             id="password"
             type="password"
             placeholder="******"
-            className="outstl w-full rounded-3xl bg-[#ffffff] px-6 py-3 text-lg outline-purple-400"
+            className="outstl w-full rounded-3xl bg-[#ffffff] px-6 py-3 text-lg outline-yellow-500"
           />
         </label>
         <button
@@ -164,7 +164,7 @@ const page = () => {
           type="button"
           disabled={loading}
           className={cn(
-            "mt-4 w-full rounded-3xl bg-purple-400 py-3 text-2xl font-semibold text-white outline-none transition-all duration-200 hover:bg-purple-500",
+            "mt-4 w-full rounded-3xl bg-yellow-500 py-3 text-2xl font-semibold text-white outline-none transition-all duration-200 hover:bg-yellow-400",
             loading && "hover:cursor-not-allowed",
           )}
         >
@@ -179,7 +179,7 @@ const page = () => {
         <div className="mt-2 flex w-full max-w-[400px] flex-col-reverse justify-between gap-2 min-[380px]:flex-row min-[380px]:gap-0">
           <div className="checkbox-wrapper-21">
             <label
-              className={`control control--checkbox font-medium text-[#ffffff] transition-all duration-200 hover:text-purple-200 ${check && "text-purple-400 hover:text-purple-400"}`}
+              className={`control control--checkbox font-medium text-[#ffffff] transition-all duration-200 hover:text-yellow-400 ${check && "text-yellow-500  hover:text-yellow-500"}`}
             >
               تذكرني
               <input
@@ -193,7 +193,7 @@ const page = () => {
           </div>
 
           <span
-            className="mt-[2px] font-medium text-purple-200 transition-colors duration-200 hover:cursor-pointer hover:text-purple-400"
+            className="mt-[2px] font-medium text-yellow-400 transition-colors duration-200 hover:cursor-pointer hover:text-yellow-500"
             onClick={() => {
               if (!loading) {
                 ChangeUrl("./reset-password");

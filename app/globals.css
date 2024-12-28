@@ -8,6 +8,14 @@
     --theme3: #895f0c;
     --theme4: #2f2f2f;
 
+    --dash-theme:#171821;
+    --dash-theme2:#21222d;
+    --dash-theme3:#4f5056;
+    --dash-theme4:#1c1d27;
+    --dash-theme5:#a9dfd8;
+    --dash-theme6:#73cabe;
+    
+
     --background: 0 0% 100%;
     --foreground: 20 14.3% 4.1%;
     --card: 0 0% 100%;
@@ -84,18 +92,20 @@
     rgb(202, 138, 4, 0.3) 0px 24px 80px;
 }
 
-::-webkit-scrollbar {
+.site::-webkit-scrollbar {
   width: 10px;
 }
 
-::-webkit-scrollbar-track {
+.site::-webkit-scrollbar-track {
   background: #f1f1f1;
 }
 
-::-webkit-scrollbar-thumb {
+.site::-webkit-scrollbar-thumb {
   @apply bg-zinc-300;
 }
 
-::-webkit-scrollbar-thumb:hover {
+.site::-webkit-scrollbar-thumb:hover {
   @apply bg-zinc-400;
 }
+
+
