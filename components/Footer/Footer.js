@@ -23,7 +23,13 @@ const Footer = () => {
     });
   };
 
-  if (pathname.includes("sign") || pathname.includes("reset")) return <></>;
+  pathname.includes("admin");
+  if (
+    pathname.includes("sign") ||
+    pathname.includes("reset") ||
+    pathname.includes("admin")
+  )
+    return <></>;
   return (
     <footer className={cn("mt-20 bg-white pt-10")}>
       {loadingPage && (

@@ -7,9 +7,6 @@ import {
   Sheet,
   SheetClose,
   SheetContent,
-  SheetDescription,
-  SheetFooter,
-  SheetHeader,
   SheetTitle,
   SheetTrigger,
 } from "@/components/ui/sheet";
@@ -36,7 +33,7 @@ const DashNav = () => {
     <div className="relative">
       {loadingPage && (
         <div className="fixed inset-0 z-50 flex h-full w-full items-center justify-center bg-white/30 backdrop-blur-sm">
-          <div className="h-14 w-14 animate-spin rounded-full border-b-4 border-[var(--dash-theme5)]"></div>
+          <div className="h-14 w-14 animate-spin rounded-full border-b-4 border-[var(--theme)]"></div>
         </div>
       )}
       {/* MOBILE SIDE NAV BELOW  */}
@@ -80,11 +77,12 @@ const DashNav = () => {
 
       <div
         className={cn(
-          "mr-10 lg:mr-20 hidden min-h-[100vh] sticky top-0 left-0 w-[250px] flex-col items-center gap-8 border-r border-[#2c2d33] bg-transparent px-5 py-8 md:flex",
+          "sticky left-0 top-0 mr-10 hidden min-h-[100vh] w-[250px] flex-col items-center gap-8 border-r border-[#2c2d33] bg-transparent px-5 py-8 md:flex lg:mr-20",
         )}
       >
         <DashHeader />
         <DashMenu
+          setLoadingPage={setLoadingPage}
           closeButton={closeButton}
           ChangeUrl={(url) => {
             ChangeUrl(url);
