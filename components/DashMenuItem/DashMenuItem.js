@@ -1,4 +1,5 @@
 import { cn } from "@/lib/utils";
+import Cookies from "js-cookie";
 
 const DashMenuItem = ({
   title,
@@ -7,6 +8,7 @@ const DashMenuItem = ({
   menuState,
   setMenuState,
   closeButton,
+  setLoadingPage,
   ChangeUrl,
 }) => {
   const lighter = title == "Logout";
@@ -19,11 +21,19 @@ const DashMenuItem = ({
     ChangeUrl(`/admin${path}`);
   };
 
+  const logout = () => {
+    Cookies.remove("access_token");
+    setLoadingPage(true);
+    location.href = "/admin/sign-in";
+  };
+
   return (
     <div
       onClick={() => {
         if (!lighter) {
           menuTransition(`/dashboard${path}`);
+        } else {
+          logout();
         }
       }}
       className={cn(

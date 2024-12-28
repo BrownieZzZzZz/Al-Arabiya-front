@@ -6,12 +6,5 @@ export const metadata = {
 };
 
 export default function RootLayout({ children }) {
-  return (
-    <html lang="en">
-      <body className="bg-[var(--dash-theme)]">
-        {children}
-        <Toaster />
-      </body>
-    </html>
-  );
+  return <>{children}</>;
 }

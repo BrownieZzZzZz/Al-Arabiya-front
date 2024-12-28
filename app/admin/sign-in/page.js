@@ -1,96 +1,188 @@
 "use client";
-import React, { startTransition, useRef, useState } from "react";
+
 import "./page.css";
+
 import DashSignHeader from "@/components/DashSignHeader/DashSignHeader";
+
 import { cn } from "@/lib/utils";
+
+import Cookies from "js-cookie";
+import React, { useRef, useState, useTransition, useEffect } from "react";
 import { useRouter } from "next/navigation";
 import { useToast } from "@/hooks/use-toast";
 
 const page = () => {
+  const router = useRouter();
   const { toast } = useToast();
   const emailInput = useRef(null);
   const passwordInput = useRef(null);
-  const checkInput = useRef(null);
+  const [check, setCheck] = useState(false);
+  const [isPending, startTransition] = useTransition();
+  const [loadingPage, setLoadingPage] = useState(false);
+  const [loading, setLoading] = useState(false);
 
-  const handleSignIn = () => {
-    if (emailInput.current.value === "") {
-      toast({
-        description: "Verify the email!",
-        variant: "destructive",
-        duration: 2000,
-      });
-      return;
-    }
-    if (passwordInput.current.value === "") {
-      toast({
-        description: "Verify the password!",
-        variant: "destructive",
-        duration: 2000,
-      });
-      return;
-    }
-
-    // write backend logic here
-  };
-
-  const router = useRouter();
   const ChangeUrl = (url) => {
     startTransition(() => {
       router.push(url);
     });
   };
-  const [check, setCheck] = useState(false);
+
+  const handleSignIn = async () => {
+    if (emailInput.current.value.trim() === "") {
+      toast({
+        title: "خطأ",
+        description: "الرجاء التحقق من البريد الإلكتروني!",
+        variant: "destructive",
+        duration: 2000,
+      });
+      return;
+    }
+
+    if (passwordInput.current.value.trim() === "") {
+      toast({
+        title: "خطأ",
+        description: "الرجاء التحقق من كلمة المرور!",
+        variant: "destructive",
+        duration: 2000,
+      });
+      return;
+    }
+
+    try {
+      setLoading(true);
+
+      const response = await fetch(
+        `${process.env.NEXT_PUBLIC_API_URL}/admins/signin`,
+        {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify({
+            email: emailInput.current.value,
+            password: passwordInput.current.value,
+          }),
+        },
+      );
+
+      if (response.ok) {
+        const data = await response.json();
+
+        if (data.data === null) {
+          toast({
+            title: "غير موجود",
+            description: "بيانات الاعتماد غير صحيحة، يرجى التحقق من التفاصيل!",
+            variant: "destructive",
+            duration: 2500,
+          });
+          setLoading(false);
+          return;
+        }
+
+        let expires = 3;
+        if (check) {
+          expires = 30;
+        }
+
+        Cookies.set("access_token", data.data.access_token, { expires });
+
+        toast({
+          title: "نجاح",
+          description: "لقد تم تسجيل الدخول بنجاح.",
+          variant: "success",
+          duration: 2500,
+        });
+        setLoadingPage(true);
+        document.location.href = "/admin/dashboard";
+        setLoading(false);
+      }
+      setLoading(false);
+    } catch (error) {
+      console.log(error);
+
+      setLoading(false);
+
+      toast({
+        title: "خطأ",
+        description: "حدث خطأ أثناء تسجيل الدخول.",
+        variant: "destructive",
+        duration: 2500,
+      });
+
+      console.log(error);
+    }
+    setLoading(false);
+  };
+
+  useEffect(() => {
+    setLoadingPage(isPending);
+  }, [isPending]);
+
   return (
-    <div className="image flex min-h-[100dvh] items-center justify-center bg-cover bg-center">
-      <div className="mx-5 flex my-8 w-full max-w-[500px] flex-col items-center gap-4 rounded-xl border-2 border-purple-300 bg-gray-400 bg-opacity-20 bg-clip-padding px-5 pb-10 pt-6 backdrop-blur-sm backdrop-filter sm:px-10 md:px-14 md:pb-16 md:pt-12">
+    <div
+      className="image flex min-h-[100dvh] items-center justify-center bg-cover bg-center"
+      dir="rtl"
+    >
+      {loadingPage && (
+        <div className="fixed inset-0 z-50 flex h-full w-full items-center justify-center bg-white/60 backdrop-blur-sm">
+          <div className="h-14 w-14 animate-spin rounded-full border-b-4 border-purple-400"></div>
+        </div>
+      )}
+      <div className="mx-5 my-8 flex w-full max-w-[500px] flex-col items-center gap-4 rounded-xl border-2 border-purple-300 bg-gray-400 bg-opacity-20 bg-clip-padding px-5 pb-10 pt-6 backdrop-blur-sm backdrop-filter sm:px-10 md:px-14 md:pb-16 md:pt-12">
         <DashSignHeader />
         <div className="inline-block self-start bg-gradient-to-tr from-purple-300 to-purple-400 bg-clip-text pb-2 text-4xl font-semibold text-transparent md:text-5xl">
-          Sign In
+          تسجيل الدخول
         </div>
         <label
           className="flex w-full flex-col gap-1.5 hover:cursor-text"
           htmlFor="email"
         >
-          <span className="text-[15px] text-[#ffffff]">EMAIL</span>
+          <span className="text-[15px] text-[#ffffff]">البريد الإلكتروني</span>
           <input
             ref={emailInput}
             id="email"
             type="text"
-            placeholder="Example@domain.com"
-            className="w-full border-0 rounded-3xl bg-[#ffffff] px-6 py-3 text-lg outline-purple-400 outstl"
+            placeholder="example@domain.com"
+            className="outstl w-full rounded-3xl border-0 bg-[#ffffff] px-6 py-3 text-lg outline-purple-400"
           />
         </label>
         <label
           className="flex w-full flex-col gap-1.5 hover:cursor-text"
           htmlFor="password"
         >
-          <span className="text-[15px] text-[#ffffff]">PASSWORD</span>
+          <span className="text-[15px] text-[#ffffff]">كلمة المرور</span>
           <input
             ref={passwordInput}
             id="password"
             type="password"
-            placeholder="Your Password"
-            className="w-full rounded-3xl bg-[#ffffff] px-6 py-3 text-lg outline-purple-400 outstl"
+            placeholder="******"
+            className="outstl w-full rounded-3xl bg-[#ffffff] px-6 py-3 text-lg outline-purple-400"
           />
         </label>
         <button
           onClick={() => handleSignIn()}
           type="button"
-          className="mt-4 w-full rounded-3xl bg-purple-400 py-3 text-2xl font-semibold text-white outline-none transition-all duration-200 hover:bg-purple-500"
+          disabled={loading}
+          className={cn(
+            "mt-4 w-full rounded-3xl bg-purple-400 py-3 text-2xl font-semibold text-white outline-none transition-all duration-200 hover:bg-purple-500",
+            loading && "hover:cursor-not-allowed",
+          )}
         >
-          Sign In
+          {loading ? (
+            <div className="flex items-center justify-center">
+              <div className="h-5 w-5 animate-spin rounded-full border-b-2 border-white"></div>
+            </div>
+          ) : (
+            "تسجيل الدخول"
+          )}
         </button>
         <div className="mt-2 flex w-full max-w-[400px] flex-col-reverse justify-between gap-2 min-[380px]:flex-row min-[380px]:gap-0">
           <div className="checkbox-wrapper-21">
             <label
-              className={cn(
-                "control control--checkbox font-medium text-[#ffffff] transition-all duration-200 hover:text-purple-200",
-                check && "text-purple-400 hover:text-purple-400",
-              )}
+              className={`control control--checkbox font-medium text-[#ffffff] transition-all duration-200 hover:text-purple-200 ${check && "text-purple-400 hover:text-purple-400"}`}
             >
-              Remember Me
+              تذكرني
               <input
-                ref={checkInput}
                 type="checkbox"
                 onChange={() => {
                   setCheck(!check);
@@ -103,10 +195,12 @@ const page = () => {
           <span
             className="mt-[2px] font-medium text-purple-200 transition-colors duration-200 hover:cursor-pointer hover:text-purple-400"
             onClick={() => {
-              ChangeUrl("./reset-password");
+              if (!loading) {
+                ChangeUrl("./reset-password");
+              }
             }}
           >
-            Forgot Password?
+            نسيت كلمة المرور؟
           </span>
         </div>
       </div>

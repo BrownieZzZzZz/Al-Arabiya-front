@@ -99,13 +99,28 @@ const Nav = () => {
   });
 
   useEffect(() => {
-    if (signed && (pathname.includes("sign") || pathname.includes("reset"))) {
-      ChangeUrl("/");
-    } else {
+    if (signed) {
+      if (pathname.includes("admin")) {
+        if (pathname.includes("sign") || pathname.includes("reset")) {
+          if (user.role === "admin") {
+            ChangeUrl("/admin/dashboard");
+          }
+        } else {
+          if (user.role !== "admin") {
+            ChangeUrl("/");
+          }
+        }
+      } else if (pathname.includes("sign") || pathname.includes("reset")) {
+        ChangeUrl("/");
+      }
     }
   }, [signed]);
 
-  if (pathname.includes("sign") || pathname.includes("reset"))
+  if (
+    pathname.includes("sign") ||
+    pathname.includes("reset") ||
+    pathname.includes("admin")
+  ) {
     return (
       <>
         {(loadingPage || loadingUser) && (
@@ -115,6 +130,7 @@ const Nav = () => {
         )}
       </>
     );
+  }
   return (
     <div
       className={cn(

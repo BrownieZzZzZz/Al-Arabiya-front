@@ -3,12 +3,10 @@ import React, { useEffect, useState } from "react";
 import DashMenuItem from "../DashMenuItem/DashMenuItem";
 import { usePathname } from "next/navigation";
 
-const DashMenu = ({ closeButton, ChangeUrl }) => {
+const DashMenu = ({ closeButton, ChangeUrl, setLoadingPage }) => {
   const pathname = usePathname();
-  const [menuState, setMenuState] = useState("" || pathname );
-  useEffect(() => {
-    console.log(pathname)
-  }, [])
+  const [menuState, setMenuState] = useState("" || pathname);
+
   const dashMenuItems = [
     {
       title: "Dashboard",
@@ -18,7 +16,7 @@ const DashMenu = ({ closeButton, ChangeUrl }) => {
     {
       title: "Profile",
       path: "/profile",
-      icon: "fa-regular fa-user", 
+      icon: "fa-regular fa-user",
     },
     {
       title: "Products",
@@ -40,6 +38,7 @@ const DashMenu = ({ closeButton, ChangeUrl }) => {
     <div className="flex w-full flex-col items-center justify-center gap-4">
       {dashMenuItems.map((item, index) => (
         <DashMenuItem
+          setLoadingPage={setLoadingPage}
           key={index}
           title={item.title}
           path={item.path}
