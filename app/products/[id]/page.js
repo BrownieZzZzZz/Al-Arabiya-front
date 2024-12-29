@@ -135,12 +135,25 @@ const page = () => {
     }
   };
 
-  const handleAddToCart = () => {
+  const handleAddToCart = async () => {
+    const cart = JSON.parse(localStorage.getItem("cart") || "{}");
+
+    cart[product.id] = cart[product.id]
+      ? productNumber + cart[product.id]
+      : productNumber;
+
+    localStorage.setItem("cart", JSON.stringify(cart));
     toast({
       title: "تمت الإضافة",
       description: "تمت إضافة المنتوج إلى السلة بنجاح!",
       variant: "success",
     });
+    try {
+      const response = await fetch();
+      setProductNumber(1);
+    } catch (error) {
+      console.log(error);
+    }
   };
 
   const handleBuyDirectly = () => {};
