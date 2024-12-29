@@ -1,0 +1,21 @@
+.nav .cart {
+  transition: all 0.5s;
+}
+
+.nav .cart:hover {
+  scale: 1.1;
+}
+
+.nav .cart .total-number {
+  position: absolute;
+  left: -30%;
+  top: -30%;
+  height: 22px;
+  width: 22px;
+  border-radius: 50%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  color: white;
+  background-color: var(--theme);
+}

@@ -1,3 +1,4 @@
+/* WebKit Browsers (Chrome, Safari, Edge) */
 .category-scroll::-webkit-scrollbar {
   width: 6px;
 }
@@ -6,8 +7,22 @@
   background: #f1f1f1;
 }
 
-
 .category-scroll::-webkit-scrollbar-thumb {
-  @apply bg-zinc-300 rounded-sm hover:bg-zinc-400 hover:cursor-pointer
+  background-color: #d1d5db; /* Matches bg-zinc-300 */
+  border-radius: 2px; /* Matches rounded-sm */
+  cursor: pointer; /* Matches hover:cursor-pointer */
 }
 
+.category-scroll::-webkit-scrollbar-thumb:hover {
+  background-color: #a3a3a3; /* Matches hover:bg-zinc-400 */
+}
+
+/* Firefox */
+.category-scroll {
+  scrollbar-width: thin;
+  scrollbar-color: #d1d5db #f1f1f1;
+}
+
+.category-scroll:hover {
+  scrollbar-color: #a3a3a3 #f1f1f1;
+}

@@ -14,7 +14,6 @@ import { useSearchParams } from "next/navigation";
 import { toast } from "@/hooks/use-toast";
 import { cn } from "@/lib/utils";
 
-import { Button } from "@/components/ui/button";
 import {
   Sheet,
   SheetContent,
@@ -182,7 +181,7 @@ const ProductPage = () => {
               >
                 نوع المنتج
               </span>
-              <div className="category-scroll flex flex-col gap-2 px-2">
+              <div className="category-scroll flex max-h-[340px] flex-col gap-2 overflow-y-auto px-2 py-2">
                 {loadingCategories
                   ? Array.from({ length: 6 }).map((_, index) => (
                       <SkeletonCategorieItem key={index} />
@@ -394,8 +393,6 @@ const ProductPage = () => {
     setLoadingPage(isPending);
   }, [isPending]);
 
-  // useEffect(() => {}, [CurrentPage]);
-
   useEffect(() => {
     fetchProducts();
     createPageNumbers();
@@ -483,7 +480,7 @@ const ProductPage = () => {
               >
                 نوع المنتج
               </span>
-              <div className="category-scroll flex flex-col gap-2 px-2">
+              <div className="category-scroll flex max-h-[340px] flex-col gap-2 overflow-y-auto px-2 py-2">
                 {loadingCategories
                   ? Array.from({ length: 6 }).map((_, index) => (
                       <SkeletonCategorieItem key={index} />
@@ -566,7 +563,7 @@ const ProductPage = () => {
           </div>
 
           <div
-            dir="ltr"
+            dir="rtl"
             className="grid-auto-rows grid w-full auto-rows-fr grid-cols-1 gap-5 md:grid-cols-2 xl:grid-cols-3"
           >
             {loadingProducts ? (

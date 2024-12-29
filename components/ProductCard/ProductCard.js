@@ -32,7 +32,7 @@ const ProductCard = ({ product, ChangeUrl }) => {
           {product.description}
         </p>
 
-        <div className="mt-auto flex items-center">
+        <div className="mt-auto flex items-center" dir="ltr">
           {!product.onSold ? (
             <>
               <span className="text-xl font-bold text-[var(--theme)]">

@@ -4,10 +4,15 @@ import "./Nav.css";
 
 import { usePathname, useRouter } from "next/navigation";
 import { useState, useEffect, useRef, useTransition } from "react";
+import { cn } from "@/lib/utils";
+import Cookies from "js-cookie";
+
+import SideCartItem from "../SideCartItem/SideCartItem";
 import Menu from "../Menu/Menu";
 import {
   Sheet,
   SheetClose,
+  SheetTitle,
   SheetContent,
   SheetTrigger,
 } from "@/components/ui/sheet";
@@ -24,8 +29,6 @@ import {
   TooltipProvider,
   TooltipTrigger,
 } from "@/components/ui/tooltip";
-import { cn } from "@/lib/utils";
-import Cookies from "js-cookie";
 
 const Nav = () => {
   const searchInputPC = useRef(null);
@@ -39,16 +42,64 @@ const Nav = () => {
   const [user, setUser] = useState({});
   const [loadingPage, setLoadingPage] = useState(true);
   const [isPending, startTransition] = useTransition();
+  const closeCartButton = useRef(null);
+
+  const [items, setItems] = useState([
+    {
+      name: "Work Table",
+      dimension: "1000 x 700 x 850 + 100mm",
+      price: "2000",
+      id: "123456",
+    },
+    {
+      name: "Work Table",
+      dimension: "1000 x 700 x 850 + 100mm",
+      price: "2000",
+      id: "123456",
+    },
+    {
+      name: "Work Table",
+      dimension: "1000 x 700 x 850 + 100mm",
+      price: "2000",
+      id: "123456",
+    },
+    {
+      name: "Work Table",
+      dimension: "1000 x 700 x 850 + 100mm",
+      price: "2000",
+      id: "123456",
+    },
+    {
+      name: "Work Table",
+      dimension: "1000 x 700 x 850 + 100mm",
+      price: "2000",
+      id: "123456",
+    },
+    {
+      name: "Work Table",
+      dimension: "1000 x 700 x 850 + 100mm",
+      price: "2000",
+      id: "123456",
+    },
+    {
+      name: "Work Table",
+      dimension: "1000 x 700 x 850 + 100mm",
+      price: "2000",
+      id: "123456",
+    },
+    {
+      name: "Work Table",
+      dimension: "1000 x 700 x 850 + 100mm",
+      price: "2000",
+      id: "123456",
+    },
+  ]);
 
   const ChangeUrl = (url, options = {}) => {
     startTransition(() => {
       router.push(url, options);
     });
   };
-
-  useEffect(() => {
-    setLoadingPage(isPending);
-  }, [isPending]);
 
   const logout = () => {
     Cookies.remove("access_token");
@@ -99,6 +150,10 @@ const Nav = () => {
   });
 
   useEffect(() => {
+    setLoadingPage(isPending);
+  }, [isPending]);
+
+  useEffect(() => {
     if (signed) {
       if (pathname.includes("admin")) {
         if (pathname.includes("sign") || pathname.includes("reset")) {
@@ -138,7 +193,7 @@ const Nav = () => {
   return (
     <div
       className={cn(
-        "flex w-full flex-row-reverse items-center justify-between bg-white p-2 pb-4 pt-4 min-[500px]:px-5 md:px-10",
+        "nav flex w-full flex-row-reverse items-center justify-between bg-white p-2 pb-4 pt-4 min-[500px]:px-5 md:px-10",
       )}
     >
       {loadingPage && (
@@ -229,6 +284,87 @@ const Nav = () => {
             </DialogContent>
           </Dialog>
         )}
+
+        <Sheet>
+          <SheetTrigger asChild className="cart md:mx-2 md:my-1">
+            <button className="cart">
+              <div className="relative">
+                <svg
+                  xmlns="http://www.w3.org/2000/svg"
+                  width="30"
+                  height="30"
+                  fill="#404040"
+                  className="bi bi-handbag"
+                  viewBox="0 0 16 16"
+                >
+                  <path d="M8 1a2 2 0 0 1 2 2v2H6V3a2 2 0 0 1 2-2m3 4V3a3 3 0 1 0-6 0v2H3.36a1.5 1.5 0 0 0-1.483 1.277L.85 13.13A2.5 2.5 0 0 0 3.322 16h9.355a2.5 2.5 0 0 0 2.473-2.87l-1.028-6.853A1.5 1.5 0 0 0 12.64 5zm-1 1v1.5a.5.5 0 0 0 1 0V6h1.639a.5.5 0 0 1 .494.426l1.028 6.851A1.5 1.5 0 0 1 12.678 15H3.322a1.5 1.5 0 0 1-1.483-1.723l1.028-6.851A.5.5 0 0 1 3.36 6H5v1.5a.5.5 0 1 0 1 0V6z" />
+                </svg>
+                <div className="total-number">0</div>
+              </div>
+            </button>
+          </SheetTrigger>
+          <SheetContent className="w-[300px] p-0">
+            <SheetTitle></SheetTitle>
+            <div className="flex h-full flex-col justify-between">
+              <div className="border-b-[1px] border-neutral-300 py-3 text-center">
+                <span className="font-lato text-2xl font-semibold text-neutral-800">
+                  Shopping Cart
+                </span>
+              </div>
+              <div className="cart-items-scrollbar relative flex w-full flex-1 flex-col overflow-auto">
+                {items.map((item, index) => (
+                  <SideCartItem
+                    key={index}
+                    name={item.name}
+                    dimension={item.dimension}
+                    price={item.price}
+                    id={item.id}
+                    closeButton={closeCartButton}
+                    index={index}
+                    ChangeUrl={(url) => {
+                      ChangeUrl(url);
+                    }}
+                  />
+                ))}
+              </div>
+              <div className="flex flex-col gap-2 border-t-[1px] border-neutral-300 p-4">
+                <div className="flex flex-row justify-between">
+                  <span className="font-lato text-xl font-semibold text-neutral-700">
+                    Total:
+                  </span>
+                  <span className="font-lato text-xl font-semibold text-[var(--theme)]">
+                    6000 QR
+                  </span>
+                </div>
+                <button
+                  type="button"
+                  className="bg-zinc-200 py-3 text-sm font-bold text-neutral-700 transition-colors duration-200 hover:bg-zinc-300"
+                  onClick={() => {
+                    ChangeUrl("/cart");
+                  }}
+                >
+                  VIEW CART
+                </button>
+                <button
+                  type="button"
+                  className="bg-[var(--theme)] py-3 text-sm font-bold text-[#ffffff] transition-colors duration-200 hover:bg-[var(--theme)]"
+                  onClick={() => {
+                    ChangeUrl("/checkout");
+                  }}
+                >
+                  CHECKOUT
+                </button>
+              </div>
+            </div>
+            <SheetClose>
+              <button
+                type="button"
+                className="hidden"
+                ref={closeCartButton}
+              ></button>
+            </SheetClose>
+          </SheetContent>
+        </Sheet>
 
         <TooltipProvider>
           <Tooltip>
