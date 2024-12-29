@@ -79,20 +79,23 @@ const SideCartItem = ({ item, closeButton, index, ChangeUrl }) => {
             {" "}
             {product.category.name}{" "}
           </span>
-          <div dir="rtl" className="flex flex-row gap-1 items-center text-end">
-            
+          <div dir="rtl" className="flex flex-row items-center gap-1 text-end">
             {product.onSold ? (
               <>
                 {item.quantity >= 5 ? (
-                  <div className="flex flex-row-reverse gap-1 items-center justify-center">
-                    <span className="font-medium text-[var(--theme)]">{product.soldMultiPrice}DT</span>
+                  <div className="flex flex-row-reverse items-center justify-center gap-1">
+                    <span className="font-medium text-[var(--theme)]">
+                      {product.soldMultiPrice}DT
+                    </span>
                     <span className="text-neutral-500 line-through">
                       {product.normalMultiPrice}DT
                     </span>
                   </div>
                 ) : (
-                  <div className="flex flex-row-reverse gap-1 items-center justify-center">
-                    <span className="font-medium text-[var(--theme)]">{product.soldSinglePrice}DT</span>
+                  <div className="flex flex-row-reverse items-center justify-center gap-1">
+                    <span className="font-medium text-[var(--theme)]">
+                      {product.soldSinglePrice}DT
+                    </span>
                     <span className="text-neutral-500 line-through">
                       {product.normalSinglePrice}DT
                     </span>
@@ -100,9 +103,26 @@ const SideCartItem = ({ item, closeButton, index, ChangeUrl }) => {
                 )}
               </>
             ) : (
-              <>{item.quantity >= 5 ? (<><span className="font-medium text-[var(--theme)]">{product.normalMultiPrice}DT</span></>) : (<><span className="font-medium text-[var(--theme)]">{product.normalSinglePrice}DT</span></>)}</>
+              <>
+                {item.quantity >= 5 ? (
+                  <>
+                    <span className="font-medium text-[var(--theme)]">
+                      {product.normalMultiPrice}DT
+                    </span>
+                  </>
+                ) : (
+                  <>
+                    <span className="font-medium text-[var(--theme)]">
+                      {product.normalSinglePrice}DT
+                    </span>
+                  </>
+                )}
+              </>
             )}
-            <span dir="ltr" className="font-lato font-semibold text-neutral-400">
+            <span
+              dir="ltr"
+              className="font-lato font-semibold text-neutral-400"
+            >
               {item.quantity} x
             </span>
           </div>
