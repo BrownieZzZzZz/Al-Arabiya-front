@@ -24,70 +24,50 @@ const page = () => {
 
   const items = [
     {
-      image: "/images/product1.png",
-      name: "Work Table With Under Shelf",
-      dimension: "1000 x 700 x 850 + 100mm",
-      price: "2000",
-      quantity: "3",
-      id: "123456",
+      productId: 1234,
+      quantity: 2,
     },
     {
-      image: "/images/product1.png",
-      name: "Work Table With Under Shelf",
-      dimension: "1000 x 700 x 850 + 100mm",
-      price: "2000",
-      quantity: "3",
-      id: "123456",
+      productId: 1234,
+      quantity: 3,
     },
     {
-      image: "/images/product1.png",
-      name: "Work Table With Under Shelf",
-      dimension: "1000 x 700 x 850 + 100mm",
-      price: "2000",
-      quantity: "3",
-      id: "123456",
+      productId: 1234,
+      quantity: 4,
     },
     {
-      image: "/images/product1.png",
-      name: "Work Table With Under Shelf",
-      dimension: "1000 x 700 x 850 + 100mm",
-      price: "2000",
-      quantity: "3",
-      id: "123456",
-    },
-    {
-      image: "/images/product1.png",
-      name: "Work Table With Under Shelf",
-      dimension: "1000 x 700 x 850 + 100mm",
-      price: "2000",
-      quantity: "3",
-      id: "123456",
-    },
-    {
-      image: "/images/product1.png",
-      name: "Work Table With Under Shelf",
-      dimension: "1000 x 700 x 850 + 100mm",
-      price: "2000",
-      quantity: "3",
-      id: "123456",
-    },
-    {
-      image: "/images/product1.png",
-      name: "Work Table With Under Shelf",
-      dimension: "1000 x 700 x 850 + 100mm",
-      price: "2000",
-      quantity: "3",
-      id: "123456",
-    },
-    {
-      image: "/images/product1.png",
-      name: "Work Table With Under Shelf",
-      dimension: "1000 x 700 x 850 + 100mm",
-      price: "2000",
-      quantity: "3",
-      id: "123456",
+      productId: 1234,
+      quantity: 5,
     },
   ];
+  const product = {
+    id: 1234,
+    name: "مرطب الوجه الطبيعي",
+    description: "مرطب طبيعي خفيف مناسب لجميع أنواع البشرة.",
+    img: [
+      "/images/product1.jpg",
+      "/images/product2.jpg",
+      "/images/product3.jpg",
+      "/images/product4.jpg",
+      "/images/product5.jpg",
+      "/images/product6.jpg",
+      "/images/product1.jpg",
+      "/images/product2.jpg",
+      "/images/product3.jpg",
+      "/images/product4.jpg",
+      "/images/product5.jpg",
+      "/images/product6.jpg",
+    ],
+    brand: { img: "/images/sheglam.png", name: "Sheglam" },
+    onSold: true,
+    soldPercentage: 15,
+    normalSinglePrice: 45.0,
+    soldSinglePrice: 38.25,
+    normalMultiPrice: 40,
+    soldMultiPrice: 34,
+    in_Stock: true,
+    category: { name: "العناية بالبشرة" },
+  };
   const increaseProductNumber = () => {};
 
   const decreaseProductNumber = () => {};
@@ -99,14 +79,17 @@ const page = () => {
         </div>
       )}
       {items.length == 0 ? (
-        <div className="mx-auto mt-6 flex w-full flex-col items-center justify-center">
+        <div
+          dir="rtl"
+          className="mx-auto mt-24 flex w-full flex-col items-center justify-center"
+        >
           <div className="flex flex-col"></div>
           <div className="mx-5 grid grid-cols-1 place-items-center gap-5">
             <svg
               xmlns="http://www.w3.org/2000/svg"
               width="180"
               height="180"
-              fill="var(--theme3)"
+              fill="var(--theme)"
               className="bi bi-cart-x"
               viewBox="0 0 16 16"
             >
@@ -114,26 +97,28 @@ const page = () => {
               <path d="M.5 1a.5.5 0 0 0 0 1h1.11l.401 1.607 1.498 7.985A.5.5 0 0 0 4 12h1a2 2 0 1 0 0 4 2 2 0 0 0 0-4h7a2 2 0 1 0 0 4 2 2 0 0 0 0-4h1a.5.5 0 0 0 .491-.408l1.5-8A.5.5 0 0 0 14.5 3H2.89l-.405-1.621A.5.5 0 0 0 2 1zm3.915 10L3.102 4h10.796l-1.313 7zM6 14a1 1 0 1 1-2 0 1 1 0 0 1 2 0m7 0a1 1 0 1 1-2 0 1 1 0 0 1 2 0" />
             </svg>
             <span className="font-lato text-center text-3xl font-bold text-neutral-800 md:text-5xl">
-              Your cart is currently empty.
+              سلة التسوق الخاصة بك فارغة حاليا.
             </span>
             <span className="font-lato max-w-[500px] text-center font-semibold text-neutral-400 md:text-lg">
-              Before proceeding to checkout you must add some products to your
-              shopping cart. You will find a lot of interesting products on our
-              Products page.
+              قبل الشروع بالدفع عليك إضافة بعض المنتجات إلى سلة التسوق الخاصة
+              بك. ستجد الكثير من المنتجات المثيرة للاهتمام على موقعنا.
             </span>
             <button
               onClick={() => {
                 ChangeUrl("/products");
               }}
               type="button"
-              className="font-lato bg-[var(--theme3)] px-6 py-3 font-semibold text-white transition-colors duration-200 hover:cursor-pointer hover:bg-[var(--theme)]"
+              className="font-lato border-2 border-[var(--theme)] bg-[var(--theme)] px-6 py-3 text-lg font-semibold text-[#ffffff] transition-colors duration-200 hover:cursor-pointer hover:bg-transparent hover:text-[var(--theme)]"
             >
-              RETURN TO SHOP
+              العودة إلى المتجر
             </button>
           </div>
         </div>
       ) : (
-        <div className="mx-auto mt-6 flex w-full flex-col items-center justify-center">
+        <div
+          dir="rtl"
+          className="mx-auto mt-6 flex w-full flex-col items-center justify-center"
+        >
           <div className="flex w-full max-w-[1500px] flex-col items-center justify-center">
             <div className="mx-2 flex flex-col gap-10 md:mx-10 lg:flex-row">
               <div>
@@ -142,11 +127,10 @@ const page = () => {
                     <tr className="font-lato border-b-2 border-neutral-200 text-lg font-bold">
                       <td className="p-[10px]"></td>
                       <td className="p-[10px]"></td>
-                      <td className="p-[10px]">PRODUCT</td>
-                      <td className="p-[10px]">DIMENSION</td>
-                      <td className="p-[10px]">PRICE</td>
-                      <td className="p-[10px]">QUANTITY</td>
-                      <td className="p-[10px]">SUBTOTAL</td>
+                      <td className="p-[10px]">المنتج</td>
+                      <td className="p-[10px]">سعر المنتج </td>
+                      <td className="p-[10px]">الكمية </td>
+                      <td className="p-[10px]">المجموع</td>
                     </tr>
                   </tbody>
 
@@ -159,54 +143,57 @@ const page = () => {
                         )}
                       >
                         <td className="p-[10px]">
-                          <i className="fa-solid fa-x text-[11px] text-neutral-500 transition-all duration-200 hover:cursor-pointer hover:text-emerald-700" />
+                          <i className="fa-solid fa-x text-[11px] text-neutral-500 transition-all duration-200 hover:cursor-pointer hover:text-[var(--theme)]" />
                         </td>
                         <td className="p-[10px]">
-                          <Image
-                            width={80}
-                            height={0}
-                            alt={item.name}
-                            src={item.image}
-                            className="max-w-[80px] hover:cursor-pointer"
-                            onClick={() => {
-                              ChangeUrl(`/products/${item.id}`);
-                            }}
-                          />
+                          <div className="relative">
+                            {product.onSold && (
+                              <div className="absolute select-none right-0 top-0 z-10 grid place-items-center rounded-bl-lg rounded-tr-lg bg-emerald-600 p-1">
+                                <span className="text-xs font-semibold text-white">
+                                  {product.soldPercentage}%
+                                </span>
+                              </div>
+                            )}
+                            <img
+                              onClick={() => {
+                                ChangeUrl(`/products/${item.productId}`);
+                              }}
+                              alt="product"
+                              src={product.img[0]}
+                              className="h-[70px] w-[110px] rounded-lg object-cover shadow-lg hover:cursor-pointer"
+                            />
+                          </div>
+                          
                         </td>
                         <td className="p-[10px]">
+                          <div className="text-sm text-neutral-500 font-medium">{product.brand.name}</div>
                           <div
                             onClick={() => {
-                              ChangeUrl(`/products/${item.id}`);
+                              ChangeUrl(`/products/${item.productId}`);
                             }}
-                            className="font-lato text-[17px] font-bold text-neutral-800 transition-colors duration-200 hover:cursor-pointer hover:text-emerald-600"
+                            className="font-lato text-[17px] font-bold text-neutral-800 transition-colors duration-200 hover:cursor-pointer hover:text-[var(--theme)]"
                           >
-                            {item.name}
+                            {product.name}
                           </div>
                         </td>
                         <td className="p-[10px]">
                           <span className="text-neutral-500">
                             {" "}
-                            {item.dimension}
+                            {`${product.soldSinglePrice}`}
                           </span>
                         </td>
                         <td className="p-[10px]">
-                          <span className="text-neutral-500">
-                            {" "}
-                            {`${item.price} QR`}
-                          </span>
-                        </td>
-                        <td className="p-[10px]">
-                          <div className="flex flex-row items-center justify-center gap-2 rounded-md border-[1px] border-neutral-300">
+                          <div className="flex flex-row items-center justify-center gap-2">
                             <button
                               type="button"
                               onClick={() => {
                                 decreaseProductNumber();
                               }}
-                              className="rounded-l-md border-r-[1px] border-neutral-300 px-2.5 py-2 font-semibold transition-all duration-200 hover:bg-[var(--theme)] hover:text-white"
+                              className="group grid size-[35px] place-items-center border-2 border-neutral-700 font-semibold transition-all duration-200 hover:bg-neutral-700"
                             >
-                              -
+                              <i className="fa-solid fa-minus text-neutral-700 group-hover:text-white" />
                             </button>
-                            <span className="font-lato px-1 font-semibold">
+                            <span className="font-lato w-5 text-center text-xl font-semibold">
                               {item.quantity}
                             </span>
                             <button
@@ -214,16 +201,16 @@ const page = () => {
                               onClick={() => {
                                 increaseProductNumber();
                               }}
-                              className="rounded-r-md border-l-[1px] border-neutral-300 px-2 py-2 font-semibold transition-all duration-200 hover:bg-[var(--theme)] hover:text-white"
+                              className="group grid size-[35px] place-items-center border-2 border-neutral-700 font-semibold transition-all duration-200 hover:bg-neutral-700"
                             >
-                              +
+                              <i className="fa-solid fa-plus text-neutral-700 group-hover:text-white" />
                             </button>
                           </div>
                         </td>
                         <td className="p-[10px]">
-                          <span className="text-lg font-bold text-[var(--theme3)]">
+                          <span className="text-lg font-bold text-[var(--theme)]">
                             {" "}
-                            {`${item.price * item.quantity} QR`}
+                            {`${product.soldSinglePrice * item.quantity}`}
                           </span>
                         </td>
                       </tr>

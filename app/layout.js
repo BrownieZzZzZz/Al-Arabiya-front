@@ -29,7 +29,7 @@ export default function RootLayout({ children }) {
           type="image/x-icon"
         />
       </head>
-      <body className="site bg-[var(--theme2)]">
+      <body className="site font-cairo bg-[var(--theme2)]">
         <Nav />
         {children}
         <PreFooter />

@@ -45,54 +45,22 @@ const Nav = () => {
   const closeCartButton = useRef(null);
 
   const [items, setItems] = useState([
-    {
-      name: "Work Table",
-      dimension: "1000 x 700 x 850 + 100mm",
-      price: "2000",
-      id: "123456",
-    },
-    {
-      name: "Work Table",
-      dimension: "1000 x 700 x 850 + 100mm",
-      price: "2000",
-      id: "123456",
-    },
-    {
-      name: "Work Table",
-      dimension: "1000 x 700 x 850 + 100mm",
-      price: "2000",
-      id: "123456",
-    },
-    {
-      name: "Work Table",
-      dimension: "1000 x 700 x 850 + 100mm",
-      price: "2000",
-      id: "123456",
-    },
-    {
-      name: "Work Table",
-      dimension: "1000 x 700 x 850 + 100mm",
-      price: "2000",
-      id: "123456",
-    },
-    {
-      name: "Work Table",
-      dimension: "1000 x 700 x 850 + 100mm",
-      price: "2000",
-      id: "123456",
-    },
-    {
-      name: "Work Table",
-      dimension: "1000 x 700 x 850 + 100mm",
-      price: "2000",
-      id: "123456",
-    },
-    {
-      name: "Work Table",
-      dimension: "1000 x 700 x 850 + 100mm",
-      price: "2000",
-      id: "123456",
-    },
+      {
+        productId: 1234,
+        quantity: 2
+      },
+      {
+        productId: 1234,
+        quantity: 3
+      },
+      {
+        productId: 1234,
+        quantity: 4
+      },
+      {
+        productId: 1234,
+        quantity: 5
+      },
   ]);
 
   const ChangeUrl = (url, options = {}) => {
@@ -285,6 +253,8 @@ const Nav = () => {
           </Dialog>
         )}
 
+        {/* CART  */}
+
         <Sheet>
           <SheetTrigger asChild className="cart md:mx-2 md:my-1">
             <button className="cart">
@@ -299,26 +269,23 @@ const Nav = () => {
                 >
                   <path d="M8 1a2 2 0 0 1 2 2v2H6V3a2 2 0 0 1 2-2m3 4V3a3 3 0 1 0-6 0v2H3.36a1.5 1.5 0 0 0-1.483 1.277L.85 13.13A2.5 2.5 0 0 0 3.322 16h9.355a2.5 2.5 0 0 0 2.473-2.87l-1.028-6.853A1.5 1.5 0 0 0 12.64 5zm-1 1v1.5a.5.5 0 0 0 1 0V6h1.639a.5.5 0 0 1 .494.426l1.028 6.851A1.5 1.5 0 0 1 12.678 15H3.322a1.5 1.5 0 0 1-1.483-1.723l1.028-6.851A.5.5 0 0 1 3.36 6H5v1.5a.5.5 0 1 0 1 0V6z" />
                 </svg>
-                <div className="total-number">0</div>
+                <div className="total-number">{items.length}</div>
               </div>
             </button>
           </SheetTrigger>
-          <SheetContent className="w-[300px] p-0">
+          <SheetContent side="left" className="w-[300px] p-0">
             <SheetTitle></SheetTitle>
             <div className="flex h-full flex-col justify-between">
               <div className="border-b-[1px] border-neutral-300 py-3 text-center">
                 <span className="font-lato text-2xl font-semibold text-neutral-800">
-                  Shopping Cart
+                  سلة التسوق
                 </span>
               </div>
-              <div className="cart-items-scrollbar relative flex w-full flex-1 flex-col overflow-auto">
+              <div className="cart relative flex w-full flex-1 flex-col overflow-auto">
                 {items.map((item, index) => (
                   <SideCartItem
                     key={index}
-                    name={item.name}
-                    dimension={item.dimension}
-                    price={item.price}
-                    id={item.id}
+                    item={item}
                     closeButton={closeCartButton}
                     index={index}
                     ChangeUrl={(url) => {
@@ -328,12 +295,12 @@ const Nav = () => {
                 ))}
               </div>
               <div className="flex flex-col gap-2 border-t-[1px] border-neutral-300 p-4">
-                <div className="flex flex-row justify-between">
+                <div className="flex flex-row-reverse justify-between">
                   <span className="font-lato text-xl font-semibold text-neutral-700">
-                    Total:
+                    المجموع
                   </span>
                   <span className="font-lato text-xl font-semibold text-[var(--theme)]">
-                    6000 QR
+                    800 DT
                   </span>
                 </div>
                 <button
@@ -343,7 +310,7 @@ const Nav = () => {
                     ChangeUrl("/cart");
                   }}
                 >
-                  VIEW CART
+                  عرض السلة
                 </button>
                 <button
                   type="button"
@@ -352,7 +319,7 @@ const Nav = () => {
                     ChangeUrl("/checkout");
                   }}
                 >
-                  CHECKOUT
+                  الدفع
                 </button>
               </div>
             </div>
@@ -460,3 +427,5 @@ const Nav = () => {
 };
 
 export default Nav;
+
+
