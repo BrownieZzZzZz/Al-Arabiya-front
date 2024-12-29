@@ -307,6 +307,7 @@ const Nav = () => {
                   type="button"
                   className="bg-zinc-200 py-3 text-sm font-bold text-neutral-700 transition-colors duration-200 hover:bg-zinc-300"
                   onClick={() => {
+                    closeCartButton.current.click();
                     ChangeUrl("/cart");
                   }}
                 >
@@ -316,6 +317,7 @@ const Nav = () => {
                   type="button"
                   className="bg-[var(--theme)] py-3 text-sm font-bold text-[#ffffff] transition-colors duration-200 hover:bg-[var(--theme)]"
                   onClick={() => {
+                    closeCartButton.current.click();
                     ChangeUrl("/checkout");
                   }}
                 >

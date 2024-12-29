@@ -117,10 +117,10 @@ const page = () => {
       ) : (
         <div
           dir="rtl"
-          className="mx-auto mt-6 flex w-full flex-col items-center justify-center"
+          className="mx-auto mt-24 flex w-full flex-col items-center justify-center"
         >
           <div className="flex w-full max-w-[1500px] flex-col items-center justify-center">
-            <div className="mx-2 flex flex-col gap-10 md:mx-10 lg:flex-row">
+            <div className="px-4 w-full flex flex-col gap-8 md:px-8 lg:flex-row justify-center">
               <div>
                 <table className="w-full">
                   <tbody className="hidden md:contents">
@@ -145,10 +145,10 @@ const page = () => {
                         <td className="p-[10px]">
                           <i className="fa-solid fa-x text-[11px] text-neutral-500 transition-all duration-200 hover:cursor-pointer hover:text-[var(--theme)]" />
                         </td>
-                        <td className="p-[10px]">
+                        <td className="h-[70px] w-[110px] p-[10px]">
                           <div className="relative">
                             {product.onSold && (
-                              <div className="absolute select-none right-0 top-0 z-10 grid place-items-center rounded-bl-lg rounded-tr-lg bg-emerald-600 p-1">
+                              <div className="absolute right-0 top-0 z-10 grid select-none place-items-center rounded-bl-md rounded-tr-lg bg-emerald-600 p-1">
                                 <span className="text-xs font-semibold text-white">
                                   {product.soldPercentage}%
                                 </span>
@@ -163,10 +163,8 @@ const page = () => {
                               className="h-[70px] w-[110px] rounded-lg object-cover shadow-lg hover:cursor-pointer"
                             />
                           </div>
-                          
                         </td>
                         <td className="p-[10px]">
-                          <div className="text-sm text-neutral-500 font-medium">{product.brand.name}</div>
                           <div
                             onClick={() => {
                               ChangeUrl(`/products/${item.productId}`);
@@ -175,12 +173,50 @@ const page = () => {
                           >
                             {product.name}
                           </div>
+                          <div className="text-sm font-medium text-neutral-500">
+                            {product.brand.name}
+                          </div>
                         </td>
                         <td className="p-[10px]">
-                          <span className="text-neutral-500">
-                            {" "}
-                            {`${product.soldSinglePrice}`}
-                          </span>
+                          {product.onSold ? (
+                            <>
+                              {item.quantity >= 5 ? (
+                                <div className="flex flex-row-reverse items-center justify-center gap-1">
+                                  <span className="text-lg font-medium text-[var(--theme)]">
+                                    {product.soldMultiPrice}DT
+                                  </span>
+                                  <span className="text-neutral-500 line-through">
+                                    {product.normalMultiPrice}DT
+                                  </span>
+                                </div>
+                              ) : (
+                                <div className="flex flex-row-reverse items-center justify-center gap-1">
+                                  <span className="text-lg font-medium text-[var(--theme)]">
+                                    {product.soldSinglePrice}DT
+                                  </span>
+                                  <span className="text-neutral-500 line-through">
+                                    {product.normalSinglePrice}DT
+                                  </span>
+                                </div>
+                              )}
+                            </>
+                          ) : (
+                            <>
+                              {item.quantity >= 5 ? (
+                                <>
+                                  <span className="font-medium text-[var(--theme)]">
+                                    {product.normalMultiPrice}DT
+                                  </span>
+                                </>
+                              ) : (
+                                <>
+                                  <span className="font-medium text-[var(--theme)]">
+                                    {product.normalSinglePrice}DT
+                                  </span>
+                                </>
+                              )}
+                            </>
+                          )}
                         </td>
                         <td className="p-[10px]">
                           <div className="flex flex-row items-center justify-center gap-2">
@@ -210,7 +246,14 @@ const page = () => {
                         <td className="p-[10px]">
                           <span className="text-lg font-bold text-[var(--theme)]">
                             {" "}
-                            {`${product.soldSinglePrice * item.quantity}`}
+                            {product.onSold
+                              ? item.quantity >= 5
+                                ? item.quantity * product.soldMultiPrice
+                                : item.quantity * product.soldSinglePrice
+                              : item.quantity >= 5
+                                ? item.quantity * product.normalMultiPrice
+                                : item.quantity * product.normalSinglePrice}
+                            DT
                           </span>
                         </td>
                       </tr>
@@ -218,13 +261,20 @@ const page = () => {
                       <tr className="contents md:hidden">
                         <td colSpan={7}>
                           <div className="flex w-full flex-row border-b border-neutral-200 py-4 min-[420px]:gap-4 sm:gap-8">
-                            <div>
+                            <div class="relative">
+                              {product.onSold && (
+                                <div className="absolute right-0 top-0 z-10 grid select-none place-items-center rounded-bl-md rounded-tr-lg bg-emerald-600 p-1">
+                                  <span className="text-xs font-semibold text-white">
+                                    {product.soldPercentage}%
+                                  </span>
+                                </div>
+                              )}
                               <Image
                                 width={100}
                                 height={0}
-                                alt={item.name}
-                                src={item.image}
-                                className="h-[110px] w-[125px] hover:cursor-pointer"
+                                alt={product.name}
+                                src={product.img[0]}
+                                className="h-[100px] w-[125px] rounded-lg object-cover shadow-lg hover:cursor-pointer"
                                 onClick={() => {
                                   ChangeUrl(`/products/${item.id}`);
                                 }}
@@ -232,47 +282,82 @@ const page = () => {
                             </div>
                             <div className="flex w-full flex-col">
                               <div className="flex w-full flex-row justify-between pb-2">
-                                <div
-                                  className="text-lg font-bold text-neutral-800"
-                                  onClick={() => {
-                                    ChangeUrl(`/products/${item.id}`);
-                                  }}
-                                >
-                                  {item.name}
+                                <div>
+                                  <div
+                                    onClick={() => {
+                                      ChangeUrl(`/products/${item.productId}`);
+                                    }}
+                                    className="font-lato text-[17px] font-bold text-neutral-800 transition-colors duration-200 hover:cursor-pointer hover:text-[var(--theme)]"
+                                  >
+                                    {product.name}
+                                  </div>
+                                  <div className="text-sm font-medium text-neutral-500">
+                                    {product.brand.name}
+                                  </div>
                                 </div>
                                 <i className="fa-solid fa-x self-center text-[12px] text-neutral-500 transition-all duration-200 hover:cursor-pointer hover:text-emerald-700" />
                               </div>
-                              <div className="flex w-full flex-row justify-between gap-1 py-2 min-[400px]:gap-0">
+                              <div className="border-mask h-[1px] w-full bg-neutral-200"></div>
+                              <div className="flex w-full flex-row justify-between py-2">
                                 <div className="font-lato my-auto text-[17px] font-semibold text-neutral-800">
-                                  Dimension
+                                  سعر المنتج
                                 </div>
-                                <div className="text-end font-medium text-neutral-500">
-                                  {item.dimension}
-                                </div>
+                                {product.onSold ? (
+                                  <>
+                                    {item.quantity >= 5 ? (
+                                      <div className="flex flex-row-reverse items-center justify-center gap-1">
+                                        <span className="text-lg font-medium text-[var(--theme)]">
+                                          {product.soldMultiPrice}DT
+                                        </span>
+                                        <span className="text-neutral-500 line-through">
+                                          {product.normalMultiPrice}DT
+                                        </span>
+                                      </div>
+                                    ) : (
+                                      <div className="flex flex-row-reverse items-center justify-center gap-1">
+                                        <span className="text-lg font-medium text-[var(--theme)]">
+                                          {product.soldSinglePrice}DT
+                                        </span>
+                                        <span className="text-neutral-500 line-through">
+                                          {product.normalSinglePrice}DT
+                                        </span>
+                                      </div>
+                                    )}
+                                  </>
+                                ) : (
+                                  <>
+                                    {item.quantity >= 5 ? (
+                                      <>
+                                        <span className="font-medium text-[var(--theme)]">
+                                          {product.normalMultiPrice}DT
+                                        </span>
+                                      </>
+                                    ) : (
+                                      <>
+                                        <span className="font-medium text-[var(--theme)]">
+                                          {product.normalSinglePrice}DT
+                                        </span>
+                                      </>
+                                    )}
+                                  </>
+                                )}
                               </div>
                               <div className="border-mask h-[1px] w-full bg-neutral-200"></div>
                               <div className="flex w-full flex-row justify-between py-2">
                                 <div className="font-lato my-auto text-[17px] font-semibold text-neutral-800">
-                                  Price
+                                  الكمية
                                 </div>
-                                <div className="font-medium text-[var(--theme3)]">{`${item.price} QR`}</div>
-                              </div>
-                              <div className="border-mask h-[1px] w-full bg-neutral-200"></div>
-                              <div className="flex w-full flex-row justify-between py-2">
-                                <div className="font-lato my-auto text-[17px] font-semibold text-neutral-800">
-                                  Quantity
-                                </div>
-                                <div className="flex flex-row items-center justify-center gap-2 rounded-md border-[1px] border-neutral-300">
+                                <div className="flex flex-row items-center justify-center gap-2">
                                   <button
                                     type="button"
                                     onClick={() => {
                                       decreaseProductNumber();
                                     }}
-                                    className="rounded-l-md border-r-[1px] border-neutral-300 px-2.5 py-1 font-semibold transition-all duration-200 hover:bg-[var(--theme)] hover:text-white"
+                                    className="group grid size-[35px] place-items-center border-2 border-neutral-700 font-semibold transition-all duration-200 hover:bg-neutral-700"
                                   >
-                                    -
+                                    <i className="fa-solid fa-minus text-neutral-700 group-hover:text-white" />
                                   </button>
-                                  <span className="font-lato px-1 font-semibold">
+                                  <span className="font-lato w-5 text-center text-xl font-semibold">
                                     {item.quantity}
                                   </span>
                                   <button
@@ -280,18 +365,29 @@ const page = () => {
                                     onClick={() => {
                                       increaseProductNumber();
                                     }}
-                                    className="rounded-r-md border-l-[1px] border-neutral-300 px-2 py-1 font-semibold transition-all duration-200 hover:bg-[var(--theme)] hover:text-white"
+                                    className="group grid size-[35px] place-items-center border-2 border-neutral-700 font-semibold transition-all duration-200 hover:bg-neutral-700"
                                   >
-                                    +
+                                    <i className="fa-solid fa-plus text-neutral-700 group-hover:text-white" />
                                   </button>
                                 </div>
                               </div>
                               <div className="border-mask h-[1px] w-full bg-neutral-200"></div>
                               <div className="flex w-full flex-row justify-between py-2">
                                 <div className="font-lato my-auto text-[17px] font-semibold text-neutral-800">
-                                  Subtotal
+                                  المجموع
                                 </div>
-                                <div className="font-medium text-[var(--theme3)]">{`${item.price * item.quantity} QR`}</div>
+                                <span className="text-lg font-bold text-[var(--theme)]">
+                                  {" "}
+                                  {product.onSold
+                                    ? item.quantity >= 5
+                                      ? item.quantity * product.soldMultiPrice
+                                      : item.quantity * product.soldSinglePrice
+                                    : item.quantity >= 5
+                                      ? item.quantity * product.normalMultiPrice
+                                      : item.quantity *
+                                        product.normalSinglePrice}
+                                  DT
+                                </span>
                               </div>
                             </div>
                           </div>
@@ -303,99 +399,40 @@ const page = () => {
               </div>
 
               <div className="flex h-fit w-full flex-col justify-between gap-3 border-[1px] border-neutral-200 p-7 shadow-md drop-shadow-md lg:max-w-[400px]">
-                <span className="font-lato text-xl font-bold text-[var(--theme3)]">
-                  CART TOTALS
+                <span className="font-lato text-xl font-bold text-[var(--theme)]">
+                السعر الإجمالي
                 </span>
                 <div className="flex flex-col">
-                  <div className="flex flex-row justify-between px-2 py-4">
+                  <div className="flex flex-row  justify-between gap-5 px-2 py-4">
                     <span className="font-lato text-lg font-semibold text-neutral-800">
-                      Subtotal
+                    التوصيل 
                     </span>
-                    <span className="text-lg text-neutral-500">145000 QR</span>
-                  </div>
-                  <div className="border-mask h-[1px] w-full bg-neutral-300"></div>
-                  <div className="flex flex-row items-center justify-between gap-5 px-2 py-4">
-                    <span className="font-lato text-lg font-semibold text-neutral-800">
-                      Shipping
+                    <span className="text-sm text-neutral-600">
+                      تأخذ مدة التوصيل من إثنين إلى أربع أيام عمل.
                     </span>
-                    <div className="flex flex-col gap-4 text-right text-neutral-600">
-                      <div>
-                        <label
-                          htmlFor="weight"
-                          className="radio-wrapper-8 hover:cursor-pointer"
-                        >
-                          <input
-                            type="radio"
-                            id="weight"
-                            name="shipping"
-                            defaultChecked
-                            className="relative left-[2px] top-2 float-end accent-emerald-700 hover:cursor-pointer"
-                          />
-                          Shipping cost depends on weight:{" "}
-                          <font className="font-bold text-[var(--theme3)]">
-                            750 QR
-                          </font>
-                        </label>
-                      </div>
-                      <div>
-                        <label htmlFor="hq" className="hover:cursor-pointer">
-                          <input
-                            type="radio"
-                            id="hq"
-                            name="shipping"
-                            className="relative left-[2px] top-2 float-end accent-emerald-700 hover:cursor-pointer"
-                          />
-                          Receipt from the company's headquarters (QATAR){" "}
-                        </label>
-                      </div>
-                      <div>
-                        <label htmlFor="truck" className="hover:cursor-pointer">
-                          <input
-                            type="radio"
-                            id="truck"
-                            name="shipping"
-                            className="relative left-[2px] top-2 float-end accent-emerald-700 hover:cursor-pointer"
-                          />
-                          A shipping truck for several products (from{" "}
-                          <font className="font-bold text-[var(--theme3)]">
-                            500
-                          </font>{" "}
-                          to{" "}
-                          <font className="font-bold text-[var(--theme3)]">
-                            2000 QR
-                          </font>
-                          ) contact customer service after ordering for shipping
-                          cost.
-                        </label>
-                      </div>
-                    </div>
                   </div>
                   <div className="border-mask h-[1px] w-full bg-neutral-300"></div>
 
                   <div className="flex flex-row items-center justify-between px-2 py-4">
                     <span className="font-lato text-lg font-semibold text-neutral-800">
-                      Total
+                    المجموع 
                     </span>
                     <div className="flex flex-col justify-between">
-                      <span className="font-lato text-2xl font-bold text-[var(--theme3)]">
-                        146750 QR
+                      <span dir="ltr" className="font-lato text-2xl font-bold text-[var(--theme)]">
+                        500 DT
                       </span>
-                      <span className="font-lato text-sm text-neutral-400">
-                        (includes{" "}
-                        <span className="text-[var(--theme3)]">1000 QR</span>{" "}
-                        Tax)
-                      </span>
+                     
                     </div>
                   </div>
                 </div>
                 <button
                   type="button"
-                  className="font-lato w-full bg-[var(--theme3)] py-2 font-semibold text-white transition-colors duration-200 hover:bg-[var(--theme)]"
+                  className="font-lato w-full bg-[var(--theme)] py-2 font-semibold text-white transition-colors duration-200 hover:bg-[var(--theme)]"
                   onClick={() => {
                     ChangeUrl("/checkout");
                   }}
                 >
-                  PROCEED TO CHECKOUT
+                  الدفع 
                 </button>
               </div>
             </div>
