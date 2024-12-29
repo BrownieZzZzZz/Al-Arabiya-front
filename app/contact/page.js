@@ -120,11 +120,11 @@ const page = () => {
             <div className="flex flex-col items-center gap-4 rounded-xl bg-white p-8">
               <div className="flex flex-col gap-4">
                 <div className="flex flex-row items-center gap-3">
-                  <i className="fa-solid fa-phone-flip text-xl text-[var(--theme)]"></i>
+                  <i className="fa-solid fa-phone-flip text-xl text-[var(--theme)]"/>
                   <div dir="ltr">+ 216 12 345 678</div>
                 </div>
                 <div className="flex flex-row items-center gap-3">
-                  <i className="fa-solid fa-envelope text-xl text-[var(--theme)]"></i>
+                  <i className="fa-solid fa-envelope text-xl text-[var(--theme)]"/>
                   <div dir="ltr">Example@gmail.com</div>
                 </div>
               </div>
@@ -140,22 +140,22 @@ const page = () => {
                     src="/icons/instagram.png"
                     alt="ig"
                     className="size-[32px] transition-all duration-200 hover:scale-110 hover:cursor-pointer"
-                  ></img>
+                  />
                   <img
                     src="/icons/facebook.png"
                     alt="ig"
                     className="size-[32px] transition-all duration-200 hover:scale-110 hover:cursor-pointer"
-                  ></img>
+                  />
                   <img
                     src="/icons/whatsapp.png"
                     alt="ig"
                     className="size-[32px] transition-all duration-200 hover:scale-110 hover:cursor-pointer"
-                  ></img>
+                  />
                   <img
                     src="/icons/tiktok.png"
                     alt="ig"
                     className="size-[32px] transition-all duration-200 hover:scale-110 hover:cursor-pointer"
-                  ></img>
+                  />
                 </div>
               </div>
             </div>
@@ -175,14 +175,14 @@ const page = () => {
                 placeholder="إسم"
                 name="name"
                 className="w-full bg-[var(--theme2)] p-2.5 placeholder-neutral-400 outline-[var(--theme)]"
-              ></input>
+              />
               <input
                 dir="rtl"
                 type="email"
                 placeholder="بريد إلكتروني"
                 name="email"
                 className="w-full bg-[var(--theme2)] p-2.5 placeholder-neutral-400 outline-[var(--theme)]"
-              ></input>
+              />
             </div>
             <input
               dir="rtl"
@@ -192,14 +192,14 @@ const page = () => {
               name="phone"
               onInput={() => validateNumberInput(phoneRef)}
               className="w-full bg-[var(--theme2)] p-2.5 placeholder-neutral-400 outline-[var(--theme)]"
-            ></input>
+            />
             <textarea
               dir="rtl"
               placeholder="رسالة"
               name="message"
               rows={4}
               className="h-full w-full bg-[var(--theme2)] p-2.5 placeholder-neutral-400 outline-[var(--theme)]"
-            ></textarea>
+              />
             <button
               type="submit"
               disabled={loading}
@@ -212,7 +212,7 @@ const page = () => {
             >
               {loading ? (
                 <div className="flex items-center justify-center">
-                  <div className="size-6 animate-spin rounded-full border-2 border-white border-t-transparent"></div>
+                  <div className="size-6 animate-spin rounded-full border-2 border-white border-t-transparent"/>
                 </div>
               ) : (
                 "أرسل"

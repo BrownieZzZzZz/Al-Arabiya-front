@@ -16,8 +16,8 @@ const PreFooter = () => {
         className="flex min-w-full flex-1 flex-row gap-4 p-1 sm:min-w-[320px] lg:min-w-0"
       >
         <div className="relative">
-          <i className="fa-solid fa-truck-fast fa-flip-horizontal text-9xl text-neutral-600"></i>
-          <i className="fa-solid fa-circle-check absolute -right-2 -top-5 text-[40px] text-red-500"></i>
+          <i className="fa-solid fa-truck-fast fa-flip-horizontal text-9xl text-neutral-600"/>
+          <i className="fa-solid fa-circle-check absolute -right-2 -top-5 text-[40px] text-red-500"/>
         </div>
         <div dir="rtl" className="flex flex-col gap-1">
           <div className="text-xl font-bold text-neutral-800">توصيل سريع </div>
@@ -55,8 +55,8 @@ const PreFooter = () => {
       </div>
       <div className="flex min-w-full flex-1 flex-row gap-4 p-1 sm:min-w-[320px] lg:min-w-0">
         <div className="relative">
-          <i className="fa-regular fa-flip-horizontal fa-comment text-9xl text-neutral-600"></i>
-          <i className="fa-solid fa-flip-horizontal fa-headset absolute left-[35px] top-[30px] text-[58px] text-neutral-600"></i>
+          <i className="fa-regular fa-flip-horizontal fa-comment text-9xl text-neutral-600"/>
+          <i className="fa-solid fa-flip-horizontal fa-headset absolute left-[35px] top-[30px] text-[58px] text-neutral-600"/>
         </div>
         <div className="flex flex-col gap-1">
           <div className="text-xl font-bold text-neutral-800">
@@ -71,7 +71,7 @@ const PreFooter = () => {
       </div>
       <div className="flex min-w-full flex-1 flex-row gap-4 p-1 sm:min-w-[320px] lg:min-w-0">
         <div className="">
-          <i className="fa-solid fa-money-bills text-9xl text-neutral-600"></i>
+          <i className="fa-solid fa-money-bills text-9xl text-neutral-600"/>
         </div>
         <div className="flex flex-col gap-1">
           <div className="text-xl font-bold text-neutral-800">

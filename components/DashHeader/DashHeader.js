@@ -7,7 +7,7 @@ const DashHeader = () => {
         src="/images/logo.png"
         alt="mini-logo"
         className="size-[120px] object-scale-down"
-      ></img>
+      />
       <div className="flex flex-col">
         <div className="text-sm font-semibold tracking-wide text-[var(--dash-theme5)]">
           إدارة

@@ -11,12 +11,12 @@ const ProductCard = ({ product, ChangeUrl }) => {
           src={product.img[0]}
           alt="Product Image"
           className="h-48 w-full object-cover transition-all duration-200 hover:scale-110"
-        ></img>
+        />
         <img
           src={product.brand.img}
           alt="Brand Logo"
           className="absolute left-2 top-2 h-[50px] w-[100px] rounded-full bg-white object-scale-down px-1.5 py-1"
-        ></img>
+        />
         {product.onSold && (
           <>
             <div className="absolute right-0 top-0 rounded-bl-full bg-rose-500 pb-3 pl-3 pr-1.5 pt-1.5 font-semibold text-white">{`%${product.soldPercentage}`}</div>

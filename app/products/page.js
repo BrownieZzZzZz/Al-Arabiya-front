@@ -112,11 +112,11 @@ const ProductPage = () => {
             variant="outline"
             className="flex items-center justify-center rounded-lg bg-[var(--theme)] px-2 transition-all duration-300 hover:scale-95 lg:hidden"
           >
-            <i className="fa-solid fa-filter text-xl text-neutral-100"></i>
+            <i className="fa-solid fa-filter text-xl text-neutral-100" />
           </button>
         </SheetTrigger>
         <SheetContent className="w-[280px] overflow-auto">
-          <SheetTitle></SheetTitle>
+          <SheetTitle />
           <div dir="ltr" className="flex flex-col gap-4">
             <div className="flex flex-col gap-3">
               <span
@@ -228,7 +228,7 @@ const ProductPage = () => {
               </button>
             </div>
           </div>
-          <SheetDescription></SheetDescription>
+          <SheetDescription />
         </SheetContent>
       </Sheet>
     );
@@ -262,9 +262,6 @@ const ProductPage = () => {
         (key) => selectedCategories[key] === true,
       );
       const categoriesString = encodeURIComponent(categories.join(","));
-
-      console.log("brandOption");
-      console.log(brandOption);
 
       const res = await fetch(
         `${process.env.NEXT_PUBLIC_API_URL}/product/search?${searchInputRef.current.value.trim() ? `name=${searchInputRef.current.value.trim()}` : ""}${categoriesString ? `&categories=${categoriesString}` : ""}${brandOption && brandOption !== "allBrands" ? `&brand=${brandOption}` : ""}${sortBy ? `&sortBy=${sortBy}` : ""}${sort_order ? `&sortOrder=${sort_order}` : ""}${minPrice !== 0 ? `&min_price=${minPrice}` : ""}${maxPrice !== 0 ? `&max_price=${maxPrice}` : ""}${CurrentPage ? `&page=${CurrentPage}` : ""}${limit ? `&limit=${limit}` : ""}`,
@@ -410,7 +407,7 @@ const ProductPage = () => {
     >
       {loadingPage && (
         <div className="fixed inset-0 z-50 flex h-full w-full items-center justify-center bg-white/60 backdrop-blur-sm">
-          <div className="h-14 w-14 animate-spin rounded-full border-b-4 border-[var(--theme)]"></div>
+          <div className="h-14 w-14 animate-spin rounded-full border-b-4 border-[var(--theme)]" />
         </div>
       )}
       <div className="mx-5 flex w-full flex-row justify-center gap-10 xsm:mx-8 sm:mx-10">
@@ -532,7 +529,7 @@ const ProductPage = () => {
         <div className="flex w-full max-w-screen-lg flex-col gap-4">
           <div className="flex min-w-full flex-row gap-1 rounded-xl border-2 border-neutral-200 py-1 pl-3 pr-3 xsm:pr-0">
             <div className="hidden min-w-10 items-center justify-center xsm:flex">
-              <i className="fa-solid fa-magnifying-glass text-zinc-300"></i>
+              <i className="fa-solid fa-magnifying-glass text-zinc-300" />
             </div>
             <input
               placeholder="ابحث عن منتج "
@@ -540,7 +537,7 @@ const ProductPage = () => {
               type="text"
               ref={searchInputRef}
               className="min-h-full w-full flex-1 bg-transparent focus:outline-none"
-            ></input>
+            />
             <button
               className="rounded-lg bg-[var(--theme)] px-2.5 py-1 text-lg text-neutral-100 transition-all duration-300 hover:scale-95"
               onClick={() => {
@@ -556,7 +553,7 @@ const ProductPage = () => {
             >
               <span className="hidden xsm:block">ابحث </span>
               <div className="xsm:hidden">
-                <i className="fa-solid fa-magnifying-glass text-neutral-100"></i>
+                <i className="fa-solid fa-magnifying-glass text-neutral-100" />
               </div>
             </button>
             <OpenFilter />
@@ -597,7 +594,7 @@ const ProductPage = () => {
                     )}
                     onClick={() => handlePageChange(CurrentPage - 1)}
                     disabled={CurrentPage === 1}
-                  ></PaginationPrevious>
+                  />
                 </PaginationItem>
 
                 {/* First Page and Ellipsis */}
@@ -663,7 +660,7 @@ const ProductPage = () => {
                     )}
                     onClick={() => handlePageChange(CurrentPage + 1)}
                     disabled={CurrentPage === totalPages}
-                  ></PaginationNext>
+                  />
                 </PaginationItem>
               </PaginationContent>
             </Pagination>
@@ -679,7 +676,7 @@ const Page = () => {
     <Suspense
       fallback={
         <div className="flex h-full w-full items-center justify-center bg-white/60 backdrop-blur-sm">
-          <div className="h-14 w-14 animate-spin rounded-full border-b-4 border-[var(--theme)]"></div>
+          <div className="h-14 w-14 animate-spin rounded-full border-b-4 border-[var(--theme)]" />
         </div>
       }
     >

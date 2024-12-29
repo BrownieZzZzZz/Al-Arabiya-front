@@ -501,11 +501,11 @@ const ProductsByBrand = ({ ChangeUrl }) => {
     <section className="mx-4 mt-20">
       <div className="mb-7 flex w-full flex-col items-center justify-center gap-2 self-center">
         <div className="mb-2 flex w-full flex-row items-center justify-center gap-3">
-          <div className="h-[2px] w-8 bg-[var(--theme)] md:w-12"></div>
+          <div className="h-[2px] w-8 bg-[var(--theme)] md:w-12"/>
           <span className="text-center text-4xl font-bold text-neutral-800">
             منتجات حسب الماركة
           </span>
-          <div className="h-[2px] w-8 bg-[var(--theme)] md:w-12"></div>
+          <div className="h-[2px] w-8 bg-[var(--theme)] md:w-12"/>
         </div>
 
         <div className="mt-5 flex w-full flex-shrink-0 flex-row gap-6 overflow-x-auto pb-4 min-[700px]:justify-center">
@@ -522,7 +522,7 @@ const ProductsByBrand = ({ ChangeUrl }) => {
               }}
               key={index}
             >
-              <img src={brand.img} alt="img"></img>
+              <img src={brand.img} alt="img"/>
             </div>
           ))}
         </div>

@@ -7,7 +7,7 @@ const DashSignHeader = () => {
         src="/images/logo.png"
         alt="mini-logo"
         className="w-[185px] md:w-[240px]"
-      ></img>
+      />
     </div>
   );
 };

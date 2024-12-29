@@ -461,11 +461,11 @@ const FeaturedProducts = ({ ChangeUrl }) => {
     <section className="mx-4 mt-20">
       <div className="mb-7 flex w-full flex-col items-center justify-center gap-2 self-center">
         <div className="flex w-full flex-row items-center justify-center gap-3">
-          <div className="h-[2px] w-8 bg-[var(--theme)] md:w-12"></div>
+          <div className="h-[2px] w-8 bg-[var(--theme)] md:w-12"/>
           <span className="font-lato text-center text-4xl font-bold text-neutral-800">
             المنتجات الأكثر طلباً
           </span>
-          <div className="h-[2px] w-8 bg-[var(--theme)] md:w-12"></div>
+          <div className="h-[2px] w-8 bg-[var(--theme)] md:w-12"/>
         </div>
       </div>
 

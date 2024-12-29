@@ -41,19 +41,19 @@ const page = () => {
     {
       text: "تنبيهات المنتجات الجديدة",
       logo: (
-        <i className="fa-solid fa-bell text-7xl text-[var(--theme)]"></i>
+        <i className="fa-solid fa-bell text-7xl text-[var(--theme)]"/>
       ),
     },
     {
       text: "إرشادات استخدام المنتج",
       logo: (
-        <i className="fa-solid fa-person-chalkboard fa-flip-horizontal text-7xl text-[var(--theme)]"></i>
+        <i className="fa-solid fa-person-chalkboard fa-flip-horizontal text-7xl text-[var(--theme)]"/>
       ),
     },
     {
       text: "الدعم الفني",
       logo: (
-        <i className="fa-solid fa-comments text-7xl text-[var(--theme)]"></i>
+        <i className="fa-solid fa-comments text-7xl text-[var(--theme)]"/>
       ),
     },
     {
@@ -84,11 +84,11 @@ const page = () => {
     >
       <div className="flex w-full flex-col items-center justify-center gap-2 self-center">
         <div className="flex w-full flex-row items-center justify-center gap-3">
-          <div className="h-[2px] w-10 bg-[var(--theme)] md:w-16"></div>
+          <div className="h-[2px] w-10 bg-[var(--theme)] md:w-16"/>
           <span className="font-lato text-center text-5xl font-bold text-neutral-800 sm:text-6xl">
             معلومات عنا
           </span>
-          <div className="h-[2px] w-10 bg-[var(--theme)] md:w-16"></div>
+          <div className="h-[2px] w-10 bg-[var(--theme)] md:w-16"/>
         </div>
         <span className="font-lato text-center text-lg text-slate-700 sm:text-xl md:text-2xl lg:text-3xl">
           من نحن
@@ -101,7 +101,7 @@ const page = () => {
             <span className="tracking-wide">شركتنا</span>
           </div>
 
-          <img src="/images/logo.png" className="max-h-[250px] max-lg:max-w-[300px]"></img>
+          <img src="/images/logo.png" className="max-h-[250px] max-lg:max-w-[300px]"/>
         </div>
 
         <div

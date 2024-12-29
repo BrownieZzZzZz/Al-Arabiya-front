@@ -7,7 +7,7 @@ const DashSignHeader = () => {
         src="/images/dash-icon.png"
         alt="mini-logo"
         className="size-[115px] md:size-[150px]"
-      ></img>
+      />
       <div className="flex flex-col">
         <div className="inline-block bg-gradient-to-br from-amber-300 to-amber-600 bg-clip-text text-3xl text-nowrap md:text-4xl font-bold tracking-wider text-transparent">
           Golden B.

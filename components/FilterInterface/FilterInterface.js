@@ -89,7 +89,7 @@ const FilterInterface = ({ ChangeUrl }) => {
                 changeSelectedCategorie(categorie)
               }
               item={categorie}
-            ></CategorieItem>
+              />
           ))}
         </div>
       </div>

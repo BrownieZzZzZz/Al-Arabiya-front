@@ -88,11 +88,11 @@ const page = () => {
 
       <div className="flex w-full flex-col items-center justify-center gap-2 self-center">
         <div className="flex w-full flex-row items-center justify-center gap-3">
-          <div className="h-[2px] w-10 bg-[var(--theme)] md:w-16"></div>
+          <div className="h-[2px] w-10 bg-[var(--theme)] md:w-16"/>
           <span className="text-center text-5xl font-bold text-neutral-800 sm:text-6xl">
           خدماتنا 
           </span>
-          <div className="h-[2px] w-10 bg-[var(--theme)] md:w-16"></div>
+          <div className="h-[2px] w-10 bg-[var(--theme)] md:w-16"/>
         </div>
         <span className="text-center font-lato text-lg text-slate-700 sm:text-xl md:text-2xl lg:text-3xl">
         ماذا نقدم 

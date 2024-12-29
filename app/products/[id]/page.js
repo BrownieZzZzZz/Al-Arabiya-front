@@ -4,78 +4,27 @@ import "./page.css";
 
 import { Skeleton } from "@/components/ui/skeleton";
 
-import { cn } from "@/lib/utils";
+import { toast } from "@/hooks/use-toast";
+import { cn, eventBus } from "@/lib/utils";
+
 import { useParams, useRouter } from "next/navigation";
 import React, { useEffect, useState, useTransition } from "react";
-import { toast } from "@/hooks/use-toast";
 
 const page = () => {
-  const [loadingPage, setLoadingPage] = useState(true);
-  const [isPending, startTransition] = useTransition();
   const router = useRouter();
   const searchParams = useParams();
   const id = searchParams.id;
-
-  const ChangeUrl = (url) => {
-    startTransition(() => {
-      router.push(url);
-    });
-  };
-
-  const [product, setProduct] = useState({
-    //   id: 1234,
-    //   name: "مرطب الوجه الطبيعي",
-    //   description: "مرطب طبيعي خفيف مناسب لجميع أنواع البشرة.",
-    //   img: [
-    //     "/images/product1.jpg",
-    //     "/images/product2.jpg",
-    //     "/images/product3.jpg",
-    //     "/images/product4.jpg",
-    //     "/images/product5.jpg",
-    //     "/images/product6.jpg",
-    //     "/images/product1.jpg",
-    //     "/images/product2.jpg",
-    //     "/images/product3.jpg",
-    //     "/images/product4.jpg",
-    //     "/images/product5.jpg",
-    //     "/images/product6.jpg",
-    //   ],
-    //   brand: { img: "/images/sheglam.png" },
-    //   onSold: true,
-    //   soldPercentage: 15,
-    //   normalSinglePrice: 45.0,
-    //   soldSinglePrice: 38.25,
-    //   normalMultiPrice: 40,
-    //   soldMultiPrice: 34,
-    //   in_Stock: true,
-    //   category: { name: "العناية بالبشرة" },
-  });
-
+  const [loadingPage, setLoadingPage] = useState(true);
+  const [isPending, startTransition] = useTransition();
+  const [product, setProduct] = useState({});
   const [imageIndex, setImageIndex] = useState(0);
-
-  const handleNextImage = () => {
-    if (imageIndex == product.img.length - 1) {
-      setImageIndex(0);
-    } else {
-      setImageIndex(imageIndex + 1);
-    }
-  };
-
-  const handlePrevImage = () => {
-    if (imageIndex == 0) {
-      setImageIndex(product.img.length - 1);
-    } else {
-      setImageIndex(imageIndex - 1);
-    }
-  };
-
+  const [currentPrice, setCurrentPrice] = useState(0);
+  const [productNumber, setProductNumber] = useState(1);
+  const [loadingProduct, setLoadingProduct] = useState(true);
   const cat = {};
   if (product.category) {
     cat[product.category?.name] = true;
   }
-  const [currentPrice, setCurrentPrice] = useState(0);
-
-  const [productNumber, setProductNumber] = useState(1);
 
   const increaseProductNumber = () => {
     if (productNumber < 99) {
@@ -98,8 +47,6 @@ const page = () => {
       }
     }
   };
-
-  const [loadingProduct, setLoadingProduct] = useState(true);
 
   const fetchProduct = async () => {
     setLoadingProduct(true);
@@ -143,20 +90,43 @@ const page = () => {
       : productNumber;
 
     localStorage.setItem("cart", JSON.stringify(cart));
+
+    eventBus.emit("updateCart");
+
     toast({
       title: "تمت الإضافة",
       description: "تمت إضافة المنتوج إلى السلة بنجاح!",
       variant: "success",
     });
-    try {
-      const response = await fetch();
-      setProductNumber(1);
-    } catch (error) {
-      console.log(error);
+    setProductNumber(1);
+  };
+
+  const handleNextImage = () => {
+    if (imageIndex == product.img.length - 1) {
+      setImageIndex(0);
+    } else {
+      setImageIndex(imageIndex + 1);
     }
   };
 
-  const handleBuyDirectly = () => {};
+  const handlePrevImage = () => {
+    if (imageIndex == 0) {
+      setImageIndex(product.img.length - 1);
+    } else {
+      setImageIndex(imageIndex - 1);
+    }
+  };
+
+  const handleBuyDirectly = () => {
+    handleAddToCart();
+    ChangeUrl("/cart");
+  };
+
+  const ChangeUrl = (url) => {
+    startTransition(() => {
+      router.push(url);
+    });
+  };
 
   useEffect(() => {
     document.title = `Al-Arabiya: ${product.name ? product.name : "Loading..."}`;
@@ -169,6 +139,7 @@ const page = () => {
   useEffect(() => {
     fetchProduct();
   }, []);
+
   return (
     <div
       dir="rtl"
@@ -176,7 +147,7 @@ const page = () => {
     >
       {loadingPage && (
         <div className="fixed inset-0 z-50 flex h-full w-full items-center justify-center bg-white/60 backdrop-blur-sm">
-          <div className="h-14 w-14 animate-spin rounded-full border-b-4 border-[var(--theme)]"></div>
+          <div className="h-14 w-14 animate-spin rounded-full border-b-4 border-[var(--theme)]"/>
         </div>
       )}
       <div className="relative mx-5 flex w-full justify-center gap-6 max-md:flex-col max-md:items-center lg:gap-12">
@@ -218,7 +189,7 @@ const page = () => {
                     : "hover:cursor-pointer",
                 )}
               >
-                <i className="fa-solid fa-chevron-right text-xl text-neutral-900"></i>
+                <i className="fa-solid fa-chevron-right text-xl text-neutral-900"/>
               </div>
               <div
                 onClick={() => {
@@ -234,7 +205,7 @@ const page = () => {
                     : "hover:cursor-pointer",
                 )}
               >
-                <i className="fa-solid fa-chevron-left text-xl text-neutral-900"></i>
+                <i className="fa-solid fa-chevron-left text-xl text-neutral-900"/>
               </div>
             </div>
           </div>
@@ -255,7 +226,7 @@ const page = () => {
                       key={index}
                       className="size-full rounded-sm bg-neutral-300"
                     />
-                    <div className="absolute left-0 top-0 z-10 h-[75px] w-[75px] rounded-sm bg-transparent opacity-20 shadow-md transition-all duration-200 hover:cursor-pointer"></div>
+                    <div className="absolute left-0 top-0 z-10 h-[75px] w-[75px] rounded-sm bg-transparent opacity-20 shadow-md transition-all duration-200 hover:cursor-pointer"/>
                   </div>
                 ))
               : product.img.map((image, index) => (
@@ -271,7 +242,7 @@ const page = () => {
                         "size-full rounded-sm object-cover transition-all duration-200",
                         imageIndex == index && "scale-110",
                       )}
-                    ></img>
+                    />
                     <div
                       onMouseOver={() => {
                         setImageIndex(index);
@@ -280,7 +251,7 @@ const page = () => {
                         "absolute left-0 top-0 z-10 h-[75px] w-[75px] rounded-sm bg-transparent opacity-20 shadow-md transition-all duration-200 hover:cursor-pointer",
                         imageIndex == index && "scale-110 bg-neutral-950",
                       )}
-                    ></div>
+                    />
                   </div>
                 ))}
           </div>
@@ -400,7 +371,7 @@ const page = () => {
               >{`${product.normalMultiPrice} DT`}</div>
             )}
           </div>
-          <div className="my-2 h-[1px] w-full bg-neutral-500"></div>
+          <div className="my-2 h-[1px] w-full bg-neutral-500"/>
           <div className="text-2xl font-bold text-neutral-900">كمية:</div>
 
           <div className="flex flex-row items-center gap-2">

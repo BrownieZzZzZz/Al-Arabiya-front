@@ -34,7 +34,7 @@ const Footer = () => {
     <footer className={cn("mt-24 bg-white pt-10")}>
       {loadingPage && (
         <div className="fixed inset-0 z-50 flex h-full w-full items-center justify-center bg-white/60 backdrop-blur-sm">
-          <div className="h-14 w-14 animate-spin rounded-full border-b-4 border-[var(--theme)]"></div>
+          <div className="h-14 w-14 animate-spin rounded-full border-b-4 border-[var(--theme)]"/>
         </div>
       )}
       <div className="mx-auto px-6">
@@ -53,7 +53,7 @@ const Footer = () => {
                 src="/images/logo.png"
                 alt="logo"
                 className="w-[100px]"
-              ></img>
+              />
             </div>
             <p className="mx-auto mt-4 max-w-screen-sm text-center text-neutral-700">
               العربية – متجر إلكتروني رائد مختص في بيع مستحضرات تجميل عالية
@@ -207,18 +207,18 @@ const Footer = () => {
                   window.open("mailto:Example@gmail.com");
                 }}
               >
-                <i className="fa-solid fa-envelope ml-2 text-[20px]"></i>
+                <i className="fa-solid fa-envelope ml-2 text-[20px]"/>
                 Example@gmail.com
               </li>
               <li className="flex flex-row items-center text-neutral-700 transition-all duration-100 hover:cursor-pointer hover:text-[var(--theme1)]">
-                <i className="fa-solid fa-phone ml-2 text-[20px]"></i>
+                <i className="fa-solid fa-phone ml-2 text-[20px]"/>
                 <span dir="ltr">+216 12 345 678</span>
               </li>
             </ul>
           </div>
         </div>
 
-        <div className="border-mask mt-8 h-[3px] w-full bg-[var(--theme2)] min-[950px]:mt-0"></div>
+        <div className="border-mask mt-8 h-[3px] w-full bg-[var(--theme2)] min-[950px]:mt-0"/>
         <div dir="rtl" className="py-3 text-center text-black">
           حقوق الطبع والنشر © 2024{" "}
           <a

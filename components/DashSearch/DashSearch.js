@@ -24,7 +24,7 @@ const DashSearch = ({ placeholder }) => {
         )}
       >
         <div className="flex items-center justify-center">
-          <i className="fa-solid fa-magnifying-glass text-neutral-400 opacity-50"></i>
+          <i className="fa-solid fa-magnifying-glass text-neutral-400 opacity-50"/>
         </div>
         <input
           id="search"

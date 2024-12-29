@@ -90,7 +90,7 @@ const page = () => {
     >
       {loadingPage && (
         <div className="fixed inset-0 z-50 flex h-full w-full items-center justify-center bg-white/60 backdrop-blur-sm">
-          <div className="h-14 w-14 animate-spin rounded-full border-b-4 border-yellow-400"></div>
+          <div className="h-14 w-14 animate-spin rounded-full border-b-4 border-yellow-400"/>
         </div>
       )}
       <div className="mx-5 my-8 flex w-full max-w-[500px] flex-col items-center gap-4 rounded-xl border-2 border-yellow-500 bg-gray-400 bg-opacity-20 bg-clip-padding px-5 pb-10 pt-6 backdrop-blur-sm backdrop-filter sm:px-10 md:px-14 md:pb-16 md:pt-12">
@@ -102,7 +102,7 @@ const page = () => {
               ChangeUrl("./sign-in");
             }}
           >
-            <i className="fa-solid fa-arrow-right text-3xl text-[#ffffff] transition-colors duration-200 group-hover:text-yellow-400"></i>
+            <i className="fa-solid fa-arrow-right text-3xl text-[#ffffff] transition-colors duration-200 group-hover:text-yellow-400"/>
           </div>
           <div className="inline-block self-start bg-gradient-to-bl from-yellow-300 to-yellow-600 bg-clip-text pb-2 text-2xl font-semibold text-transparent sm:text-3xl">
             استعادة كلمة المرور
@@ -137,7 +137,7 @@ const page = () => {
         >
           {loading ? (
             <div className="flex items-center justify-center">
-              <div className="h-5 w-5 animate-spin rounded-full border-b-2 border-white"></div>
+              <div className="h-5 w-5 animate-spin rounded-full border-b-2 border-white"/>
             </div>
           ) : (
             "أرسل"

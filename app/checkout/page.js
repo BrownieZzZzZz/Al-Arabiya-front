@@ -66,7 +66,7 @@ const page = () => {
     <div className="mx-auto mt-6 flex w-full flex-col items-center justify-center">
       {loadingPage && (
         <div className="fixed inset-0 z-50 flex h-full w-full items-center justify-center bg-white/60 backdrop-blur-sm">
-          <div className="h-14 w-14 animate-spin rounded-full border-b-4 border-[var(--theme)]"></div>
+          <div className="h-14 w-14 animate-spin rounded-full border-b-4 border-[var(--theme)]"/>
         </div>
       )}
       <div className="grid w-full max-w-[1300px] grid-cols-1 gap-8 bg-white px-3 xsm:px-6 sm:px-10 lg:grid-cols-2">
@@ -259,7 +259,7 @@ const page = () => {
                   SUBTOTAL
                 </span>
               </div>
-              <div className="h-[2px] w-full bg-neutral-200"></div>
+              <div className="h-[2px] w-full bg-neutral-200"/>
               {items.map((item, index) => (
                 <div key={index}>
                   <div className="flex flex-row justify-between gap-2 px-2 py-2.5">
@@ -269,7 +269,7 @@ const page = () => {
                     </span>
                     <span className="min-w-[90px] text-end font-medium text-neutral-500">{`${item.price * item.quantity} QR`}</span>
                   </div>
-                  <div className="border-mask h-[1px] w-full bg-zinc-200 px-2"></div>
+                  <div className="border-mask h-[1px] w-full bg-zinc-200 px-2"/>
                 </div>
               ))}
               <div className="flex flex-row justify-between px-2 py-4">
@@ -280,7 +280,7 @@ const page = () => {
                   145000 QR
                 </span>
               </div>
-              <div className="h-[2px] w-full bg-neutral-200"></div>
+              <div className="h-[2px] w-full bg-neutral-200"/>
               <div className="flex flex-row items-center justify-between gap-5 px-2 py-4">
                 <span className="font-lato text-lg font-semibold text-neutral-800">
                   Shipping
@@ -337,7 +337,7 @@ const page = () => {
                   </div>
                 </div>
               </div>
-              <div className="h-[2px] w-full bg-neutral-200"></div>
+              <div className="h-[2px] w-full bg-neutral-200"/>
               <div className="flex flex-row items-center justify-between gap-2 px-2 py-4">
                 <span className="font-lato text-lg font-semibold text-neutral-800">
                   Duration
@@ -347,7 +347,7 @@ const page = () => {
                 </span>
               </div>
 
-              <div className="h-[2px] w-full bg-neutral-200"></div>
+              <div className="h-[2px] w-full bg-neutral-200"/>
 
               <div className="flex flex-row items-center justify-between px-2 py-4">
                 <span className="font-lato text-lg font-semibold text-neutral-800">
@@ -365,7 +365,7 @@ const page = () => {
               </div>
             </div>
           </div>
-          <div className="h-[1px] w-full bg-neutral-300"></div>
+          <div className="h-[1px] w-full bg-neutral-300"/>
           <div className="text-neutral-500">
             Your personal data will be used to process your order, support your
             experience throughout this website, and for other purposes described

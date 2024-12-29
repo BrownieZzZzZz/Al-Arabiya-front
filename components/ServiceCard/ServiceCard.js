@@ -21,7 +21,7 @@ const ServiceCard = ({ title, description, logo}) => {
           hover && "bg-[var(--theme)]"
         )}
       >
-        <i className={`${logo} text-[44px] relative top-1 -left-4 text-neutral-700`}></i>
+        <i className={`${logo} text-[44px] relative top-1 -left-4 text-neutral-700`}/>
       </div>
       <div
         className={cn(

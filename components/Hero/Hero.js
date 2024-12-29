@@ -3,7 +3,7 @@ import "./Hero.css";
 const Hero = ({ ChangeUrl }) => {
   return (
     <div className="image relative flex h-[700px] w-full flex-col items-center justify-center bg-cover bg-center bg-no-repeat">
-      <div className="absolute left-0 top-0 z-10 h-[700px] w-full bg-neutral-900 opacity-40"></div>
+      <div className="absolute left-0 top-0 z-10 h-[700px] w-full bg-neutral-900 opacity-40"/>
       <div dir="rtl" className="grid h-full w-full md:grid-cols-2">
         <div
           className={
