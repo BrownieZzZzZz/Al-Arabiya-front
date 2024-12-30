@@ -4,7 +4,7 @@ import "./page.css";
 
 import DashSignHeader from "@/components/DashSignHeader/DashSignHeader";
 
-import { cn } from "@/lib/utils";
+import { cn, validateEmail } from "@/lib/utils";
 
 import Cookies from "js-cookie";
 import React, { useRef, useState, useTransition, useEffect } from "react";
@@ -28,7 +28,10 @@ const page = () => {
   };
 
   const handleSignIn = async () => {
-    if (emailInput.current.value.trim() === "") {
+    if (
+      emailInput.current.value.trim() === "" ||
+      !validateEmail(emailInput.current.value.trim())
+    ) {
       toast({
         title: "خطأ",
         description: "الرجاء التحقق من البريد الإلكتروني!",
@@ -38,7 +41,7 @@ const page = () => {
       return;
     }
 
-    if (passwordInput.current.value.trim() === "") {
+    if (passwordInput.current.value === "") {
       toast({
         title: "خطأ",
         description: "الرجاء التحقق من كلمة المرور!",
@@ -59,7 +62,7 @@ const page = () => {
             "Content-Type": "application/json",
           },
           body: JSON.stringify({
-            email: emailInput.current.value,
+            email: emailInput.current.value.trim(),
             password: passwordInput.current.value,
           }),
         },
@@ -125,7 +128,7 @@ const page = () => {
     >
       {loadingPage && (
         <div className="fixed inset-0 z-50 flex h-full w-full items-center justify-center bg-white/60 backdrop-blur-sm">
-          <div className="h-14 w-14 animate-spin rounded-full border-b-4 border-yellow-400"/>
+          <div className="h-14 w-14 animate-spin rounded-full border-b-4 border-yellow-400" />
         </div>
       )}
       <div className="mx-5 my-8 flex w-full max-w-[500px] flex-col items-center gap-4 rounded-xl border-2 border-yellow-500 bg-gray-400 bg-opacity-20 bg-clip-padding px-5 pb-10 pt-6 backdrop-blur-sm backdrop-filter sm:px-10 md:px-14 md:pb-16 md:pt-12">
@@ -141,7 +144,7 @@ const page = () => {
           <input
             ref={emailInput}
             id="email"
-            type="text"
+            type="email"
             placeholder="example@domain.com"
             className="outstl w-full rounded-3xl border-0 bg-[#ffffff] px-6 py-3 text-lg outline-yellow-500"
           />
@@ -170,7 +173,7 @@ const page = () => {
         >
           {loading ? (
             <div className="flex items-center justify-center">
-              <div className="h-5 w-5 animate-spin rounded-full border-b-2 border-white"/>
+              <div className="h-5 w-5 animate-spin rounded-full border-b-2 border-white" />
             </div>
           ) : (
             "تسجيل الدخول"
@@ -179,7 +182,7 @@ const page = () => {
         <div className="mt-2 flex w-full max-w-[400px] flex-col-reverse justify-between gap-2 min-[380px]:flex-row min-[380px]:gap-0">
           <div className="checkbox-wrapper-21">
             <label
-              className={`control control--checkbox font-medium text-[#ffffff] transition-all duration-200 hover:text-yellow-400 ${check && "text-yellow-500  hover:text-yellow-500"}`}
+              className={`control control--checkbox font-medium text-[#ffffff] transition-all duration-200 hover:text-yellow-400 ${check && "text-yellow-500 hover:text-yellow-500"}`}
             >
               تذكرني
               <input
@@ -188,7 +191,7 @@ const page = () => {
                   setCheck(!check);
                 }}
               />
-              <div className="control__indicator"/>
+              <div className="control__indicator" />
             </label>
           </div>
 

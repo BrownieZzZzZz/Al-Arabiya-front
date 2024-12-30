@@ -1,12 +1,12 @@
 "use client";
 
 import { useToast } from "@/hooks/use-toast";
-import { cn } from "@/lib/utils";
-import { useRef, useState, useTransition, useEffect } from "react";
+import { cn, validateEmail, validateNumberInput } from "@/lib/utils";
+import { useRef, useState, useTransition, useEffect, Suspense } from "react";
 import { useRouter, useSearchParams } from "next/navigation";
 import Cookies from "js-cookie";
 
-const page = () => {
+const ProfilePage = () => {
   const searchParams = useSearchParams();
   const [loadingPage, setLoadingPage] = useState(true);
   const [isPending, startTransition] = useTransition();
@@ -55,7 +55,10 @@ const page = () => {
         });
         errorTest = true;
       }
-      if (emailRef.current.value.trim() === "") {
+      if (
+        emailRef.current.value.trim() === "" ||
+        !validateEmail(emailRef.current.value.trim())
+      ) {
         toast({
           title: "خطأ",
           description: "الرجاء ادخال البريد الالكتروني",
@@ -141,7 +144,7 @@ const page = () => {
   };
 
   const savePassword = async () => {
-    if (!passwordRef.current.value.trim()) {
+    if (!passwordInput.current.value) {
       toast({
         title: "خطأ",
         description: "الرجاء ادخال كلمة المرور",
@@ -150,7 +153,7 @@ const page = () => {
       });
       return;
     }
-    if (!confirmPasswordRef.current.value.trim()) {
+    if (!confirmpasswordInput.current.value) {
       toast({
         title: "خطأ",
         description: "الرجاء ادخال تأكيد كلمة المرور",
@@ -170,7 +173,7 @@ const page = () => {
     }
 
     const body = {
-      password: passwordRef.current.value.trim(),
+      password: passwordRef.current.value,
     };
 
     try {
@@ -200,7 +203,7 @@ const page = () => {
             },
             body: JSON.stringify({
               email: emailRef.current.value.trim(),
-              password: passwordRef.current.value.trim(),
+              password: passwordRef.current.value,
             }),
           },
         );
@@ -403,6 +406,7 @@ const page = () => {
                       : "outline-[var(--theme)]",
                   )}
                   disabled={!isEditing}
+                  onInput={() => validateNumberInput(phoneRef)}
                 />
               </div>
               <div className="flex flex-col gap-1">
@@ -564,4 +568,18 @@ const page = () => {
   );
 };
 
-export default page;
+const Page = () => {
+  return (
+    <Suspense
+      fallback={
+        <div className="flex h-full w-full items-center justify-center bg-white/60 backdrop-blur-sm">
+          <div className="h-14 w-14 animate-spin rounded-full border-b-4 border-[var(--theme)]" />
+        </div>
+      }
+    >
+      <ProfilePage />
+    </Suspense>
+  );
+};
+
+export default Page;

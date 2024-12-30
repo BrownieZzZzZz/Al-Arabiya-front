@@ -1,10 +1,11 @@
 "use client";
 import "./page.css";
 
-import { cn } from "@/lib/utils";
+import { cn, validateEmail } from "@/lib/utils";
 import { useState, useEffect, useTransition, useRef } from "react";
 import { useRouter } from "next/navigation";
 import { useToast } from "@/hooks/use-toast";
+import { validateNumberInput } from "@/lib/utils";
 
 const page = () => {
   const { toast } = useToast();
@@ -45,7 +46,10 @@ const page = () => {
       });
       return;
     }
-    if (emailInput.current.value.trim() === "") {
+    if (
+      emailInput.current.value.trim() === "" ||
+      !validateEmail(emailInput.current.value.trim())
+    ) {
       toast({
         title: "خطأ",
         description: "الرجاء التحقق من البريد الإلكتروني!",
@@ -54,7 +58,7 @@ const page = () => {
       });
       return;
     }
-    if (passwordInput.current.value.trim() === "") {
+    if (passwordInput.current.value === "") {
       toast({
         title: "خطأ",
         description: "الرجاء التحقق من كلمة المرور!",
@@ -63,7 +67,7 @@ const page = () => {
       });
       return;
     }
-    if (confirmPasswordInput.current.value.trim() === "") {
+    if (confirmPasswordInput.current.value === "") {
       toast({
         title: "خطأ",
         description: "الرجاء تأكيد كلمة المرور!",
@@ -72,10 +76,7 @@ const page = () => {
       });
       return;
     }
-    if (
-      passwordInput.current.value.trim() !==
-      confirmPasswordInput.current.value.trim()
-    ) {
+    if (passwordInput.current.value !== confirmPasswordInput.current.value) {
       toast({
         title: "خطأ",
         description: "كلمتا المرور غير متطابقتين، الرجاء التحقق!",
@@ -96,11 +97,11 @@ const page = () => {
             "Content-Type": "application/json",
           },
           body: JSON.stringify({
-            full_name: `${firstNameInput.current.value} ${lastNameInput.current.value}`,
-            email: emailInput.current.value,
+            full_name: `${firstNameInput.current.value.trim()} ${lastNameInput.current.value.trim()}`,
+            email: emailInput.current.value.trim(),
             password: passwordInput.current.value,
-            phone: phoneInput.current.value,
-            address: addressInput.current.value,
+            phone: phoneInput.current.value.trim(),
+            address: addressInput.current.value.trim(),
           }),
         },
       );
@@ -159,16 +160,6 @@ const page = () => {
     setLoadingPage(isPending);
   }, [isPending]);
 
-  const validateNumberInput = (price) => {
-    const input = price.current;
-    let value = input.value;
-
-    const regex = /^\+{0,1}[0-9]*$/;
-
-    if (!regex.test(value)) {
-      input.value = value.slice(0, -1);
-    }
-  };
   return (
     <div
       dir="rtl"
@@ -176,10 +167,10 @@ const page = () => {
     >
       {loadingPage && (
         <div className="fixed inset-0 z-50 flex h-full w-full items-center justify-center bg-white/60 backdrop-blur-sm">
-          <div className="h-14 w-14 animate-spin rounded-full border-b-4 border-[var(--theme)]"/>
+          <div className="h-14 w-14 animate-spin rounded-full border-b-4 border-[var(--theme)]" />
         </div>
       )}
-      <div className="absolute left-0 top-0 z-10 h-full w-full bg-yellow-800 opacity-[0.25]"/>
+      <div className="absolute left-0 top-0 z-10 h-full w-full bg-yellow-800 opacity-[0.25]" />
       <div className="z-20 mx-5 my-8 flex w-full max-w-[500px] flex-col items-center gap-4 rounded-xl border-2 border-yellow-500 bg-gray-400 bg-opacity-20 bg-clip-padding px-5 pb-10 pt-6 backdrop-blur-sm backdrop-filter sm:px-10 md:px-14 md:pb-16 md:pt-12">
         <div className="inline-block self-start bg-gradient-to-r from-yellow-400 to-yellow-600 bg-clip-text pb-2 text-4xl font-semibold text-transparent md:text-5xl">
           إنشاء حساب
@@ -295,7 +286,7 @@ const page = () => {
         >
           {loading ? (
             <div className="flex items-center justify-center">
-              <div className="h-5 w-5 animate-spin rounded-full border-b-2 border-white"/>
+              <div className="h-5 w-5 animate-spin rounded-full border-b-2 border-white" />
             </div>
           ) : (
             "إنشاء حساب"

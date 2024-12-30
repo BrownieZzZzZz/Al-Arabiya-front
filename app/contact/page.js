@@ -1,23 +1,14 @@
 "use client";
 
 import { toast } from "@/hooks/use-toast";
-import { cn } from "@/lib/utils";
+import { cn, validateEmail } from "@/lib/utils";
 import { useRef, useState } from "react";
+import { validateNumberInput } from "@/lib/utils";
 
 const page = () => {
   const phoneRef = useRef(null);
+  const emailRef = useRef(null);
   const [loading, setLoading] = useState(false);
-
-  const validateNumberInput = (price) => {
-    const input = price.current;
-    let value = input.value;
-
-    const regex = /^\+{0,1}[0-9]*$/;
-
-    if (!regex.test(value)) {
-      input.value = value.slice(0, -1);
-    }
-  };
 
   async function handleSubmit(event) {
     event.preventDefault();
@@ -49,7 +40,7 @@ const page = () => {
       return;
     }
 
-    if (email.trim() === "") {
+    if (email.trim() === "" || !validateEmail(email.trim())) {
       toast({
         title: "خطأ",
         description: "حقل البريد الإلكتروني مطلوب",
@@ -120,11 +111,11 @@ const page = () => {
             <div className="flex flex-col items-center gap-4 rounded-xl bg-white p-8">
               <div className="flex flex-col gap-4">
                 <div className="flex flex-row items-center gap-3">
-                  <i className="fa-solid fa-phone-flip text-xl text-[var(--theme)]"/>
+                  <i className="fa-solid fa-phone-flip text-xl text-[var(--theme)]" />
                   <div dir="ltr">+ 216 12 345 678</div>
                 </div>
                 <div className="flex flex-row items-center gap-3">
-                  <i className="fa-solid fa-envelope text-xl text-[var(--theme)]"/>
+                  <i className="fa-solid fa-envelope text-xl text-[var(--theme)]" />
                   <div dir="ltr">Example@gmail.com</div>
                 </div>
               </div>
@@ -182,6 +173,7 @@ const page = () => {
                 placeholder="بريد إلكتروني"
                 name="email"
                 className="w-full bg-[var(--theme2)] p-2.5 placeholder-neutral-400 outline-[var(--theme)]"
+                ref={emailRef}
               />
             </div>
             <input
@@ -199,7 +191,7 @@ const page = () => {
               name="message"
               rows={4}
               className="h-full w-full bg-[var(--theme2)] p-2.5 placeholder-neutral-400 outline-[var(--theme)]"
-              />
+            />
             <button
               type="submit"
               disabled={loading}
@@ -212,7 +204,7 @@ const page = () => {
             >
               {loading ? (
                 <div className="flex items-center justify-center">
-                  <div className="size-6 animate-spin rounded-full border-2 border-white border-t-transparent"/>
+                  <div className="size-6 animate-spin rounded-full border-2 border-white border-t-transparent" />
                 </div>
               ) : (
                 "أرسل"

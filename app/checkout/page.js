@@ -11,7 +11,7 @@ import {
   SelectValue,
 } from "@/components/ui/select";
 import { toast } from "@/hooks/use-toast";
-import { cn, eventBus } from "@/lib/utils";
+import { cn, eventBus, validateEmail, validateNumberInput } from "@/lib/utils";
 
 import Cookies from "js-cookie";
 
@@ -129,7 +129,10 @@ const Page = () => {
       });
       return;
     }
-    if (!emailRef.current.value.trim()) {
+    if (
+      !emailRef.current.value.trim() ||
+      !validateEmail(emailRef.current.value.trim())
+    ) {
       toast({
         title: "خطأ",
         description: "الرجاء إدخال البريد الإلكتروني",
@@ -168,11 +171,11 @@ const Page = () => {
     });
 
     const order = {
-      first_name: firstNameRef.current.value,
-      last_name: lastNameRef.current.value,
-      email: emailRef.current.value,
-      phone: phoneRef.current.value,
-      address: addressRef.current.value,
+      first_name: firstNameRef.current.value.trim(),
+      last_name: lastNameRef.current.value.trim(),
+      email: emailRef.current.value.trim(),
+      phone: phoneRef.current.value.trim(),
+      address: addressRef.current.value.trim(),
       city: selectedCity,
       cart: cart,
       created_At: new Date(),
@@ -327,6 +330,7 @@ const Page = () => {
               className="rounded-sm border border-neutral-300 bg-transparent px-4 py-2 outline-[var(--theme)]"
               required
               ref={phoneRef}
+              onInput={() => validateNumberInput(phoneRef)}
             />
           </div>
 

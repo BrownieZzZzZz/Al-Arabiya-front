@@ -1,9 +1,9 @@
 "use client";
 
-import { useState, useTransition, useEffect } from "react";
+import { useState, useTransition, useEffect, Suspense } from "react";
 import { useRouter, useSearchParams } from "next/navigation";
 
-const Page = () => {
+const SuccessPage = () => {
   const searchParam = useSearchParams();
   const router = useRouter();
   const [loadingPage, setLoadingPage] = useState(true);
@@ -63,7 +63,9 @@ const Page = () => {
           <p className="text-sm text-neutral-600">
             رقم الطلب: {searchParam.get("productId")}
           </p>
-          <p className="text-sm text-neutral-600">تاريخ الطلب: {searchParam.get("productDate")}</p>
+          <p className="text-sm text-neutral-600">
+            تاريخ الطلب: {searchParam.get("productDate")}
+          </p>
         </div>
 
         <button
@@ -76,6 +78,20 @@ const Page = () => {
         </button>
       </div>
     </div>
+  );
+};
+
+const Page = () => {
+  return (
+    <Suspense
+      fallback={
+        <div className="flex h-full w-full items-center justify-center bg-white/60 backdrop-blur-sm">
+          <div className="h-14 w-14 animate-spin rounded-full border-b-4 border-[var(--theme)]" />
+        </div>
+      }
+    >
+      <SuccessPage />
+    </Suspense>
   );
 };
 
