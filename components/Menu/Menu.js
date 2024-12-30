@@ -12,7 +12,8 @@ const Menu = ({ orientation, ChangeUrl, user }) => {
     <div
       className={cn(
         "menu hidden flex-row items-center gap-8 text-[15px] min-[1260px]:flex",
-        orientation == "col" && "flex flex-col items-start gap-7 text-lg",
+        orientation == "col" &&
+          "flex flex-col-reverse items-start gap-7 text-lg",
       )}
     >
       <div>
