@@ -44,15 +44,29 @@ const Page = () => {
 
   const cities = [
     { value: "tunis", text: "تونس" },
-    { value: "sfax", text: "صفاقس" },
-    { value: "sousse", text: "سوسة" },
-    { value: "kairouan", text: "القيروان" },
-    { value: "bizerte", text: "بنزرت" },
-    { value: "gabes", text: "قابس" },
     { value: "ariana", text: "أريانة" },
-    { value: "monastir", text: "المنستير" },
     { value: "ben-arous", text: "بن عروس" },
+    { value: "mannouba", text: "منوبة" },
+    { value: "bizerte", text: "بنزرت" },
     { value: "nabeul", text: "نابل" },
+    { value: "beja", text: "باجة" },
+    { value: "jendouba", text: "جندوبة" },
+    { value: "zaghouan", text: "زغوان" },
+    { value: "siliana", text: "سليانة" },
+    { value: "le-kef", text: "الكاف" },
+    { value: "sousse", text: "سوسة" },
+    { value: "monastir", text: "المنستير" },
+    { value: "mahdia", text: "المهدية" },
+    { value: "kasserine", text: "القصرين" },
+    { value: "sidi-bouzid", text: "سيدي بوزيد" },
+    { value: "kairouan", text: "القيروان" },
+    { value: "gafsa", text: "قفصة" },
+    { value: "sfax", text: "صفاقس" },
+    { value: "gabes", text: "قابس" },
+    { value: "medenine", text: "مدنين" },
+    { value: "tozeur", text: "توزر" },
+    { value: "kebili", text: "قبلي" },
+    { value: "tatouine", text: "تطاوين" },
   ];
 
   const [items, setItems] = useState({});
@@ -127,6 +141,14 @@ const Page = () => {
       toast({
         title: "خطأ",
         description: "الرجاء إدخال العنوان",
+        variant: "destructive",
+      });
+      return;
+    }
+    if (!selectedCity.trim()) {
+      toast({
+        title: "خطأ",
+        description: "الرجاء إختيار المدينة",
         variant: "destructive",
       });
       return;
