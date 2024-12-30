@@ -175,15 +175,20 @@ const Page = () => {
       address: addressRef.current.value,
       city: selectedCity,
       cart: cart,
+      created_At: new Date(),
     };
 
     try {
+      var access_token = null;
+      if (Cookies.get("access_token")) {
+        access_token = Cookies.get("access_token");
+      }
       const response = await fetch(
         `${process.env.NEXT_PUBLIC_API_URL}/orders`,
         {
           method: "POST",
           headers: {
-            access_token: Cookies.get("access_token"),
+            access_token,
             "Content-Type": "application/json",
           },
           body: JSON.stringify(order),
