@@ -30,7 +30,7 @@ const page = () => {
   }, []);
 
   useEffect(() => {
-    setLoadingPage(isPending);
+    setLoadingPage(isPending);  
   }, [isPending]);
 
   return (

@@ -212,7 +212,7 @@ const page = () => {
           <div
             dir="ltr"
             className={cn(
-              "images-scroll flex gap-3 max-lg:h-full max-lg:w-full max-lg:max-w-[600px] max-lg:overflow-x-auto max-lg:py-3 lg:h-[600px] lg:w-full lg:max-w-[110px] lg:flex-col lg:overflow-y-auto",
+              "images-scroll flex gap-3 lg:px-3 lg:py-2 max-lg:px-2 max-lg:h-full max-lg:w-full max-lg:max-w-[600px] max-lg:overflow-x-auto max-lg:py-3 lg:h-[600px] lg:w-full lg:max-w-[110px] lg:flex-col lg:overflow-y-auto",
               !loadingPage ? "" : "lg:px-3",
             )}
           >
