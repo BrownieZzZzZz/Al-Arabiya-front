@@ -63,7 +63,10 @@ const CheckoutCartItem = ({ quantity, productId, setTotalPrice }) => {
           )}
           <font className="font-bold">x {loadingProduct ? 1 : quantity}</font>
         </span>
-        <span className="flex min-w-[90px] items-center text-end font-medium text-neutral-500">
+        <span
+          className="flex min-w-[90px] items-center text-end font-medium text-neutral-500"
+          dir="ltr"
+        >
           {loadingProduct
             ? // <Skeleton className={"h-5 w-[30px] bg-neutral-300"} />
               0

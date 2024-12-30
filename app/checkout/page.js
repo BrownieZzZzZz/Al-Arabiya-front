@@ -179,6 +179,7 @@ const Page = () => {
     };
 
     try {
+      setLoadingOrder(true);
       var access_token = null;
       if (Cookies.get("access_token")) {
         access_token = Cookies.get("access_token");
@@ -200,6 +201,7 @@ const Page = () => {
       if (data.data === null) {
         throw new Error(data.message);
       }
+      setLoadingOrder(false);
 
       localStorage.setItem("cart", "{}");
       eventBus.emit("updateCart");
@@ -209,8 +211,11 @@ const Page = () => {
         variant: "success",
         duration: 10000,
       });
-      ChangeUrl("/");
+      ChangeUrl(
+        `/checkout/success?productId=${data.data.id}&productDate=${new Date(data.data.created_At).toLocaleDateString("ar")}`,
+      );
     } catch (error) {
+      setLoadingOrder(false);
       console.error(error);
       toast({
         title: "خطأ",
@@ -226,7 +231,7 @@ const Page = () => {
   }, []);
   return (
     <div
-      className="mx-auto mt-6 flex w-full flex-col items-center justify-center"
+      className="mx-auto mt-20 flex w-full flex-col items-center justify-center"
       dir="rtl"
     >
       {loadingPage && (
@@ -248,7 +253,7 @@ const Page = () => {
                 placeholder="الاسم"
                 type="text"
                 id="first-name"
-                className="rounded-sm border border-neutral-300 bg-transparent px-4 py-2 outline-[var(--theme3)]"
+                className="rounded-sm border border-neutral-300 bg-transparent px-4 py-2 outline-[var(--theme)]"
                 required
                 ref={firstNameRef}
               />
@@ -261,7 +266,7 @@ const Page = () => {
                 placeholder="اللقب"
                 type="text"
                 id="last-name"
-                className="rounded-sm border border-neutral-300 bg-transparent px-4 py-2 outline-[var(--theme3)]"
+                className="rounded-sm border border-neutral-300 bg-transparent px-4 py-2 outline-[var(--theme)]"
                 required
                 ref={lastNameRef}
               />
@@ -275,7 +280,7 @@ const Page = () => {
             <Select onValueChange={setSelectedCity} value={selectedCity}>
               <SelectTrigger
                 dir="rtl"
-                className="border-neutral-300 bg-transparent text-right focus:ring-[var(--theme3)]"
+                className="border-neutral-300 bg-transparent text-right focus:ring-[var(--theme)]"
               >
                 <SelectValue dir="rtl" placeholder="اختر المدينة.." />
               </SelectTrigger>
@@ -304,7 +309,7 @@ const Page = () => {
               type="text"
               id="address"
               placeholder="الشارع / الحي"
-              className="rounded-sm border border-neutral-300 bg-transparent px-4 py-2 outline-[var(--theme3)]"
+              className="rounded-sm border border-neutral-300 bg-transparent px-4 py-2 outline-[var(--theme)]"
               required
               ref={addressRef}
             />
@@ -319,7 +324,7 @@ const Page = () => {
               dir="rtl"
               id="phone"
               placeholder="216+ xxxxxxxx"
-              className="rounded-sm border border-neutral-300 bg-transparent px-4 py-2 outline-[var(--theme3)]"
+              className="rounded-sm border border-neutral-300 bg-transparent px-4 py-2 outline-[var(--theme)]"
               required
               ref={phoneRef}
             />
@@ -333,18 +338,18 @@ const Page = () => {
               type="email"
               id="email"
               placeholder="example@domain.com"
-              className="rounded-sm border border-neutral-300 bg-transparent px-4 py-2 outline-[var(--theme3)]"
+              className="rounded-sm border border-neutral-300 bg-transparent px-4 py-2 outline-[var(--theme)]"
               required
               ref={emailRef}
             />
           </div>
         </div>
 
-        <div className="my-4 flex flex-col gap-8 bg-[#f1f1f1] px-6 py-3 shadow-sm drop-shadow-sm">
+        <div className="my-4 flex flex-col gap-8 bg-[var(--theme2)] px-6 py-3 shadow-sm drop-shadow-sm">
           <span className="self-center font-cairo text-2xl font-bold text-neutral-800">
             طلبك
           </span>
-          <div className="flex h-fit w-full flex-col justify-between gap-3 self-center bg-[#f7f7f7] p-7">
+          <div className="flex h-fit w-full flex-col justify-between gap-3 self-center bg-white p-7">
             <div className="flex flex-col">
               <div className="flex flex-row justify-between px-2 py-4">
                 <span className="font-cairo text-lg font-semibold text-neutral-800">
@@ -367,8 +372,11 @@ const Page = () => {
                 <span className="font-cairo text-lg font-semibold text-neutral-800">
                   المجموع الفرعي
                 </span>
-                <span className="text-lg font-medium text-[var(--theme3)]">
-                  {sumValues(totalPrice)} DT
+                <span
+                  className="text-lg font-medium text-[var(--theme)]"
+                  dir="ltr"
+                >
+                  {sumValues(totalPrice)}DT
                 </span>
               </div>
               <div className="h-[2px] w-full bg-neutral-200" />
@@ -377,10 +385,9 @@ const Page = () => {
                   التوصيل
                 </span>
                 <div className="flex flex-col gap-4 text-right text-neutral-600">
-                  <div>
-                    تكلفة التوصيل:{" "}
-                    <font className="font-bold text-[var(--theme3)]">7 DT</font>
-                  </div>
+                  <font className="font-bold text-[var(--theme)]" dir="ltr">
+                    7DT
+                  </font>
                 </div>
               </div>
               <div className="h-[2px] w-full bg-neutral-200" />
@@ -388,7 +395,7 @@ const Page = () => {
                 <span className="font-cairo text-lg font-semibold text-neutral-800">
                   مدة التوصيل
                 </span>
-                <span className="text-end font-cairo text-[17px] font-semibold text-[var(--theme3)]">
+                <span className="text-end font-cairo text-[17px] font-semibold text-[var(--theme)]">
                   التوصيل خلال 3-6 أيام عمل
                 </span>
               </div>
@@ -400,8 +407,11 @@ const Page = () => {
                   المجموع
                 </span>
                 <div className="flex flex-col justify-between">
-                  <span className="font-cairo text-2xl font-bold text-[var(--theme3)]">
-                    {sumValues(totalPrice) + 7} DT
+                  <span
+                    className="font-cairo text-2xl font-bold text-[var(--theme)]"
+                    dir="ltr"
+                  >
+                    {sumValues(totalPrice) + 7}DT
                   </span>
                 </div>
               </div>
@@ -415,7 +425,7 @@ const Page = () => {
               onClick={() => {
                 ChangeUrl("/terms-and-conditions#privacy");
               }}
-              className="font-bold text-neutral-700 transition-colors duration-200 hover:cursor-pointer hover:text-[var(--theme)]"
+              className="font-bold text-neutral-700 transition-colors duration-200 hover:cursor-pointer hover:text-[var(--theme3)]"
             >
               سياسة الخصوصية
             </font>
@@ -423,7 +433,7 @@ const Page = () => {
           </div>
           <button
             className={cn(
-              "bg-[var(--theme3)] px-2 py-3 font-cairo text-lg font-semibold text-white transition-colors duration-200 hover:cursor-pointer hover:bg-[var(--theme)]",
+              "bg-[var(--theme)] px-2 py-3 font-cairo text-lg font-semibold text-white transition-colors duration-200 hover:cursor-pointer hover:bg-[var(--theme3)]",
               loadingOrder && "opacity-80 hover:cursor-not-allowed",
             )}
             type="button"

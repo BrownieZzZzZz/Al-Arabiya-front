@@ -3,14 +3,15 @@
 import { useToast } from "@/hooks/use-toast";
 import { cn } from "@/lib/utils";
 import { useRef, useState, useTransition, useEffect } from "react";
-import { useRouter } from "next/navigation";
+import { useRouter, useSearchParams } from "next/navigation";
 import Cookies from "js-cookie";
 
 const page = () => {
+  const searchParams = useSearchParams();
   const [loadingPage, setLoadingPage] = useState(true);
   const [isPending, startTransition] = useTransition();
   const [loadingUser, setLoadingUser] = useState(true);
-  const [menu, setMenu] = useState(1);
+  var menu = parseInt(searchParams.get("menu")) || 1;
   const [isEditing, setIsEditing] = useState(false);
   const [user, setUser] = useState({
     id: "",
@@ -258,16 +259,11 @@ const page = () => {
 
       setUser(data.data);
 
-      const full_name = data.data.full_name.split(" ");
-
-      firstNameRef.current.value = full_name[0];
-      lastNameRef.current.value = full_name.length > 1 ? full_name[1] : "";
-      phoneRef.current.value = data.data.phone;
-      emailRef.current.value = data.data.email;
-      addressRef.current.value = data.data.address;
       setLoadingUser(false);
     } catch (error) {
       console.error(error);
+      setLoadingPage(true);
+      location.href = "/sign-in";
       toast({
         title: "خطأ",
         description: "حدث خطأ أثناء جلب البيانات",
@@ -303,7 +299,7 @@ const page = () => {
       <div className="flex w-full max-w-[600px] flex-col rounded-lg bg-white shadow-lg min-[600px]:mx-4">
         <div className="flex items-center justify-center gap-6 border-b-2 border-[var(--theme2)]">
           <div
-            onClick={() => setMenu(1)}
+            onClick={() => ChangeUrl("/profile?menu=1")}
             className={cn(
               "border-b-4 border-neutral-300 p-3 transition-all duration-200 hover:cursor-pointer hover:border-neutral-400",
               menu === 1 && "border-[var(--theme)] hover:border-[var(--theme)]",
@@ -314,7 +310,7 @@ const page = () => {
             </span>
           </div>
           <div
-            onClick={() => setMenu(2)}
+            onClick={() => ChangeUrl("/profile?menu=2")}
             className={cn(
               "border-b-4 border-neutral-300 p-3 transition-all duration-200 hover:cursor-pointer hover:border-neutral-400",
               menu === 2 && "border-[var(--theme)] hover:border-[var(--theme)]",
