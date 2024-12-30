@@ -376,7 +376,7 @@ const CartItem = ({
                 </div>
                 <i className="fa-solid fa-x self-center text-[12px] text-neutral-500 transition-all duration-200 hover:cursor-pointer hover:text-emerald-700" />
               </div>
-              <div className="border-mask h-[1px] w-full bg-neutral-200"/>
+              <div className="border-mask h-[1px] w-full bg-neutral-200" />
               <div className="flex w-full flex-row justify-between py-2">
                 <div className="font-lato my-auto text-[17px] font-semibold text-neutral-800">
                   سعر المنتج
@@ -423,7 +423,7 @@ const CartItem = ({
                   </>
                 )}
               </div>
-              <div className="border-mask h-[1px] w-full bg-neutral-200"/>
+              <div className="border-mask h-[1px] w-full bg-neutral-200" />
               <div className="flex w-full flex-row justify-between py-2">
                 <div className="font-lato my-auto text-[17px] font-semibold text-neutral-800">
                   الكمية
@@ -478,7 +478,7 @@ const CartItem = ({
                   </button>
                 </div>
               </div>
-              <div className="border-mask h-[1px] w-full bg-neutral-200"/>
+              <div className="border-mask h-[1px] w-full bg-neutral-200" />
               <div className="flex w-full flex-row justify-between py-2">
                 <div className="font-lato my-auto text-[17px] font-semibold text-neutral-800">
                   المجموع

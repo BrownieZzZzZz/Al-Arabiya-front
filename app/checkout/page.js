@@ -1,5 +1,6 @@
 "use client";
 
+import CheckoutCartItem from "@/components/SideCartItem/CheckoutCartItem";
 import {
   Select,
   SelectContent,
@@ -9,13 +10,27 @@ import {
   SelectTrigger,
   SelectValue,
 } from "@/components/ui/select";
-import { useRouter } from "next/navigation";
-import { useEffect, useTransition, useState } from "react";
+import { toast } from "@/hooks/use-toast";
+import { cn, eventBus } from "@/lib/utils";
 
-const page = () => {
+import Cookies from "js-cookie";
+
+import { useRouter } from "next/navigation";
+import { useEffect, useTransition, useState, useRef } from "react";
+
+const Page = () => {
+  const [loadingOrder, setLoadingOrder] = useState(false);
   const [loadingPage, setLoadingPage] = useState(true);
   const [isPending, startTransition] = useTransition();
   const router = useRouter();
+  const firstNameRef = useRef(null);
+  const lastNameRef = useRef(null);
+  const emailRef = useRef(null);
+  const phoneRef = useRef(null);
+  const addressRef = useRef(null);
+  const [selectedCity, setSelectedCity] = useState("");
+  const [user, setUser] = useState({});
+  const [totalPrice, setTotalPrice] = useState({});
 
   const ChangeUrl = (url) => {
     startTransition(() => {
@@ -28,172 +43,224 @@ const page = () => {
   }, [isPending]);
 
   const cities = [
-    { value: "1", text: "City 1" },
-    { value: "2", text: "City 2" },
-    { value: "3", text: "City 3" },
-    { value: "4", text: "City 4" },
-    { value: "5", text: "City 5" },
-    { value: "6", text: "City 6" },
-    { value: "7", text: "City 7" },
-    { value: "8", text: "City 8" },
-    { value: "9", text: "City 9" },
-    { value: "10", text: "City 10" },
-    { value: "11", text: "City 11" },
+    { value: "tunis", text: "تونس" },
+    { value: "sfax", text: "صفاقس" },
+    { value: "sousse", text: "سوسة" },
+    { value: "kairouan", text: "القيروان" },
+    { value: "bizerte", text: "بنزرت" },
+    { value: "gabes", text: "قابس" },
+    { value: "ariana", text: "أريانة" },
+    { value: "monastir", text: "المنستير" },
+    { value: "ben-arous", text: "بن عروس" },
+    { value: "nabeul", text: "نابل" },
   ];
-  const items = [
-    {
-      name: "Work Table Under Shelf",
-      quantity: "3",
-      price: 2000,
-    },
-    {
-      name: "Mobile Table With Two Shelf",
-      quantity: "5",
-      price: 1500,
-    },
-    {
-      name: "Single Bowl Sink Table",
-      quantity: "2",
-      price: 1800,
-    },
-    {
-      name: "Base Cabinet With 3 Layer Drawer",
-      quantity: "1",
-      price: 1400,
-    },
-  ];
+
+  const [items, setItems] = useState({});
+
+  const checkUser = async () => {
+    try {
+      const response = await fetch(
+        `${process.env.NEXT_PUBLIC_API_URL}/users/account`,
+        {
+          method: "GET",
+          headers: {
+            access_token: Cookies.get("access_token"),
+            "Content-Type": "application/json",
+          },
+        },
+      );
+      const data = await response.json();
+
+      if (data.data === null) {
+        throw new Error(data.message);
+      }
+
+      console.log(data.data);
+
+      setUser(data.data);
+      const full_name = data.data.full_name.split(" ");
+
+      firstNameRef.current.value = full_name[0];
+      lastNameRef.current.value = full_name.length > 1 ? full_name[1] : "";
+      phoneRef.current.value = data.data.phone;
+      emailRef.current.value = data.data.email;
+      addressRef.current.value = data.data.address;
+    } catch (error) {}
+  };
+
+  const sumValues = (obj) => Object.values(obj).reduce((a, b) => a + b, 0);
+
+  const handleCheckout = async () => {
+    const cart = JSON.parse(localStorage.getItem("cart") || "{}");
+
+    if (!firstNameRef.current.value.trim()) {
+      toast({
+        title: "خطأ",
+        description: "الرجاء إدخال الاسم الأول",
+        variant: "destructive",
+      });
+      return;
+    }
+    if (!lastNameRef.current.value.trim()) {
+      toast({
+        title: "خطأ",
+        description: "الرجاء إدخال الاسم الأخير",
+        variant: "destructive",
+      });
+      return;
+    }
+    if (!phoneRef.current.value.trim()) {
+      toast({
+        title: "خطأ",
+        description: "الرجاء إدخال رقم الهاتف",
+        variant: "destructive",
+      });
+      return;
+    }
+    if (!emailRef.current.value.trim()) {
+      toast({
+        title: "خطأ",
+        description: "الرجاء إدخال البريد الإلكتروني",
+        variant: "destructive",
+      });
+      return;
+    }
+    if (!addressRef.current.value.trim()) {
+      toast({
+        title: "خطأ",
+        description: "الرجاء إدخال العنوان",
+        variant: "destructive",
+      });
+      return;
+    }
+    if (sumValues(cart) < 1) {
+      toast({
+        title: "خطأ",
+        description: "الرجاء إضافة منتجات إلى السلة",
+        variant: "destructive",
+      });
+      return;
+    }
+    // please wait toast
+    toast({
+      title: "الرجاء الانتظار",
+      description: "جارٍ إرسال الطلب",
+    });
+
+    const order = {
+      first_name: firstNameRef.current.value,
+      last_name: lastNameRef.current.value,
+      email: emailRef.current.value,
+      phone: phoneRef.current.value,
+      address: addressRef.current.value,
+      city: selectedCity,
+      cart: cart,
+    };
+
+    try {
+      const response = await fetch(
+        `${process.env.NEXT_PUBLIC_API_URL}/orders`,
+        {
+          method: "POST",
+          headers: {
+            access_token: Cookies.get("access_token"),
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify(order),
+        },
+      );
+      console.log("test");
+
+      const data = await response.json();
+
+      if (data.data === null) {
+        throw new Error(data.message);
+      }
+
+      localStorage.setItem("cart", "{}");
+      eventBus.emit("updateCart");
+      toast({
+        title: "تم إتمام الطلب",
+        description: "شكراً لاستخدامك خدماتنا",
+        variant: "success",
+        duration: 10000,
+      });
+      ChangeUrl("/checkout/success");
+    } catch (error) {
+      console.error(error);
+      toast({
+        title: "خطأ",
+        description: "حدث خطأ أثناء إرسال الطلب",
+        variant: "destructive",
+      });
+    }
+  };
+
+  useEffect(() => {
+    setItems(JSON.parse(localStorage.getItem("cart") || "{}"));
+    checkUser();
+  }, []);
   return (
-    <div className="mx-auto mt-6 flex w-full flex-col items-center justify-center">
+    <div
+      className="mx-auto mt-6 flex w-full flex-col items-center justify-center"
+      dir="rtl"
+    >
       {loadingPage && (
         <div className="fixed inset-0 z-50 flex h-full w-full items-center justify-center bg-white/60 backdrop-blur-sm">
-          <div className="h-14 w-14 animate-spin rounded-full border-b-4 border-[var(--theme)]"/>
+          <div className="h-14 w-14 animate-spin rounded-full border-b-4 border-[var(--theme)]" />
         </div>
       )}
       <div className="grid w-full max-w-[1300px] grid-cols-1 gap-8 bg-white px-3 xsm:px-6 sm:px-10 lg:grid-cols-2">
         <div className="flex flex-col gap-5 pt-6">
-          <div className="font-lato text-2xl font-bold text-neutral-800">
-            BILLING & SHIPPING
+          <div className="font-cairo text-2xl font-bold text-neutral-800">
+            معلومات الفتورة والتوصيل
           </div>
           <div className="grid grid-cols-1 gap-5 md:grid-cols-2">
             <div className="flex flex-col gap-1">
-              <label htmlFor="first-name" className="font-lato text-lg">
-                First Name <font className="text-rose-500">*</font>
+              <label htmlFor="first-name" className="font-cairo text-lg">
+                الاسم <font className="text-rose-500">*</font>
               </label>
               <input
-                placeholder="First Name"
+                placeholder="الاسم"
                 type="text"
                 id="first-name"
                 className="rounded-sm border border-neutral-300 bg-transparent px-4 py-2 outline-[var(--theme3)]"
                 required
+                ref={firstNameRef}
               />
             </div>
             <div className="flex flex-col gap-1">
-              <label htmlFor="last-name" className="font-lato text-lg">
-                Last Name <font className="text-rose-500">*</font>
+              <label htmlFor="last-name" className="font-cairo text-lg">
+                اللقب <font className="text-rose-500">*</font>
               </label>
               <input
-                placeholder="Last Name"
+                placeholder="اللقب"
                 type="text"
                 id="last-name"
                 className="rounded-sm border border-neutral-300 bg-transparent px-4 py-2 outline-[var(--theme3)]"
                 required
+                ref={lastNameRef}
               />
             </div>
           </div>
 
           <div className="flex flex-col gap-1">
-            <label htmlFor="company" className="font-lato text-lg">
-              Company (optional)
+            <label htmlFor="city" className="font-cairo text-lg">
+              المدينة <font className="text-rose-500">*</font>
             </label>
-            <input
-              placeholder="Example Inc."
-              type="text"
-              id="company"
-              className="rounded-sm border border-neutral-300 bg-transparent px-4 py-2 outline-[var(--theme3)]"
-            />
-          </div>
-
-          <div className="flex flex-col gap-1">
-            <label htmlFor="tax-number" className="font-lato text-lg">
-              Tax Number (optional)
-            </label>
-            <input
-              placeholder="Tax Identification Number"
-              type="text"
-              id="tax-number"
-              className="rounded-sm border border-neutral-300 bg-transparent px-4 py-2 outline-[var(--theme3)]"
-            />
-          </div>
-          {/* <div className="grid grid-cols-2">
-            <div className="flex flex-col gap-1">
-              <label htmlFor="country" className="font-lato text-lg">
-                Country <font className="text-rose-500">*</font>
-              </label>
-              <span
-                id="country"
-                className="font-lato text-xl font-semibold text-[var(--theme3)]"
+            <Select onValueChange={setSelectedCity} value={selectedCity}>
+              <SelectTrigger
+                dir="rtl"
+                className="border-neutral-300 bg-transparent text-right focus:ring-[var(--theme3)]"
               >
-                Qatar
-              </span>
-            </div>
-            <div className="flex flex-col gap-1">
-              <label htmlFor="state" className="font-lato text-lg">
-                State <font className="text-rose-500">*</font>
-              </label>
-              <span
-                id="state"
-                className="font-lato text-xl font-semibold text-[var(--theme3)]"
-              >
-                Doha
-              </span>
-            </div>
-          </div> */}
-          <div className="grid grid-cols-1 gap-5 md:grid-cols-2">
-            <div className="flex flex-col gap-1">
-              <label htmlFor="country" className="font-lato text-lg">
-                Country <font className="text-rose-500">*</font>
-              </label>
-              <input
-                placeholder="Country"
-                type="text"
-                id="country"
-                className="rounded-sm border border-neutral-300 bg-transparent px-4 py-2 outline-[var(--theme3)]"
-                required
-                defaultValue={"Qatar"}
-                readOnly={true}
-                disabled={true}
-              />
-            </div>
-            <div className="flex flex-col gap-1">
-              <label htmlFor="state" className="font-lato text-lg">
-                State <font className="text-rose-500">*</font>
-              </label>
-              <input
-                placeholder="State"
-                type="text"
-                id="state"
-                className="rounded-sm border border-neutral-300 bg-transparent px-4 py-2 outline-[var(--theme3)]"
-                required
-                defaultValue={"Doha"}
-                readOnly={true}
-                disabled={true}
-              />
-            </div>
-          </div>
-          <div className="flex flex-col gap-1">
-            <label htmlFor="city" className="font-lato text-lg">
-              City <font className="text-rose-500">*</font>
-            </label>
-            <Select>
-              <SelectTrigger className="border-neutral-300 bg-transparent focus:ring-[var(--theme3)]">
-                <SelectValue placeholder="Select a city.." />
+                <SelectValue dir="rtl" placeholder="اختر المدينة.." />
               </SelectTrigger>
-              <SelectContent className="">
-                <SelectGroup>
-                  <SelectLabel>Doha</SelectLabel>
+              <SelectContent dir="rtl">
+                <SelectGroup dir="rtl">
                   {cities.map((city, index) => (
                     <SelectItem
-                      className="transition-colors duration-150 hover:cursor-pointer focus:bg-zinc-200"
+                      dir="rtl"
+                      className="text-right transition-colors duration-150 hover:cursor-pointer focus:bg-zinc-200"
                       key={index}
                       value={city.value}
                     >
@@ -206,185 +273,149 @@ const page = () => {
           </div>
 
           <div className="flex flex-col gap-1">
-            <label htmlFor="address" className="font-lato text-lg">
-              Street / District Address <font className="text-rose-500">*</font>
+            <label htmlFor="address" className="font-cairo text-lg">
+              العنوان <font className="text-rose-500">*</font>
             </label>
             <input
               type="text"
               id="address"
-              placeholder="Street / District Address"
+              placeholder="الشارع / الحي"
               className="rounded-sm border border-neutral-300 bg-transparent px-4 py-2 outline-[var(--theme3)]"
               required
+              ref={addressRef}
             />
           </div>
 
           <div className="flex flex-col gap-1">
-            <label htmlFor="phone" className="font-lato text-lg">
-              Phone <font className="text-rose-500">*</font>
+            <label htmlFor="phone" className="font-cairo text-lg">
+              رقم الهاتف <font className="text-rose-500">*</font>
             </label>
             <input
               type="tel"
+              dir="rtl"
               id="phone"
-              placeholder="+974 123 456 78"
+              placeholder="216+ xxxxxxxx"
               className="rounded-sm border border-neutral-300 bg-transparent px-4 py-2 outline-[var(--theme3)]"
               required
+              ref={phoneRef}
             />
           </div>
 
           <div className="flex flex-col gap-1">
-            <label htmlFor="email" className="font-lato text-lg">
-              Email <font className="text-rose-500">*</font>
+            <label htmlFor="email" className="font-cairo text-lg">
+              البريد الإلكتروني <font className="text-rose-500">*</font>
             </label>
             <input
               type="email"
               id="email"
-              placeholder="Example@domain.com"
+              placeholder="example@domain.com"
               className="rounded-sm border border-neutral-300 bg-transparent px-4 py-2 outline-[var(--theme3)]"
               required
+              ref={emailRef}
             />
           </div>
         </div>
 
-        <div className="flex flex-col gap-8 bg-[#f1f1f1] p-6 shadow-sm drop-shadow-sm">
-          <span className="font-lato self-center text-2xl font-bold text-neutral-800">
-            YOUR ORDER
+        <div className="my-4 flex flex-col gap-8 bg-[#f1f1f1] px-6 py-3 shadow-sm drop-shadow-sm">
+          <span className="self-center font-cairo text-2xl font-bold text-neutral-800">
+            طلبك
           </span>
           <div className="flex h-fit w-full flex-col justify-between gap-3 self-center bg-[#f7f7f7] p-7">
             <div className="flex flex-col">
               <div className="flex flex-row justify-between px-2 py-4">
-                <span className="font-lato text-lg font-semibold text-neutral-800">
-                  PRODUCT
+                <span className="font-cairo text-lg font-semibold text-neutral-800">
+                  المنتج
                 </span>
-                <span className="font-lato text-lg font-semibold text-neutral-800">
-                  SUBTOTAL
+                <span className="font-cairo text-lg font-semibold text-neutral-800">
+                  المجموع الفرعي
                 </span>
               </div>
-              <div className="h-[2px] w-full bg-neutral-200"/>
-              {items.map((item, index) => (
-                <div key={index}>
-                  <div className="flex flex-row justify-between gap-2 px-2 py-2.5">
-                    <span className="font-lato text-neutral-500">
-                      {item.name}{" "}
-                      <font className="font-bold">{`x ${item.quantity}`}</font>
-                    </span>
-                    <span className="min-w-[90px] text-end font-medium text-neutral-500">{`${item.price * item.quantity} QR`}</span>
-                  </div>
-                  <div className="border-mask h-[1px] w-full bg-zinc-200 px-2"/>
-                </div>
+              <div className="h-[2px] w-full bg-neutral-200" />
+              {Object.keys(items).map((productId, index) => (
+                <CheckoutCartItem
+                  key={productId}
+                  productId={productId}
+                  quantity={items[productId]}
+                  setTotalPrice={(param) => setTotalPrice(param)}
+                />
               ))}
               <div className="flex flex-row justify-between px-2 py-4">
-                <span className="font-lato text-lg font-semibold text-neutral-800">
-                  Subtotal
+                <span className="font-cairo text-lg font-semibold text-neutral-800">
+                  المجموع الفرعي
                 </span>
                 <span className="text-lg font-medium text-[var(--theme3)]">
-                  145000 QR
+                  {sumValues(totalPrice)} DT
                 </span>
               </div>
-              <div className="h-[2px] w-full bg-neutral-200"/>
+              <div className="h-[2px] w-full bg-neutral-200" />
               <div className="flex flex-row items-center justify-between gap-5 px-2 py-4">
-                <span className="font-lato text-lg font-semibold text-neutral-800">
-                  Shipping
+                <span className="font-cairo text-lg font-semibold text-neutral-800">
+                  التوصيل
                 </span>
                 <div className="flex flex-col gap-4 text-right text-neutral-600">
                   <div>
-                    <label
-                      htmlFor="weight"
-                      className="radio-wrapper-8 hover:cursor-pointer"
-                    >
-                      <input
-                        type="radio"
-                        id="weight"
-                        name="shipping"
-                        defaultChecked
-                        className="relative left-[2px] top-[6px] float-end accent-emerald-700 hover:cursor-pointer"
-                      />
-                      Shipping cost depends on weight:{" "}
-                      <font className="font-bold text-[var(--theme3)]">
-                        750 QR
-                      </font>
-                    </label>
-                  </div>
-                  <div>
-                    <label htmlFor="hq" className="hover:cursor-pointer">
-                      <input
-                        type="radio"
-                        id="hq"
-                        name="shipping"
-                        className="relative left-[2px] top-[6px] float-end accent-emerald-700 hover:cursor-pointer"
-                      />
-                      Receipt from the company's headquarters (QATAR){" "}
-                    </label>
-                  </div>
-                  <div>
-                    <label htmlFor="truck" className="hover:cursor-pointer">
-                      <input
-                        type="radio"
-                        id="truck"
-                        name="shipping"
-                        className="relative left-[2px] top-[6px] float-end accent-emerald-700 hover:cursor-pointer"
-                      />
-                      A shipping truck for several products (from{" "}
-                      <font className="font-bold text-[var(--theme3)]">
-                        500
-                      </font>{" "}
-                      to{" "}
-                      <font className="font-bold text-[var(--theme3)]">
-                        2000 QR
-                      </font>
-                      ) contact customer service after ordering for shipping
-                      cost.
-                    </label>
+                    تكلفة التوصيل:{" "}
+                    <font className="font-bold text-[var(--theme3)]">7 DT</font>
                   </div>
                 </div>
               </div>
-              <div className="h-[2px] w-full bg-neutral-200"/>
+              <div className="h-[2px] w-full bg-neutral-200" />
               <div className="flex flex-row items-center justify-between gap-2 px-2 py-4">
-                <span className="font-lato text-lg font-semibold text-neutral-800">
-                  Duration
+                <span className="font-cairo text-lg font-semibold text-neutral-800">
+                  مدة التوصيل
                 </span>
-                <span className="font-lato text-end text-[17px] font-semibold text-[var(--theme3)]">
-                  Shipping within 4-10 business days
+                <span className="text-end font-cairo text-[17px] font-semibold text-[var(--theme3)]">
+                  التوصيل خلال 3-6 أيام عمل
                 </span>
               </div>
 
-              <div className="h-[2px] w-full bg-neutral-200"/>
+              <div className="h-[2px] w-full bg-neutral-200" />
 
               <div className="flex flex-row items-center justify-between px-2 py-4">
-                <span className="font-lato text-lg font-semibold text-neutral-800">
-                  Total
+                <span className="font-cairo text-lg font-semibold text-neutral-800">
+                  المجموع
                 </span>
                 <div className="flex flex-col justify-between">
-                  <span className="font-lato text-2xl font-bold text-[var(--theme3)]">
-                    146750 QR
-                  </span>
-                  <span className="font-lato text-sm text-neutral-400">
-                    (includes{" "}
-                    <span className="text-[var(--theme3)]">1000 QR</span> Tax)
+                  <span className="font-cairo text-2xl font-bold text-[var(--theme3)]">
+                    {sumValues(totalPrice) + 7} DT
                   </span>
                 </div>
               </div>
             </div>
           </div>
-          <div className="h-[1px] w-full bg-neutral-300"/>
-          <div className="text-neutral-500">
-            Your personal data will be used to process your order, support your
-            experience throughout this website, and for other purposes described
-            in our{" "}
+          <div className="h-[1px] w-full bg-neutral-300" />
+          <div className="font-cairo text-neutral-500">
+            سيتم استخدام بياناتك الشخصية لمعالجة طلبك ودعم تجربتك خلال هذا
+            الموقع ولأغراض أخرى موضحة في{" "}
             <font
               onClick={() => {
                 ChangeUrl("/terms-and-conditions#privacy");
               }}
               className="font-bold text-neutral-700 transition-colors duration-200 hover:cursor-pointer hover:text-[var(--theme)]"
             >
-              privacy policy
+              سياسة الخصوصية
             </font>
             .
           </div>
           <button
-            className="bg-[var(--theme3)] px-2 py-3 text-lg font-semibold text-white transition-colors duration-200 hover:cursor-pointer hover:bg-[var(--theme)]"
+            className={cn(
+              "bg-[var(--theme3)] px-2 py-3 font-cairo text-lg font-semibold text-white transition-colors duration-200 hover:cursor-pointer hover:bg-[var(--theme)]",
+              loadingOrder && "opacity-80 hover:cursor-not-allowed",
+            )}
             type="button"
+            disabled={loadingOrder}
+            onClick={() => {
+              if (loadingOrder) return;
+              handleCheckout();
+            }}
           >
-            PLACE ORDER
+            {loadingOrder ? (
+              <div className="flex items-center justify-center">
+                <div className="h-5 w-5 animate-spin rounded-full border-b-2 border-white" />
+              </div>
+            ) : (
+              "تأكيد الطلب"
+            )}
           </button>
         </div>
       </div>
@@ -392,4 +423,4 @@ const page = () => {
   );
 };
 
-export default page;
+export default Page;

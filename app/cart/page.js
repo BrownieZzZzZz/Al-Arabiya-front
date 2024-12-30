@@ -21,11 +21,13 @@ const page = () => {
     });
   };
 
-  const [items, setItems] = useState(
-    JSON.parse(localStorage.getItem("cart") || "{}"),
-  );
+  const [items, setItems] = useState({});
 
   const sumValues = (obj) => Object.values(obj).reduce((a, b) => a + b, 0);
+
+  useEffect(() => {
+    setItems(JSON.parse(localStorage.getItem("cart") || "{}"));
+  }, []);
 
   useEffect(() => {
     setLoadingPage(isPending);
@@ -85,8 +87,8 @@ const page = () => {
                 <table className="w-full">
                   <tbody className="hidden md:contents">
                     <tr className="font-lato border-b-2 border-neutral-200 text-lg font-bold">
-                      <td className="p-[10px]"/>
-                      <td className="p-[10px]"/>
+                      <td className="p-[10px]" />
+                      <td className="p-[10px]" />
                       <td className="p-[10px]">المنتج</td>
                       <td className="p-[10px]">سعر المنتج </td>
                       <td className="p-[10px]">الكمية </td>

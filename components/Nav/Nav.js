@@ -45,9 +45,7 @@ const Nav = () => {
   const [isPending, startTransition] = useTransition();
   const closeCartButton = useRef(null);
 
-  const [items, setItems] = useState(
-    JSON.parse(localStorage.getItem("cart") || "{}"),
-  );
+  const [items, setItems] = useState({});
 
   const ChangeUrl = (url, options = {}) => {
     startTransition(() => {
@@ -84,6 +82,8 @@ const Nav = () => {
       setLoadingUser(false);
       setSigned(true);
       setUser(data.data);
+      localStorage.setItem("cart", JSON.stringify(data.data.cart));
+      setItems(data.data.cart);
     } catch (error) {
       setLoadingUser(false);
     }
@@ -115,6 +115,7 @@ const Nav = () => {
 
   useEffect(() => {
     checkUser();
+    setItems(JSON.parse(localStorage.getItem("cart") || "{}"));
   }, []);
 
   useEffect(() => {
@@ -268,81 +269,85 @@ const Nav = () => {
 
         {/* CART  */}
 
-        <Sheet>
-          <SheetTrigger asChild className="cart md:mx-2 md:my-1">
-            <button className="cart">
-              <div className="relative">
-                <svg
-                  xmlns="http://www.w3.org/2000/svg"
-                  width="30"
-                  height="30"
-                  fill="#404040"
-                  className="bi bi-handbag"
-                  viewBox="0 0 16 16"
-                >
-                  <path d="M8 1a2 2 0 0 1 2 2v2H6V3a2 2 0 0 1 2-2m3 4V3a3 3 0 1 0-6 0v2H3.36a1.5 1.5 0 0 0-1.483 1.277L.85 13.13A2.5 2.5 0 0 0 3.322 16h9.355a2.5 2.5 0 0 0 2.473-2.87l-1.028-6.853A1.5 1.5 0 0 0 12.64 5zm-1 1v1.5a.5.5 0 0 0 1 0V6h1.639a.5.5 0 0 1 .494.426l1.028 6.851A1.5 1.5 0 0 1 12.678 15H3.322a1.5 1.5 0 0 1-1.483-1.723l1.028-6.851A.5.5 0 0 1 3.36 6H5v1.5a.5.5 0 1 0 1 0V6z" />
-                </svg>
-                <div className="total-number">{Object.keys(items).length}</div>
-              </div>
-            </button>
-          </SheetTrigger>
-          <SheetContent side="left" className="w-[300px] p-0">
-            <SheetTitle />
-            <div className="flex h-full flex-col justify-between">
-              <div className="border-b-[1px] border-neutral-300 py-3 text-center">
-                <span className="font-lato text-2xl font-semibold text-neutral-800">
-                  سلة التسوق
-                </span>
-              </div>
-              <div className="cart relative flex w-full flex-1 flex-col overflow-auto">
-                {Object.keys(items).map((id, index) => (
-                  <SideCartItem
-                    key={index}
-                    productId={id}
-                    quantity={items[id]}
-                    closeButton={closeCartButton}
-                    index={index}
-                    ChangeUrl={(url) => {
-                      ChangeUrl(url);
-                    }}
-                    setTotalPrice={(param) => setTotalPrice(param)}
-                  />
-                ))}
-              </div>
-              <div className="flex flex-col gap-2 border-t-[1px] border-neutral-300 p-4">
-                <div className="flex flex-row-reverse justify-between">
-                  <span className="font-lato text-xl font-semibold text-neutral-700">
-                    المجموع
-                  </span>
-                  <span className="font-lato text-xl font-semibold text-[var(--theme)]">
-                    {sumValues(totalPrice)} DT
+        {!pathname.includes("checkout") && (
+          <Sheet>
+            <SheetTrigger asChild className="cart md:mx-2 md:my-1">
+              <button className="cart">
+                <div className="relative">
+                  <svg
+                    xmlns="http://www.w3.org/2000/svg"
+                    width="30"
+                    height="30"
+                    fill="#404040"
+                    className="bi bi-handbag"
+                    viewBox="0 0 16 16"
+                  >
+                    <path d="M8 1a2 2 0 0 1 2 2v2H6V3a2 2 0 0 1 2-2m3 4V3a3 3 0 1 0-6 0v2H3.36a1.5 1.5 0 0 0-1.483 1.277L.85 13.13A2.5 2.5 0 0 0 3.322 16h9.355a2.5 2.5 0 0 0 2.473-2.87l-1.028-6.853A1.5 1.5 0 0 0 12.64 5zm-1 1v1.5a.5.5 0 0 0 1 0V6h1.639a.5.5 0 0 1 .494.426l1.028 6.851A1.5 1.5 0 0 1 12.678 15H3.322a1.5 1.5 0 0 1-1.483-1.723l1.028-6.851A.5.5 0 0 1 3.36 6H5v1.5a.5.5 0 1 0 1 0V6z" />
+                  </svg>
+                  <div className="total-number">
+                    {Object.keys(items).length}
+                  </div>
+                </div>
+              </button>
+            </SheetTrigger>
+            <SheetContent side="left" className="w-[300px] p-0">
+              <SheetTitle />
+              <div className="flex h-full flex-col justify-between">
+                <div className="border-b-[1px] border-neutral-300 py-3 text-center">
+                  <span className="font-lato text-2xl font-semibold text-neutral-800">
+                    سلة التسوق
                   </span>
                 </div>
-                <button
-                  type="button"
-                  className="bg-zinc-200 py-3 text-sm font-bold text-neutral-700 transition-colors duration-200 hover:bg-zinc-300"
-                  onClick={() => {
-                    closeCartButton.current.click();
-                    ChangeUrl("/cart");
-                  }}
-                >
-                  عرض السلة
-                </button>
-                <button
-                  type="button"
-                  className="bg-[var(--theme)] py-3 text-sm font-bold text-[#ffffff] transition-colors duration-200 hover:bg-[var(--theme)]"
-                  onClick={() => {
-                    closeCartButton.current.click();
-                    ChangeUrl("/checkout");
-                  }}
-                >
-                  الدفع
-                </button>
+                <div className="cart relative flex w-full flex-1 flex-col overflow-auto">
+                  {Object.keys(items).map((id, index) => (
+                    <SideCartItem
+                      key={index}
+                      productId={id}
+                      quantity={items[id]}
+                      closeButton={closeCartButton}
+                      index={index}
+                      ChangeUrl={(url) => {
+                        ChangeUrl(url);
+                      }}
+                      setTotalPrice={(param) => setTotalPrice(param)}
+                    />
+                  ))}
+                </div>
+                <div className="flex flex-col gap-2 border-t-[1px] border-neutral-300 p-4">
+                  <div className="flex flex-row-reverse justify-between">
+                    <span className="font-lato text-xl font-semibold text-neutral-700">
+                      المجموع
+                    </span>
+                    <span className="font-lato text-xl font-semibold text-[var(--theme)]">
+                      {sumValues(totalPrice)} DT
+                    </span>
+                  </div>
+                  <button
+                    type="button"
+                    className="bg-zinc-200 py-3 text-sm font-bold text-neutral-700 transition-colors duration-200 hover:bg-zinc-300"
+                    onClick={() => {
+                      closeCartButton.current.click();
+                      ChangeUrl("/cart");
+                    }}
+                  >
+                    عرض السلة
+                  </button>
+                  <button
+                    type="button"
+                    className="bg-[var(--theme)] py-3 text-sm font-bold text-[#ffffff] transition-colors duration-200 hover:bg-[var(--theme)]"
+                    onClick={() => {
+                      closeCartButton.current.click();
+                      ChangeUrl("/checkout");
+                    }}
+                  >
+                    الدفع
+                  </button>
+                </div>
               </div>
-            </div>
-            <SheetClose ref={closeCartButton} className="hidden" />
-          </SheetContent>
-        </Sheet>
+              <SheetClose ref={closeCartButton} className="hidden" />
+            </SheetContent>
+          </Sheet>
+        )}
 
         <TooltipProvider>
           <Tooltip>
