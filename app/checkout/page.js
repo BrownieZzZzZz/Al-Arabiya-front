@@ -185,7 +185,7 @@ const Page = () => {
         variant: "success",
         duration: 10000,
       });
-      ChangeUrl("/checkout/success");
+      ChangeUrl("/");
     } catch (error) {
       console.error(error);
       toast({
