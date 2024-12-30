@@ -73,7 +73,7 @@ const page = () => {
 
       setLoadingProduct(false);
     } catch (error) {
-      console.log(error);
+      console.error(error);
       toast({
         title: "خطأ",
         description: "حدث خطأ ما، يرجى المحاولة مرة أخرى!",

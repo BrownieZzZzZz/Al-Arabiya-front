@@ -75,8 +75,6 @@ const Page = () => {
         throw new Error(data.message);
       }
 
-      console.log(data.data);
-
       setUser(data.data);
       const full_name = data.data.full_name.split(" ");
 
@@ -169,7 +167,6 @@ const Page = () => {
           body: JSON.stringify(order),
         },
       );
-      console.log("test");
 
       const data = await response.json();
 

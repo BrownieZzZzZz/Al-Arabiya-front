@@ -281,7 +281,7 @@ const ProductPage = () => {
 
       setLoadingProducts(false);
     } catch (error) {
-      console.log(error);
+      console.error(error);
       toast({
         title: "خطأ",
         description: "حدث خطأ ما، يرجى المحاولة مرة أخرى!",
@@ -312,7 +312,7 @@ const ProductPage = () => {
 
       setLoadingCategories(false);
     } catch (error) {
-      console.log(error);
+      console.error(error);
       toast({
         title: "خطأ",
         description: "حدث خطأ ما، يرجى المحاولة مرة أخرى!",
@@ -343,7 +343,7 @@ const ProductPage = () => {
 
       setLoadingBrands(false);
     } catch (error) {
-      console.log(error);
+      console.error(error);
       toast({
         title: "خطأ",
         description: "حدث خطأ ما، يرجى المحاولة مرة أخرى!",

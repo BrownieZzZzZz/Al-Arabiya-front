@@ -67,7 +67,7 @@ export async function POST(request) {
 
     return NextResponse.json({ message: "تم إرسال البريد الإلكتروني بنجاح" });
   } catch (error) {
-    console.log(error);
+    console.error(error);
     return NextResponse.status(500).json({
       message: "تعذر إرسال الرسالة",
     });
