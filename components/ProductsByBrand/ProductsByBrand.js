@@ -119,17 +119,19 @@ const ProductsByBrand = ({ ChangeUrl }) => {
             : brands.map((brand, index) => (
                 <div
                   className={cn(
-                    "w-[100px] flex-shrink-0 rounded-lg p-2 font-semibold transition-all duration-200 hover:scale-105 hover:cursor-pointer hover:bg-stone-200",
+                    "flex-shrink-0 rounded-lg p-2 font-semibold transition-all duration-200 hover:scale-105 hover:cursor-pointer hover:bg-stone-200",
                     selectedBrand === index
                       ? "bg-stone-300 hover:bg-stone-300"
                       : "",
+                    // "w-[100px]",
                   )}
                   onClick={() => {
                     setSelectedBrand(index);
                   }}
                   key={index}
                 >
-                  <img src={brand.img} alt="img" />
+                  {/* <img src={brand.img} alt={brand.name} /> */}
+                  {brand.name}
                 </div>
               ))}
         </div>
