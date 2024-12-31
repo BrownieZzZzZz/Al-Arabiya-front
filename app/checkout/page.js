@@ -349,7 +349,7 @@ const Page = () => {
           </div>
         </div>
 
-        <div className="my-10 flex flex-col gap-8 bg-[var(--theme2)] px-6 py-3 shadow-sm drop-shadow-sm">
+        <div className="my-10  flex flex-col gap-8 bg-[var(--theme2)] px-6 py-3 shadow-sm drop-shadow-sm">
           <span className="self-center font-cairo text-2xl font-bold text-neutral-800">
             طلبك
           </span>
