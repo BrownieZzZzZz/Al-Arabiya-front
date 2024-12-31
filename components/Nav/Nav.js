@@ -231,14 +231,13 @@ const Nav = () => {
                 <i className="fa-solid fa-magnifying-glass text-2xl" />
               </div>
             </DialogTrigger>
-            <DialogContent className="flex items-center justify-center px-2 py-12">
+            <DialogContent closeClass="text-neutral-800" className="flex items-center justify-center px-2 py-12">
               <DialogTitle />
               <div className="flex w-full flex-col items-center justify-center gap-4">
                 <div className="text-xl font-semibold text-neutral-500">
                   تريد البحث عن ماذا ؟
                 </div>
                 <div className="flex w-full flex-row items-center gap-2 rounded-md border px-2 py-2">
-                  {/* <i className="fa-solid fa-magnifying-glass text-md px-1 text-neutral-500"/> */}
 
                   <input
                     dir="rtl"

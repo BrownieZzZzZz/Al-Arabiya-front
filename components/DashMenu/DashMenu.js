@@ -24,6 +24,11 @@ const DashMenu = ({ closeButton, ChangeUrl, setLoadingPage }) => {
       icon: "fa-solid fa-layer-group",
     },
     {
+      title: "ماركات ",
+      path: "/brands",
+      icon: "fa-brands fa-font-awesome fa-flip-horizontal",
+    },
+    {
       title: "فئات",
       path: "/categories",
       icon: "fa-solid fa-sliders",
