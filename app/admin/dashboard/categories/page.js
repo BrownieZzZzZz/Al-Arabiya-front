@@ -53,7 +53,6 @@ const page = () => {
         <Dialog>
           <DialogTrigger>
             <div
-              onClick={() => {}}
               className="flex items-center justify-center rounded-xl bg-[var(--dash-theme2)] px-4 py-5 transition-all duration-200 hover:scale-[1.02] hover:cursor-pointer hover:bg-[#2b2b36]"
             >
               <div className="flex flex-col items-center justify-between gap-2">

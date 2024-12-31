@@ -11,11 +11,15 @@ import {
 import { cn } from "@/lib/utils";
 import { useToast } from "@/hooks/use-toast";
 
-const Category = ({ category }) => {
+const Brand = ({ brand }) => {
   const [isEditing, setIsEditing] = useState(false);
   const [editText, setEditText] = useState("تعديل");
-  const categoryRef = useRef(null);
+  const brandRef = useRef(null);
   const { toast } = useToast();
+
+  const [imageValue, setImageValue] = useState(brand.img);
+  const imageRef = useRef(null);
+  const fileInput = useRef(null);
   const confirmDeleteRef = useRef(null);
 
   const handleEdit = () => {
@@ -24,14 +28,14 @@ const Category = ({ category }) => {
       setEditText("حفظ");
       return;
     }
-    // HANDLE CHECKS AND EDIT HERE !!!
+    // HANDLE EDITS AND CHECKS HERE!!
     setIsEditing(!isEditing);
     setEditText("تعديل");
   };
 
   const handleDelete = () => {
-    // HANDLE DELETION HERE CHOGLOG!!!
-  };
+    // HANDLE DELETION HERE BJDOG!!!
+  }
 
   const confirmDeletePopUp = () => {
     confirmDeleteRef.current.click();
@@ -49,16 +53,14 @@ const Category = ({ category }) => {
         >
           <DialogTitle />
           <div className="flex w-full flex-col items-center justify-center gap-4">
-            <div className="w-3/4 text-center text-3xl font-bold text-red-500">
-              تحذير
-            </div>
-            <div className="text-medium w-3/4 text-center text-xl text-white">
-              حذف هذه الفئة سينجم عنه حذف كل المنتوجات المرتبطة بهذه الفئة 
+            <div className="w-3/4 text-center text-3xl font-bold text-red-500">تحذير</div>
+            <div className="w-3/4 text-center text-medium text-xl text-white">
+              حذف هذه الماركة سينجم عنه حذف كل المنتوجات المرتبطة بهذه الماركة
             </div>
             <button
               onClick={() => handleDelete()}
               type="button"
-              className="mt-4 w-3/4 rounded-lg border-2 border-red-500 bg-red-500 py-2 text-lg font-semibold text-[#ffffff] transition-all duration-200 hover:border-red-900 hover:bg-red-900"
+              className="w-3/4 mt-4 rounded-lg border-2 border-red-500 bg-red-500 py-2 text-lg font-semibold text-[#ffffff] transition-all duration-200 hover:bg-red-900 hover:border-red-900"
             >
               أنا متأكد{" "}
             </button>
@@ -74,7 +76,7 @@ const Category = ({ category }) => {
           }}
         >
           <div className="flex h-full w-full items-center justify-center rounded-xl bg-[var(--dash-theme2)] px-4 py-4 text-center text-2xl font-semibold text-neutral-300 transition-all duration-200 hover:scale-[1.02] hover:cursor-pointer hover:bg-[#2c2d33]">
-            {category}
+            {brand.title}
           </div>
         </DialogTrigger>
         <DialogContent
@@ -85,12 +87,12 @@ const Category = ({ category }) => {
           <div className="flex w-full flex-col items-center justify-center gap-4">
             <div className="text-2xl font-semibold text-white">إسم الفئة </div>
             <input
-              ref={categoryRef}
+              ref={brandRef}
               readOnly={!isEditing}
-              defaultValue={category}
+              defaultValue={brand.title}
               dir="rtl"
               type="text"
-              placeholder="العناية بالشعر"
+              placeholder="Sheglam"
               className={cn(
                 "my-2 w-3/4 rounded-lg bg-[var(--dash-theme2)] p-3 text-lg font-medium text-white placeholder-neutral-500 outline-none outline-2",
                 !isEditing
@@ -98,6 +100,34 @@ const Category = ({ category }) => {
                   : "focus:bg-[var(--dash-theme4)] focus:outline-[var(--dash-theme6)]",
               )}
             />
+            <input
+              onChange={() => {
+                const file = fileInput.current.files[0];
+                const reader = new FileReader();
+                reader.onloadend = () => {
+                  imageRef.current.src = reader.result;
+                };
+                reader.readAsDataURL(file);
+              }}
+              type="file"
+              accept="image/*"
+              className="hidden"
+              ref={fileInput}
+            />
+            <img
+              onClick={() => {
+                if (isEditing) {
+                  fileInput.current.click();
+                }
+              }}
+              ref={imageRef}
+              src={imageValue}
+              alt="brand image"
+              className={cn(
+                "mb-2 h-[150px] w-3/4 rounded-lg object-scale-down",
+                isEditing ? "hover:cursor-pointer" : "hover:cursor-not-allowed",
+              )}
+            ></img>
             <div className="flex w-3/4 flex-row gap-4">
               <button
                 onClick={() => handleEdit()}
@@ -126,4 +156,4 @@ const Category = ({ category }) => {
   );
 };
 
-export default Category;
+export default Brand;
