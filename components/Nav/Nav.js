@@ -146,6 +146,34 @@ const Nav = () => {
 
   const sumValues = (obj) => Object.values(obj).reduce((a, b) => a + b, 0);
 
+  const ChangePath = () => {
+    if (pathname.includes("admin") && !loadingAdmin) {
+      if (pathname.includes("sign") || pathname.includes("reset")) {
+        if (Adminsigned) {
+          console.log("test");
+
+          ChangeUrl("/admin/dashboard");
+          return;
+        }
+      } else if (pathname.includes("dashboard")) {
+        if (!Adminsigned) {
+          ChangeUrl("/admin/sign-in");
+          return;
+        }
+      }
+    } else if (signed && !loadingUser) {
+      if (pathname.includes("sign") || pathname.includes("reset")) {
+        ChangeUrl("/profile");
+        return;
+      }
+    } else {
+      if (pathname.includes("profile")) {
+        ChangeUrl("/sign-in");
+        return;
+      }
+    }
+  };
+
   useEffect(() => {
     if (pathname.includes("admin")) {
       checkAdmin();
@@ -168,25 +196,7 @@ const Nav = () => {
   }, [isPending]);
 
   useEffect(() => {
-    if (pathname.includes("admin")) {
-      if (pathname.includes("sign") || pathname.includes("reset")) {
-        if (Adminsigned) {
-          ChangeUrl("/admin/dashboard");
-        }
-      } else {
-        if (!Adminsigned) {
-          ChangeUrl("/admin/sign-in");
-        }
-      }
-    } else if (signed) {
-      if (pathname.includes("sign") || pathname.includes("reset")) {
-        ChangeUrl("/profile");
-      }
-    } else {
-      if (pathname.includes("profile")) {
-        ChangeUrl("/sign-in");
-      }
-    }
+    ChangePath();
 
     eventBus.on("updateCart", updateCart);
 
