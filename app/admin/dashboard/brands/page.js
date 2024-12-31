@@ -20,62 +20,59 @@ const page = () => {
   const [imageValue, setImageValue] = useState(null);
   const [loaded, setLoaded] = useState(false);
   const addBrand = () => {
-    if(brandRef.current.value.trim() === ""){
+    if (brandRef.current.value.trim() === "") {
       toast({
         variant: "destructive",
         title: "خطأ",
         description: "الرجاء إدخال إسم الماركة ",
-        duration: 2000
-      })
+        duration: 2000,
+      });
       return;
     }
-    if(!fileInput.current.files[0]) {
+    if (!fileInput.current.files[0]) {
       toast({
         variant: "destructive",
         title: "خطأ",
         description: "الرجاء إختيار صورة ",
-        duration: 2000
-      })
+        duration: 2000,
+      });
       return;
     }
-    
+
     // Check if brand is unique and Add it + confirmation message
-  }
+  };
 
   const brands = [
     {
       title: "Sheglam",
-      img: "/images/brands/sheglam.png"
+      img: "/images/brands/sheglam.png",
     },
     {
       title: "Vaseline",
-      img: "/images/brands/vaseline.png"
+      img: "/images/brands/vaseline.png",
     },
     {
       title: "Hude Beauty",
-      img: "/images/brands/hudabeauty.png"
+      img: "/images/brands/hudabeauty.png",
     },
     {
       title: "Lattafa",
-      img: "/images/brands/latafa.png"
-    }
-  ]
-
-
-
+      img: "/images/brands/latafa.png",
+    },
+  ];
 
   return (
     <div className="flex w-full flex-col gap-8 px-5 pt-5 md:px-0 md:pl-10 md:pt-8 lg:pl-20 lg:pt-10">
       <DashSearch placeholder="...Sheglam, Vaseline" />
       <div className="grid w-full auto-rows-fr gap-6 min-[500px]:grid-cols-2 xl:grid-cols-3 2xl:grid-cols-4">
-
-
         {/* ADD BRAND */}
 
         <Dialog>
-          <DialogTrigger onClick={() => {
-            setLoaded(false);
-          }}>
+          <DialogTrigger
+            onClick={() => {
+              setLoaded(false);
+            }}
+          >
             <div className="flex items-center justify-center rounded-xl bg-[var(--dash-theme2)] px-4 py-5 transition-all duration-200 hover:scale-[1.02] hover:cursor-pointer hover:bg-[#2b2b36]">
               <div className="flex flex-col items-center justify-between gap-2">
                 <div className="grid size-[40px] place-items-center rounded-full border-2 border-neutral-300 text-center text-2xl font-semibold text-neutral-300">
@@ -105,7 +102,9 @@ const page = () => {
               />
 
               <div
-                onClick={() => { fileInput.current.click() }}
+                onClick={() => {
+                  fileInput.current.click();
+                }}
                 className={cn(
                   "relative flex h-[150px] w-3/4 items-center justify-center rounded-lg border-[var(--dash-theme6)] hover:cursor-pointer",
                   loaded ? "border-0" : "border-4 border-dashed",
@@ -144,17 +143,22 @@ const page = () => {
                   </div>
                 )}
               </div>
-              <span dir="rtl">
-                <font className="text-lg font-bold text-emerald-500">
-                  {" "}
-                  ملاحظة:{" "}
-                </font>
-                <font className="text-lg font-medium text-white">
+              <div className="flex w-3/4 flex-col items-center justify-center gap-1 text-center">
+                <span dir="rtl" className="text-lg font-bold text-emerald-500">
+                  ملاحظة{" "}
+                </span>
+                <span dir="rtl" className="text-lg font-medium text-white">
                   يجب أن تكون الصورة بدون خلفية.
-                </font>
-              </span>
+                </span>
+                <span dir="rtl" className="text-lg font-medium text-white">
+                  يجب أن يتم اقتصاص الصورة مما يعني عدم وجود مساحة فارغة إضافية
+                  من جميع الجوانب.
+                </span>
+              </div>
               <button
-                onClick={() => { addBrand() }}
+                onClick={() => {
+                  addBrand();
+                }}
                 type="button"
                 className="w-3/4 rounded-lg bg-[var(--dash-theme6)] p-3 text-xl font-semibold text-white transition-all duration-200 hover:bg-[var(--dash-theme5)]"
               >
