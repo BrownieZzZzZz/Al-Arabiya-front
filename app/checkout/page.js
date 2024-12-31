@@ -243,7 +243,7 @@ const Page = () => {
         </div>
       )}
       <div className="grid w-full max-w-[1300px] grid-cols-1 gap-8 bg-white px-3 xsm:px-6 sm:px-10 lg:grid-cols-2">
-        <div className="flex flex-col gap-5 pt-6">
+        <div className="flex flex-col gap-5 pt-10">
           <div className="font-cairo text-2xl font-bold text-neutral-800">
             معلومات الفتورة والتوصيل
           </div>
@@ -349,7 +349,7 @@ const Page = () => {
           </div>
         </div>
 
-        <div className="my-4 flex flex-col gap-8 bg-[var(--theme2)] px-6 py-3 shadow-sm drop-shadow-sm">
+        <div className="my-10 flex flex-col gap-8 bg-[var(--theme2)] px-6 py-3 shadow-sm drop-shadow-sm">
           <span className="self-center font-cairo text-2xl font-bold text-neutral-800">
             طلبك
           </span>

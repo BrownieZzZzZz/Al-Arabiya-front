@@ -269,7 +269,7 @@ const Nav = () => {
 
         {/* CART  */}
 
-        {!pathname.includes("checkout") && (
+        {(!pathname.includes("checkout") && !pathname.includes("cart")) && (
           <Sheet>
             <SheetTrigger asChild className="cart md:mx-2 md:my-1">
               <button className="cart">

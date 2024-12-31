@@ -150,14 +150,14 @@ const CartItem = ({
           index == items.length - 1 ? "" : "border-b",
         )}
       >
-        <td
-          className="p-[10px]"
-          onClick={() => {
-            if (loadingProduct) return;
-            removeItem();
-          }}
-        >
-          <i className="fa-solid fa-x text-[11px] text-neutral-500 transition-all duration-200 hover:cursor-pointer hover:text-[var(--theme)]" />
+        <td className="p-[10px]">
+          <i
+            onClick={() => {
+              if (loadingProduct) return;
+              removeItem();
+            }}
+            className="fa-solid fa-x text-[11px] text-neutral-500 transition-all duration-200 hover:cursor-pointer hover:text-[var(--theme)]"
+          />
         </td>
         <td className="h-[70px] w-[110px] p-[10px]">
           <div className="relative">
@@ -175,6 +175,7 @@ const CartItem = ({
                 onClick={() => {
                   ChangeUrl(`/products/${productId}`);
                 }}
+                className="rounded-lg"
                 alt="product"
                 src={product.img[0]}
               />
