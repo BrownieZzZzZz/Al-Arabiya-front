@@ -12,22 +12,22 @@ import React, { useEffect, useState } from "react";
 import ProductCard from "../ProductCard/ProductCard";
 import { Skeleton } from "../ui/skeleton";
 
-const ProductsByBrand = ({ ChangeUrl }) => {
-  const [selectedBrand, setSelectedBrand] = useState(0);
+const ProductsByCategory = ({ ChangeUrl }) => {
+  const [selectedCategory, setSelectedCategory] = useState(0);
   const [loadingProducts, setLoadingProducts] = useState(true);
-  const [limitBrands, setLimitBrands] = useState(4);
+  const [limitCategories, setLimitCategories] = useState(8);
   const [limitProducts, setLimitProducts] = useState(8);
-  const [loadingBrands, setLoadingBrands] = useState(true);
+  const [loadingCategories, setLoadingCategories] = useState(true);
 
-  const [brands, setBrands] = useState([]);
+  const [categories, setCategories] = useState([]);
 
   const [products, setProducts] = useState([]);
 
-  const fetchBrands = async () => {
-    setLoadingBrands(true);
+  const fetchCategories = async () => {
+    setLoadingCategories(true);
     try {
       const res = await fetch(
-        `${process.env.NEXT_PUBLIC_API_URL}/brand?page=1&limit=${limitBrands}`,
+        `${process.env.NEXT_PUBLIC_API_URL}/category?page=1&limit=${limitCategories}`,
         {
           method: "GET",
         },
@@ -38,9 +38,9 @@ const ProductsByBrand = ({ ChangeUrl }) => {
         throw new Error(data.message);
       }
 
-      setBrands(data.data.data);
+      setCategories(data.data.data);
 
-      setLoadingBrands(false);
+      setLoadingCategories(false);
     } catch (error) {
       console.error(error);
       toast({
@@ -49,16 +49,16 @@ const ProductsByBrand = ({ ChangeUrl }) => {
         variant: "destructive",
       });
 
-      setLoadingBrands(false);
+      setLoadingCategories(false);
     }
-    setLoadingBrands(false);
+    setLoadingCategories(false);
   };
 
   const fetchProducts = async () => {
     setLoadingProducts(true);
     try {
       const res = await fetch(
-        `${process.env.NEXT_PUBLIC_API_URL}/product/search?brand=${brands[selectedBrand].name}&page=1&limit=${limitProducts}`,
+        `${process.env.NEXT_PUBLIC_API_URL}/product/search?categories=${categories[selectedCategory].name}&page=1&limit=${limitProducts}`,
         {
           method: "GET",
         },
@@ -85,13 +85,13 @@ const ProductsByBrand = ({ ChangeUrl }) => {
   };
 
   useEffect(() => {
-    if (!loadingBrands) {
+    if (!loadingCategories) {
       fetchProducts();
     }
-  }, [loadingBrands, selectedBrand]);
+  }, [loadingCategories, selectedCategory]);
 
   useEffect(() => {
-    fetchBrands();
+    fetchCategories();
   }, []);
   return (
     <section className="mx-4 mt-20">
@@ -99,14 +99,14 @@ const ProductsByBrand = ({ ChangeUrl }) => {
         <div className="mb-2 flex w-full flex-row items-center justify-center gap-3">
           <div className="h-[2px] w-8 bg-[var(--theme)] md:w-12" />
           <span className="text-center text-4xl font-bold text-neutral-800">
-            منتجات حسب الماركة
+            منتجات حسب نوع المنتج
           </span>
           <div className="h-[2px] w-8 bg-[var(--theme)] md:w-12" />
         </div>
 
         <div className="mt-5 flex w-full flex-shrink-0 flex-row items-center gap-6 overflow-x-auto pb-4 min-[700px]:justify-center">
-          {loadingBrands
-            ? Array.from({ length: limitBrands }).map((_, index) => (
+          {loadingCategories
+            ? Array.from({ length: limitCategories }).map((_, index) => (
                 <div
                   className={cn(
                     "flex-shrink-0 rounded-lg p-2 font-semibold transition-all duration-200 hover:scale-105 hover:cursor-pointer",
@@ -116,20 +116,20 @@ const ProductsByBrand = ({ ChangeUrl }) => {
                   <Skeleton className={"h-[35px] w-[100px] bg-neutral-300"} />
                 </div>
               ))
-            : brands.map((brand, index) => (
+            : categories.map((category, index) => (
                 <div
                   className={cn(
-                    "w-[100px] flex-shrink-0 rounded-lg p-2 font-semibold transition-all duration-200 hover:scale-105 hover:cursor-pointer hover:bg-stone-200",
-                    selectedBrand === index
+                    "flex-shrink-0 rounded-lg p-2 font-semibold transition-all duration-200 hover:scale-105 hover:cursor-pointer hover:bg-stone-200",
+                    selectedCategory === index
                       ? "bg-stone-300 hover:bg-stone-300"
                       : "",
                   )}
                   onClick={() => {
-                    setSelectedBrand(index);
+                    setSelectedCategory(index);
                   }}
                   key={index}
                 >
-                  <img src={brand.img} alt="img" />
+                  {category.name}
                 </div>
               ))}
         </div>
@@ -172,4 +172,4 @@ const ProductsByBrand = ({ ChangeUrl }) => {
   );
 };
 
-export default ProductsByBrand;
+export default ProductsByCategory;

@@ -8,6 +8,7 @@ import SpecialOffers from "@/components/SpecialOffers/SpecialOffers";
 
 import { useState, useEffect, useTransition } from "react";
 import { useRouter } from "next/navigation";
+import ProductsByCategory from "@/components/ProductsByCategory/ProductsByCategory";
 
 export default function Home() {
   const router = useRouter();
@@ -27,7 +28,7 @@ export default function Home() {
     <div className="mx-auto flex w-full flex-col">
       {loadingPage && (
         <div className="fixed inset-0 z-50 flex h-full w-full items-center justify-center bg-white/60 backdrop-blur-sm">
-          <div className="h-14 w-14 animate-spin rounded-full border-b-4 border-[var(--theme)]"/>
+          <div className="h-14 w-14 animate-spin rounded-full border-b-4 border-[var(--theme)]" />
         </div>
       )}
       <Hero
@@ -51,6 +52,11 @@ export default function Home() {
         }}
       />
       <LookingFor
+        ChangeUrl={(url, options = {}) => {
+          ChangeUrl(url, options);
+        }}
+      />
+      <ProductsByCategory
         ChangeUrl={(url, options = {}) => {
           ChangeUrl(url, options);
         }}

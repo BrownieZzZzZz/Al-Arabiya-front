@@ -82,11 +82,17 @@ const MultiRangeSlider = ({ changePrice }) => {
         <div className="slider__track overflow-hidden">
           <div ref={range} className="slider__range" />
         </div>
-        <div className="slider__left-value text-lg font-medium text-[var(--theme)]">
-          {`${maxVal} DT`}
+        <div
+          className="slider__left-value text-lg font-medium text-[var(--theme)]"
+          dir="ltr"
+        >
+          {`${maxVal}DT`}
         </div>
-        <div className="slider__right-value text-lg font-medium text-[var(--theme)]">
-          {`${minVal} DT`}
+        <div
+          className="slider__right-value text-lg font-medium text-[var(--theme)]"
+          dir="ltr"
+        >
+          {`${minVal}DT`}
         </div>
       </div>
     </div>
