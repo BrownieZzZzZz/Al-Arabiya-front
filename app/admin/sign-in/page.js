@@ -87,7 +87,7 @@ const page = () => {
           expires = 30;
         }
 
-        Cookies.set("access_token", data.data.access_token, { expires });
+        Cookies.set("admin_access_token", data.data.access_token, { expires });
 
         toast({
           title: "نجاح",

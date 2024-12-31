@@ -31,21 +31,23 @@ import {
 } from "@/components/ui/tooltip";
 
 const Nav = () => {
+  const router = useRouter();
+  const pathname = usePathname();
   const searchInputPC = useRef(null);
   const searchInputMB = useRef(null);
-  const router = useRouter();
   const closeButton = useRef(null);
   const closeDialog = useRef(null);
-  const pathname = usePathname();
+  const closeCartButton = useRef(null);
   const [loadingUser, setLoadingUser] = useState(true);
-  const [signed, setSigned] = useState(false);
-  const [totalPrice, setTotalPrice] = useState({});
   const [user, setUser] = useState({});
+  const [signed, setSigned] = useState(false);
+  const [loadingAdmin, setLoadingAdmin] = useState(true);
+  const [Admin, setAdmin] = useState({});
+  const [Adminsigned, setAdminSigned] = useState(false);
   const [loadingPage, setLoadingPage] = useState(true);
   const [isPending, startTransition] = useTransition();
-  const closeCartButton = useRef(null);
-
   const [items, setItems] = useState({});
+  const [totalPrice, setTotalPrice] = useState({});
 
   const ChangeUrl = (url, options = {}) => {
     startTransition(() => {
@@ -57,6 +59,37 @@ const Nav = () => {
     Cookies.remove("access_token");
     setLoadingPage(true);
     location.href = "/sign-in";
+  };
+
+  const checkAdmin = async () => {
+    try {
+      setLoadingAdmin(true);
+
+      const response = await fetch(
+        `${process.env.NEXT_PUBLIC_API_URL}/admins/account`,
+        {
+          method: "GET",
+          headers: {
+            access_token: Cookies.get("admin_access_token"),
+            "Content-Type": "application/json",
+          },
+        },
+      );
+      const data = await response.json();
+
+      if (data.data === null) {
+        throw new Error(data.message);
+      }
+
+      setLoadingAdmin(false);
+      setAdminSigned(true);
+      setAdmin(data.data);
+    } catch (error) {
+      console.error(error);
+
+      setLoadingAdmin(false);
+    }
+    setLoadingAdmin(false);
   };
 
   const checkUser = async () => {
@@ -114,8 +147,11 @@ const Nav = () => {
   const sumValues = (obj) => Object.values(obj).reduce((a, b) => a + b, 0);
 
   useEffect(() => {
-    checkUser();
-    setItems(JSON.parse(localStorage.getItem("cart") || "{}"));
+    if (pathname.includes("admin")) {
+      checkAdmin();
+    } else {
+      checkUser();
+    }
   }, []);
 
   useEffect(() => {
@@ -132,23 +168,25 @@ const Nav = () => {
   }, [isPending]);
 
   useEffect(() => {
-    if (signed) {
-      if (pathname.includes("admin")) {
-        if (pathname.includes("sign") || pathname.includes("reset")) {
-          if (user.role === "admin") {
-            ChangeUrl("/admin/dashboard");
-          }
+    if (pathname.includes("admin")) {
+      if (pathname.includes("sign") || pathname.includes("reset")) {
+        if (Adminsigned) {
+          ChangeUrl("/admin/dashboard");
         } else {
-          if (user.role !== "admin") {
-            ChangeUrl("/");
-          }
+          ChangeUrl("/admin/sign-in");
         }
-      } else if (pathname.includes("sign") || pathname.includes("reset")) {
-        ChangeUrl("/");
+      } else {
+        if (!Adminsigned) {
+          ChangeUrl("/admin/sign-in");
+        }
+      }
+    } else if (signed) {
+      if (pathname.includes("sign") || pathname.includes("reset")) {
+        ChangeUrl("/profile");
       }
     } else {
-      if (pathname.includes("dashboard") && !loadingUser) {
-        ChangeUrl("/admin/sign-in");
+      if (pathname.includes("profile")) {
+        ChangeUrl("/sign-in");
       }
     }
 
@@ -157,7 +195,7 @@ const Nav = () => {
     return () => {
       eventBus.off("updateCart", updateCart);
     };
-  }, [signed, loadingUser]);
+  }, [signed, Adminsigned, loadingUser, loadingAdmin]);
 
   if (
     pathname.includes("sign") ||
@@ -268,7 +306,7 @@ const Nav = () => {
 
         {/* CART  */}
 
-        {(!pathname.includes("checkout") && !pathname.includes("cart")) && (
+        {!pathname.includes("checkout") && !pathname.includes("cart") && (
           <Sheet>
             <SheetTrigger asChild className="cart md:mx-2 md:my-1">
               <button className="cart">

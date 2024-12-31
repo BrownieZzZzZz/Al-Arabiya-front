@@ -13,7 +13,6 @@ import {
 import ProductCard from "../ProductCard/ProductCard";
 import { useState, useEffect } from "react";
 import { toast } from "@/hooks/use-toast";
-import SkeletonProductCard from "../ProductCard/SkeletonProductCard";
 import HomeSkeletonProductCard from "../ProductCard/HomeSkeletonProductCard";
 
 const FeaturedProducts = ({ ChangeUrl }) => {

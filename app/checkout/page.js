@@ -11,7 +11,13 @@ import {
   SelectValue,
 } from "@/components/ui/select";
 import { toast } from "@/hooks/use-toast";
-import { cn, eventBus, validateEmail, validateNumberInput } from "@/lib/utils";
+import {
+  cn,
+  eventBus,
+  validateEmail,
+  validateNumberInput,
+  cities,
+} from "@/lib/utils";
 
 import Cookies from "js-cookie";
 
@@ -41,33 +47,6 @@ const Page = () => {
   useEffect(() => {
     setLoadingPage(isPending);
   }, [isPending]);
-
-  const cities = [
-    { value: "tunis", text: "تونس" },
-    { value: "ariana", text: "أريانة" },
-    { value: "ben-arous", text: "بن عروس" },
-    { value: "mannouba", text: "منوبة" },
-    { value: "bizerte", text: "بنزرت" },
-    { value: "nabeul", text: "نابل" },
-    { value: "beja", text: "باجة" },
-    { value: "jendouba", text: "جندوبة" },
-    { value: "zaghouan", text: "زغوان" },
-    { value: "siliana", text: "سليانة" },
-    { value: "le-kef", text: "الكاف" },
-    { value: "sousse", text: "سوسة" },
-    { value: "monastir", text: "المنستير" },
-    { value: "mahdia", text: "المهدية" },
-    { value: "kasserine", text: "القصرين" },
-    { value: "sidi-bouzid", text: "سيدي بوزيد" },
-    { value: "kairouan", text: "القيروان" },
-    { value: "gafsa", text: "قفصة" },
-    { value: "sfax", text: "صفاقس" },
-    { value: "gabes", text: "قابس" },
-    { value: "medenine", text: "مدنين" },
-    { value: "tozeur", text: "توزر" },
-    { value: "kebili", text: "قبلي" },
-    { value: "tatouine", text: "تطاوين" },
-  ];
 
   const [items, setItems] = useState({});
 
@@ -326,7 +305,7 @@ const Page = () => {
               type="tel"
               dir="rtl"
               id="phone"
-              placeholder="216+ xxxxxxxx"
+              placeholder="xxxxxxxx"
               className="rounded-sm border border-neutral-300 bg-transparent px-4 py-2 outline-[var(--theme)]"
               required
               ref={phoneRef}
@@ -349,7 +328,7 @@ const Page = () => {
           </div>
         </div>
 
-        <div className="my-10  flex flex-col gap-8 bg-[var(--theme2)] px-6 py-3 shadow-sm drop-shadow-sm">
+        <div className="my-10 flex flex-col gap-8 bg-[var(--theme2)] px-6 py-3 shadow-sm drop-shadow-sm">
           <span className="self-center font-cairo text-2xl font-bold text-neutral-800">
             طلبك
           </span>
