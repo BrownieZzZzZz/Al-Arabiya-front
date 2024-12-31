@@ -172,8 +172,6 @@ const Nav = () => {
       if (pathname.includes("sign") || pathname.includes("reset")) {
         if (Adminsigned) {
           ChangeUrl("/admin/dashboard");
-        } else {
-          ChangeUrl("/admin/sign-in");
         }
       } else {
         if (!Adminsigned) {
@@ -197,11 +195,18 @@ const Nav = () => {
     };
   }, [signed, Adminsigned, loadingUser, loadingAdmin]);
 
-  if (
-    pathname.includes("sign") ||
-    pathname.includes("reset") ||
-    pathname.includes("admin")
-  ) {
+  if (pathname.includes("admin")) {
+    return (
+      <>
+        {(loadingPage || loadingAdmin) && (
+          <div className="fixed inset-0 z-50 flex h-full w-full items-center justify-center bg-white/60 backdrop-blur-sm">
+            <div className="h-14 w-14 animate-spin rounded-full border-b-4 border-[var(--theme)]" />
+          </div>
+        )}
+      </>
+    );
+  }
+  if (pathname.includes("sign") || pathname.includes("reset")) {
     return (
       <>
         {(loadingPage || loadingUser) && (
@@ -269,14 +274,16 @@ const Nav = () => {
                 <i className="fa-solid fa-magnifying-glass text-2xl" />
               </div>
             </DialogTrigger>
-            <DialogContent closeClass="text-neutral-800" className="flex items-center justify-center px-2 py-12">
+            <DialogContent
+              closeClass="text-neutral-800"
+              className="flex items-center justify-center px-2 py-12"
+            >
               <DialogTitle />
               <div className="flex w-full flex-col items-center justify-center gap-4">
                 <div className="text-xl font-semibold text-neutral-500">
                   تريد البحث عن ماذا ؟
                 </div>
                 <div className="flex w-full flex-row items-center gap-2 rounded-md border px-2 py-2">
-
                   <input
                     dir="rtl"
                     placeholder={"ابحث عن منتج "}
