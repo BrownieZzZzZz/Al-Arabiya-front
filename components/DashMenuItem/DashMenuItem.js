@@ -22,7 +22,7 @@ const DashMenuItem = ({
   };
 
   const logout = () => {
-    Cookies.remove("access_token");
+    Cookies.remove("admin_access_token");
     setLoadingPage(true);
     location.href = "/admin/sign-in";
   };
@@ -45,7 +45,7 @@ const DashMenuItem = ({
     >
       <div className="flex flex-row items-center gap-1.5">
         <div className="flex size-[20px] items-center justify-center">
-          <i className={cn("text-[17px]", icon)}/>
+          <i className={cn("text-[17px]", icon)} />
         </div>
 
         <div className="text-lg">{title}</div>
