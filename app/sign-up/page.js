@@ -1,15 +1,25 @@
 "use client";
 import "./page.css";
 
-import { cn, validateEmail } from "@/lib/utils";
+import { cn, validateEmail, cities } from "@/lib/utils";
 import { useState, useEffect, useTransition, useRef } from "react";
 import { useRouter } from "next/navigation";
 import { useToast } from "@/hooks/use-toast";
 import { validateNumberInput } from "@/lib/utils";
+import {
+  Select,
+  SelectContent,
+  SelectGroup,
+  SelectItem,
+  SelectLabel,
+  SelectTrigger,
+  SelectValue,
+} from "@/components/ui/select";
 
 const page = () => {
   const { toast } = useToast();
   const [loading, setLoading] = useState(false);
+  const [selectedCity, setSelectedCity] = useState("");
   const firstNameInput = useRef(null);
   const lastNameInput = useRef(null);
   const addressInput = useRef(null);
@@ -32,6 +42,15 @@ const page = () => {
       toast({
         title: "خطأ",
         description: "الرجاء التحقق من اللقب!",
+        variant: "destructive",
+        duration: 2000,
+      });
+      return;
+    }
+    if (!selectedCity.trim()) {
+      toast({
+        title: "خطأ",
+        description: "الرجاء التحقق من المدينة!",
         variant: "destructive",
         duration: 2000,
       });
@@ -102,6 +121,7 @@ const page = () => {
             password: passwordInput.current.value,
             phone: phoneInput.current.value.trim(),
             address: addressInput.current.value.trim(),
+            city: selectedCity.trim(),
           }),
         },
       );
@@ -234,6 +254,47 @@ const page = () => {
           />
         </label>
 
+        <label
+          className="flex w-full flex-col gap-1.5 hover:cursor-text"
+          htmlFor="address"
+        >
+          <span className="text-[15px] text-[#ffffff]">المدينة</span>
+          {/* <input
+            ref={addressInput}
+            id="address"
+            type="text"
+            placeholder="عنوان السكن "
+            className="outstl w-full rounded-3xl border-0 bg-[#ffffff] px-6 py-3 text-lg outline-yellow-500"
+          /> */}
+          <Select
+            onValueChange={setSelectedCity}
+            value={selectedCity}
+            // className="outstl w-full rounded-3xl border-0 bg-[#ffffff] px-6 py-3 text-lg outline-yellow-500"
+          >
+            <SelectTrigger
+              id="address"
+              dir="rtl"
+              className="outstl h-[46px] w-full rounded-3xl border-0 bg-[#ffffff] px-6 py-3 text-lg outline-yellow-500"
+              // className="border-neutral-300 bg-transparent text-right focus:ring-[var(--theme)]"
+            >
+              <SelectValue dir="rtl" placeholder="اختر المدينة.." />
+            </SelectTrigger>
+            <SelectContent dir="rtl">
+              <SelectGroup dir="rtl">
+                {cities.map((city, index) => (
+                  <SelectItem
+                    dir="rtl"
+                    className="text-right transition-colors duration-150 hover:cursor-pointer focus:bg-zinc-200"
+                    key={index}
+                    value={city.value}
+                  >
+                    {city.text}
+                  </SelectItem>
+                ))}
+              </SelectGroup>
+            </SelectContent>
+          </Select>
+        </label>
         <label
           className="flex w-full flex-col gap-1.5 hover:cursor-text"
           htmlFor="address"

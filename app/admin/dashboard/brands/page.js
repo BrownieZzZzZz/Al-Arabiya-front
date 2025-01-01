@@ -1,7 +1,7 @@
 "use client";
 
 import DashSearch from "@/components/DashSearch/DashSearch";
-import React, { useRef, useState } from "react";
+import React, { useRef, useState, useEffect } from "react";
 import {
   Dialog,
   DialogContent,
@@ -11,16 +11,29 @@ import {
 } from "@/components/ui/dialog";
 import { useToast } from "@/hooks/use-toast";
 import { cn } from "@/lib/utils";
-import Brand from "@/components/Brand/page";
+import Brand from "@/components/Brand/Brand";
+import Cookies from "js-cookie";
+import { Skeleton } from "@/components/ui/skeleton";
 
 const page = () => {
+  const { toast } = useToast();
   const brandRef = useRef(null);
   const imageInput = useRef(null);
   const fileInput = useRef(null);
   const [imageValue, setImageValue] = useState(null);
   const [loaded, setLoaded] = useState(false);
-  const addBrand = () => {
-    if (brandRef.current.value.trim() === "") {
+  const [loadingBrand, setLoadingBrand] = useState(false);
+  const [loadingBrands, setLoadingBrands] = useState(true);
+  const [brands, setBrands] = useState([]);
+  const addDialogClose = useRef(null);
+
+  const addBrand = async () => {
+    console.log("brandRef.current.value.trim()");
+    console.log(brandRef.current.value.trim());
+    console.log("imageInput.current.src.trim()");
+    console.log(imageInput.current.src.trim());
+
+    if (!brandRef.current.value.trim()) {
       toast({
         variant: "destructive",
         title: "خطأ",
@@ -29,7 +42,8 @@ const page = () => {
       });
       return;
     }
-    if (!fileInput.current.files[0]) {
+
+    if (!imageInput.current.src.trim()) {
       toast({
         variant: "destructive",
         title: "خطأ",
@@ -39,31 +53,104 @@ const page = () => {
       return;
     }
 
-    // Check if brand is unique and Add it + confirmation message
+    try {
+      setLoadingBrand(true);
+      const response = await fetch(
+        `${process.env.NEXT_PUBLIC_API_URL}/admins/brand`,
+        {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+            access_token: Cookies.get("admin_access_token"),
+          },
+          body: JSON.stringify({
+            name: brandRef.current.value.trim(),
+            img: imageInput.current.src.trim(),
+          }),
+        },
+      );
+      const data = await response.json();
+      if (data.data == null) {
+        setLoadingBrand(false);
+        if (data.message === "Brand already exists") {
+          toast({
+            title: "خطأ",
+            description: "الماركة موجودة بالفعل",
+            variant: "destructive",
+            duration: 2500,
+          });
+          brandRef.current.value = "";
+
+          return;
+        }
+        throw new Error(data.message);
+      }
+      toast({
+        variant: "success",
+        title: "تم",
+        description: "تم إنشاء الماركة بنجاح",
+        duration: 2000,
+      });
+      fetchBrands();
+      setLoadingBrand(false);
+      addDialogClose.current?.click();
+    } catch (error) {
+      console.error(error);
+      toast({
+        variant: "destructive",
+        title: "خطأ",
+        description: "حدث خطأ أثناء إنشاء الماركة",
+        duration: 2000,
+      });
+      setLoadingBrand(false);
+    }
   };
 
-  const brands = [
-    {
-      title: "Sheglam",
-      img: "/images/brands/sheglam.png",
-    },
-    {
-      title: "Vaseline",
-      img: "/images/brands/vaseline.png",
-    },
-    {
-      title: "Hude Beauty",
-      img: "/images/brands/hudabeauty.png",
-    },
-    {
-      title: "Lattafa",
-      img: "/images/brands/latafa.png",
-    },
-  ];
+  const fetchBrands = async (search = null) => {
+    setLoadingBrands(true);
+    try {
+      const res = await fetch(
+        `${process.env.NEXT_PUBLIC_API_URL}/admins/brand?${search ? `name=${search.trim()}` : ``}&page=1&limit=999`,
+        {
+          method: "GET",
+          headers: {
+            "Content-Type": "application/json",
+            access_token: Cookies.get("admin_access_token"),
+          },
+        },
+      );
+
+      const data = await res.json();
+      if (data.data === null) {
+        throw new Error(data.message);
+      }
+
+      setBrands(data.data.data);
+
+      setLoadingBrands(false);
+    } catch (error) {
+      console.error(error);
+      toast({
+        title: "خطأ",
+        description: "حدث خطأ ما، يرجى المحاولة مرة أخرى!",
+        variant: "destructive",
+      });
+
+      setLoadingBrands(false);
+    }
+    setLoadingBrands(false);
+  };
+
+  useEffect(() => {
+    fetchBrands();
+  }, []);
 
   return (
     <div className="flex w-full flex-col gap-8 px-5 pt-5 md:px-0 md:pl-10 md:pt-8 lg:pl-20 lg:pt-10">
-      <DashSearch placeholder="...Sheglam, Vaseline" />
+      <DashSearch
+        placeholder="...Sheglam, Vaseline"
+        search={(search) => fetchBrands(search)}
+      />
       <div className="grid w-full auto-rows-fr gap-6 min-[500px]:grid-cols-2 xl:grid-cols-3 2xl:grid-cols-4">
         {/* ADD BRAND */}
 
@@ -79,7 +166,7 @@ const page = () => {
                   <div className="mb-1">+</div>
                 </div>
                 <div className="text-center text-xl font-semibold text-neutral-300">
-                  أضف ماركة جديدة{" "}
+                  أضف ماركة جديدة
                 </div>
               </div>
             </div>
@@ -91,10 +178,11 @@ const page = () => {
             <DialogTitle />
             <div className="flex w-full flex-col items-center justify-center gap-4">
               <div className="text-2xl font-semibold text-white">
-                إسم الماركة{" "}
+                إسم الماركة
               </div>
               <input
                 ref={brandRef}
+                disabled={loadingBrand}
                 dir="rtl"
                 type="text"
                 placeholder="Sheglam"
@@ -121,6 +209,7 @@ const page = () => {
                     setLoaded(true);
                   }}
                   ref={fileInput}
+                  disabled={loadingBrand}
                   type="file"
                   accept="image/*"
                   className="hidden"
@@ -138,14 +227,14 @@ const page = () => {
                   <div className="flex h-full w-full flex-col items-center justify-center gap-4">
                     <i className="fa-solid fa-upload text-3xl text-[var(--dash-theme6)]"></i>
                     <span className="text-xl font-semibold text-[var(--dash-theme6)]">
-                      حمل صورة{" "}
+                      حمل صورة
                     </span>
                   </div>
                 )}
               </div>
               <div className="flex w-3/4 flex-col items-center justify-center gap-1 text-center">
                 <span dir="rtl" className="text-lg font-bold text-emerald-500">
-                  ملاحظة{" "}
+                  ملاحظة
                 </span>
                 <span dir="rtl" className="text-lg font-medium text-white">
                   يجب أن تكون الصورة بدون خلفية.
@@ -160,17 +249,42 @@ const page = () => {
                   addBrand();
                 }}
                 type="button"
-                className="w-3/4 rounded-lg bg-[var(--dash-theme6)] p-3 text-xl font-semibold text-white transition-all duration-200 hover:bg-[var(--dash-theme5)]"
+                className={cn(
+                  "w-3/4 rounded-lg bg-[var(--dash-theme6)] p-3 text-xl font-semibold text-white transition-all duration-200 hover:bg-[var(--dash-theme5)]",
+                  loadingBrand
+                    ? "hover:cursor-not-allowed"
+                    : "hover:cursor-pointer",
+                )}
               >
-                أضف ماركة{" "}
+                {loadingBrand ? (
+                  <div className="flex items-center justify-center">
+                    <div className="h-5 w-5 animate-spin rounded-full border-b-2 border-white" />
+                  </div>
+                ) : (
+                  "أضف ماركة"
+                )}
               </button>
             </div>
           </DialogContent>
+          <DialogClose ref={addDialogClose} className="hidden" />
         </Dialog>
 
-        {brands.map((brand, index) => (
-          <Brand key={index} brand={brand} />
-        ))}
+        {loadingBrands
+          ? Array.from({ length: 10 }).map((_, index) => (
+              <div
+                key={index}
+                className="flex h-full w-full items-center justify-center rounded-xl bg-[var(--dash-theme2)] px-4 py-4 text-center text-2xl font-semibold text-neutral-300 transition-all duration-200 hover:scale-[1.02] hover:cursor-pointer hover:bg-[#2c2d33]"
+              >
+                <Skeleton className={"h-7 w-[100px] bg-neutral-200"} />
+              </div>
+            ))
+          : brands.map((brand) => (
+              <Brand
+                key={brand.id}
+                brand={brand}
+                fetchBrands={() => fetchBrands()}
+              />
+            ))}
       </div>
     </div>
   );

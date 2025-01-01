@@ -1,10 +1,19 @@
 "use client";
 
 import { useToast } from "@/hooks/use-toast";
-import { cn, validateEmail, validateNumberInput } from "@/lib/utils";
+import { cn, validateEmail, validateNumberInput, cities } from "@/lib/utils";
 import { useRef, useState, useTransition, useEffect, Suspense } from "react";
 import { useRouter, useSearchParams } from "next/navigation";
 import Cookies from "js-cookie";
+import {
+  Select,
+  SelectContent,
+  SelectGroup,
+  SelectItem,
+  SelectLabel,
+  SelectTrigger,
+  SelectValue,
+} from "@/components/ui/select";
 
 const ProfilePage = () => {
   const searchParams = useSearchParams();
@@ -18,6 +27,7 @@ const ProfilePage = () => {
     full_name: "",
     email: "",
     phone: "",
+    city: "",
     address: "",
     orders: [],
   });
@@ -26,6 +36,7 @@ const ProfilePage = () => {
   const lastNameRef = useRef(null);
   const emailRef = useRef(null);
   const phoneRef = useRef(null);
+  const [selectedCity, setSelectedCity] = useState("");
   const addressRef = useRef(null);
   const passwordRef = useRef(null);
   const confirmPasswordRef = useRef(null);
@@ -92,6 +103,7 @@ const ProfilePage = () => {
         emailRef.current.value = user.email;
         phoneRef.current.value = user.phone;
         addressRef.current.value = user.address;
+        setSelectedCity(user.city);
         setEditText("تعديل");
         return;
       }
@@ -101,6 +113,7 @@ const ProfilePage = () => {
         email: emailRef.current.value.trim(),
         phone: phoneRef.current.value.trim(),
         address: addressRef.current.value.trim(),
+        city: selectedCity,
       };
 
       try {
@@ -261,7 +274,7 @@ const ProfilePage = () => {
       }
 
       setUser(data.data);
-
+      setSelectedCity(data.data.city);
       setLoadingUser(false);
     } catch (error) {
       console.error(error);
@@ -409,6 +422,7 @@ const ProfilePage = () => {
                   onInput={() => validateNumberInput(phoneRef)}
                 />
               </div>
+
               <div className="flex flex-col gap-1">
                 <div className="text-neutral-400">عنوان السكن </div>
                 <input
@@ -425,6 +439,48 @@ const ProfilePage = () => {
                   )}
                   disabled={!isEditing}
                 />
+              </div>
+              <div className="flex flex-col gap-1">
+                <div className="text-neutral-400">المدينة </div>
+
+                <Select
+                  onValueChange={setSelectedCity}
+                  value={selectedCity}
+                  className={cn(
+                    "w-full bg-[var(--theme2)] px-3 py-2 text-lg placeholder-neutral-300 outline-transparent",
+                    !isEditing
+                      ? "hover:cursor-default"
+                      : "outline-[var(--theme)]",
+                  )}
+                  disabled={!isEditing}
+                >
+                  <SelectTrigger
+                    dir="rtl"
+                    className={cn(
+                      "w-full bg-[var(--theme2)] px-3 py-2 text-lg placeholder-neutral-300 outline-transparent",
+                      !isEditing
+                        ? "hover:cursor-default"
+                        : "outline-[var(--theme)]",
+                    )}
+                    // className="border-neutral-300 bg-transparent text-right focus:ring-[var(--theme)]"
+                  >
+                    <SelectValue dir="rtl" placeholder="اختر المدينة.." />
+                  </SelectTrigger>
+                  <SelectContent dir="rtl">
+                    <SelectGroup dir="rtl">
+                      {cities.map((city, index) => (
+                        <SelectItem
+                          dir="rtl"
+                          className="text-right transition-colors duration-150 hover:cursor-pointer focus:bg-zinc-200"
+                          key={index}
+                          value={city.value}
+                        >
+                          {city.text}
+                        </SelectItem>
+                      ))}
+                    </SelectGroup>
+                  </SelectContent>
+                </Select>
               </div>
               <button
                 onClick={() => handleEdit()}

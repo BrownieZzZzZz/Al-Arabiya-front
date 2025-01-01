@@ -76,6 +76,7 @@ const Page = () => {
       phoneRef.current.value = data.data.phone;
       emailRef.current.value = data.data.email;
       addressRef.current.value = data.data.address;
+      setSelectedCity(data.data.city);
     } catch (error) {}
   };
 
