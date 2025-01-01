@@ -358,7 +358,7 @@ const page = () => {
           </div>
           <button onClick={() => {
             handleAddImage();
-          }} type="button" className="w-[200px] py-3 mt-1 text-lg font-semibold transition-all duration-200 bg-[var(--dash-theme5)] border-2 border-[var(--dash-theme5)] text-[#ffffff] hover:bg-transparent hover:text-[var(--dash-theme5)]">
+          }} type="button" className="w-[200px] py-2.5 mt-1 text-lg font-semibold transition-all duration-200 bg-[var(--dash-theme5)] border-2 border-[var(--dash-theme5)] text-[#ffffff] hover:bg-transparent hover:text-[var(--dash-theme5)]">
             أضف الصورة
           </button>
         </div>
