@@ -12,47 +12,47 @@ import React, { useEffect, useState } from "react";
 import ProductCard from "../ProductCard/ProductCard";
 import { Skeleton } from "../ui/skeleton";
 
-const ProductsByBrand = ({ ChangeUrl }) => {
+const ProductsByBrand = ({ ChangeUrl, loading, brands }) => {
   const [selectedBrand, setSelectedBrand] = useState(0);
   const [loadingProducts, setLoadingProducts] = useState(true);
   const [limitBrands, setLimitBrands] = useState(4);
   const [limitProducts, setLimitProducts] = useState(8);
-  const [loadingBrands, setLoadingBrands] = useState(true);
+  // const [loading, setLoadingBrands] = useState(true);
 
-  const [brands, setBrands] = useState([]);
+  // const [brands, setBrands] = useState([]);
 
   const [products, setProducts] = useState([]);
 
-  const fetchBrands = async () => {
-    setLoadingBrands(true);
-    try {
-      const res = await fetch(
-        `${process.env.NEXT_PUBLIC_API_URL}/brand?page=1&limit=${limitBrands}`,
-        {
-          method: "GET",
-        },
-      );
+  // const fetchBrands = async () => {
+  //   setLoadingBrands(true);
+  //   try {
+  //     const res = await fetch(
+  //       `${process.env.NEXT_PUBLIC_API_URL}/brand?page=1&limit=${limitBrands}`,
+  //       {
+  //         method: "GET",
+  //       },
+  //     );
 
-      const data = await res.json();
-      if (data.data === null) {
-        throw new Error(data.message);
-      }
+  //     const data = await res.json();
+  //     if (data.data === null) {
+  //       throw new Error(data.message);
+  //     }
 
-      setBrands(data.data.data);
+  //     setBrands(data.data.data);
 
-      setLoadingBrands(false);
-    } catch (error) {
-      console.error(error);
-      toast({
-        title: "خطأ",
-        description: "حدث خطأ ما، يرجى المحاولة مرة أخرى!",
-        variant: "destructive",
-      });
+  //     setLoadingBrands(false);
+  //   } catch (error) {
+  //     console.error(error);
+  //     toast({
+  //       title: "خطأ",
+  //       description: "حدث خطأ ما، يرجى المحاولة مرة أخرى!",
+  //       variant: "destructive",
+  //     });
 
-      setLoadingBrands(false);
-    }
-    setLoadingBrands(false);
-  };
+  //     setLoadingBrands(false);
+  //   }
+  //   setLoadingBrands(false);
+  // };
 
   const fetchProducts = async () => {
     setLoadingProducts(true);
@@ -85,14 +85,14 @@ const ProductsByBrand = ({ ChangeUrl }) => {
   };
 
   useEffect(() => {
-    if (!loadingBrands) {
+    if (!loading) {
       fetchProducts();
     }
-  }, [loadingBrands, selectedBrand]);
+  }, [loading, selectedBrand]);
 
-  useEffect(() => {
-    fetchBrands();
-  }, []);
+  // useEffect(() => {
+  //   fetchBrands();
+  // }, []);
   return (
     <section className="mx-4 mt-20">
       <div className="mb-7 flex w-full flex-col items-center justify-center gap-2 self-center">
@@ -105,7 +105,7 @@ const ProductsByBrand = ({ ChangeUrl }) => {
         </div>
 
         <div className="mt-5 flex w-full flex-shrink-0 flex-row items-center gap-6 overflow-x-auto pb-4 min-[700px]:justify-center">
-          {loadingBrands
+          {loading
             ? Array.from({ length: limitBrands }).map((_, index) => (
                 <div
                   className={cn(

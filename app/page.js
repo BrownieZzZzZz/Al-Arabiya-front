@@ -5,15 +5,21 @@ import Hero from "@/components/Hero/Hero";
 import LookingFor from "@/components/LookingFor/LookingFor";
 import ProductsByBrand from "@/components/ProductsByBrand/ProductsByBrand";
 import SpecialOffers from "@/components/SpecialOffers/SpecialOffers";
+import ProductsByCategory from "@/components/ProductsByCategory/ProductsByCategory";
+
+import { toast } from "@/hooks/use-toast";
 
 import { useState, useEffect, useTransition } from "react";
 import { useRouter } from "next/navigation";
-import ProductsByCategory from "@/components/ProductsByCategory/ProductsByCategory";
 
 export default function Home() {
   const router = useRouter();
   const [isPending, startTransition] = useTransition();
   const [loadingPage, setLoadingPage] = useState(false);
+  const [loading, setLoading] = useState(true);
+  const [brands, setBrands] = useState([]);
+  const [categories, setCategories] = useState([]);
+  const [products, setProducts] = useState([]);
 
   useEffect(() => {
     setLoadingPage(isPending);
@@ -24,6 +30,41 @@ export default function Home() {
       router.push(url, options);
     });
   };
+
+  const fetchData = async () => {
+    try {
+      setLoading(true);
+      const res = await fetch(
+        `${process.env.NEXT_PUBLIC_API_URL}/customization`,
+        {
+          method: "GET",
+        },
+      );
+
+      const data = await res.json();
+      if (data.data === null) {
+        throw new Error(data.message);
+      }
+      setLoading(false);
+
+      setProducts(data.data.featuredProducts);
+      setBrands(data.data.brands);
+      setCategories(data.data.categories);
+    } catch (error) {
+      setLoading(false);
+
+      console.error(error);
+      toast({
+        title: "خطأ",
+        description: "حدث خطأ ما، يرجى المحاولة مرة أخرى!",
+        variant: "destructive",
+      });
+    }
+  };
+
+  useEffect(() => {
+    fetchData();
+  }, []);
   return (
     <div className="mx-auto flex w-full flex-col">
       {loadingPage && (
@@ -40,6 +81,8 @@ export default function Home() {
         ChangeUrl={(url, options = {}) => {
           ChangeUrl(url, options);
         }}
+        loading={loading}
+        products={products}
       />
       <SpecialOffers
         ChangeUrl={(url, options = {}) => {
@@ -50,6 +93,8 @@ export default function Home() {
         ChangeUrl={(url, options = {}) => {
           ChangeUrl(url, options);
         }}
+        loading={loading}
+        brands={brands}
       />
       <LookingFor
         ChangeUrl={(url, options = {}) => {
@@ -60,6 +105,8 @@ export default function Home() {
         ChangeUrl={(url, options = {}) => {
           ChangeUrl(url, options);
         }}
+        loading={loading}
+        categories={categories}
       />
     </div>
   );
