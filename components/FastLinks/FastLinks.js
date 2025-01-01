@@ -1,5 +1,6 @@
 "use client";
 
+import { cn } from "@/lib/utils";
 import "./FastLinks.css";
 
 import { usePathname } from "next/navigation";
@@ -39,7 +40,7 @@ const FastLinks = () => {
           handleScroll();
         }}
       >
-        <i className="fa-solid fa-chevron-up text-[var(--theme)]"/>
+        <i className={cn("fa-solid fa-chevron-up text-[var(--theme)]")}/>
       </div>
     </div>
   );
