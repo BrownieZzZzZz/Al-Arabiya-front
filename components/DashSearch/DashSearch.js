@@ -30,7 +30,7 @@ const DashSearch = ({ placeholder, search }) => {
         <input
           id="search"
           type="text"
-          className="w-full bg-transparent text-[17px] font-semibold text-neutral-200 placeholder-neutral-400 placeholder-opacity-50 outline-none"
+          className="w-full bg-transparent text-[17px] font-semibold text-neutral-200 placeholder-neutral-500 outline-none"
           placeholder={placeholder}
           ref={searchRef}
         />

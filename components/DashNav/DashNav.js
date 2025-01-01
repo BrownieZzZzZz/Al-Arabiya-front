@@ -44,6 +44,7 @@ const DashNav = () => {
             <i className="fa-solid fa-bars-staggered text-2xl text-white"/>
           </SheetTrigger>
           <SheetContent
+            closeClass="text-white"
             side="right"
             className="w-[250px] border-transparent bg-[var(--dash-theme)]"
           >

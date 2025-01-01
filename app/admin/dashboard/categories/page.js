@@ -126,7 +126,7 @@ const page = () => {
     fetchCategories();
   }, []);
   return (
-    <div className="flex w-full flex-col gap-8 px-5 pt-5 md:px-0 md:pl-10 md:pt-8 lg:pl-20 lg:pt-10">
+    <div className="flex w-full flex-col gap-8 px-5 pt-5 md:px-0 md:pl-10 md:pt-8 lg:pl-20 lg:pt-10 pb-10">
       <DashSearch
         placeholder="العناية بالشعر، المكياج..."
         search={(search) => fetchCategories(search)}
