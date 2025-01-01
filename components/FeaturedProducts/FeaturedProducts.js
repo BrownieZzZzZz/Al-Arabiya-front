@@ -15,44 +15,44 @@ import { useState, useEffect } from "react";
 import { toast } from "@/hooks/use-toast";
 import HomeSkeletonProductCard from "../ProductCard/HomeSkeletonProductCard";
 
-const FeaturedProducts = ({ ChangeUrl }) => {
-  const [loadingProducts, setLoadingProducts] = useState(true);
+const FeaturedProducts = ({ ChangeUrl, loading, products }) => {
+  // const [loading, setLoadingProducts] = useState(true);
   const [limit, setLimit] = useState(8);
-  const [products, setProducts] = useState([]);
+  // const [products, setProducts] = useState([]);
 
-  const fetchProducts = async () => {
-    setLoadingProducts(true);
-    try {
-      const res = await fetch(
-        `${process.env.NEXT_PUBLIC_API_URL}/product/mostpopular?page=1&limit=${limit}`,
-        {
-          method: "GET",
-        },
-      );
+  // const fetchProducts = async () => {
+  //   setLoadingProducts(true);
+  //   try {
+  //     const res = await fetch(
+  //       `${process.env.NEXT_PUBLIC_API_URL}/product/mostpopular?page=1&limit=${limit}`,
+  //       {
+  //         method: "GET",
+  //       },
+  //     );
 
-      const data = await res.json();
-      if (data.data === null) {
-        throw new Error(data.message);
-      }
+  //     const data = await res.json();
+  //     if (data.data === null) {
+  //       throw new Error(data.message);
+  //     }
 
-      setProducts(data.data.data);
+  //     setProducts(data.data.data);
 
-      setLoadingProducts(false);
-    } catch (error) {
-      console.error(error);
-      toast({
-        title: "خطأ",
-        description: "حدث خطأ ما، يرجى المحاولة مرة أخرى!",
-        variant: "destructive",
-      });
+  //     setLoadingProducts(false);
+  //   } catch (error) {
+  //     console.error(error);
+  //     toast({
+  //       title: "خطأ",
+  //       description: "حدث خطأ ما، يرجى المحاولة مرة أخرى!",
+  //       variant: "destructive",
+  //     });
 
-      setLoadingProducts(false);
-    }
-  };
+  //     setLoadingProducts(false);
+  //   }
+  // };
 
-  useEffect(() => {
-    fetchProducts();
-  }, []);
+  // useEffect(() => {
+  //   fetchProducts();
+  // }, []);
   return (
     <section className="mx-4 mt-20">
       <div className="mb-7 flex w-full flex-col items-center justify-center gap-2 self-center">
@@ -73,7 +73,7 @@ const FeaturedProducts = ({ ChangeUrl }) => {
             }}
           >
             <CarouselContent className="-ml-1">
-              {loadingProducts
+              {loading
                 ? Array.from({ length: limit }).map((_, index) => (
                     <CarouselItem
                       key={index}

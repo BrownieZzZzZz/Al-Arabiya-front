@@ -37,6 +37,7 @@ const Page = () => {
   const [selectedCity, setSelectedCity] = useState("");
   const [user, setUser] = useState({});
   const [totalPrice, setTotalPrice] = useState({});
+  const [deliveryPrice, setDeliveryPrice] = useState(0);
 
   const ChangeUrl = (url) => {
     startTransition(() => {
@@ -156,6 +157,7 @@ const Page = () => {
       email: emailRef.current.value.trim(),
       phone: phoneRef.current.value.trim(),
       address: addressRef.current.value.trim(),
+      deliveryPrice,
       city: selectedCity,
       cart: cart,
       created_At: new Date(),
@@ -211,6 +213,35 @@ const Page = () => {
   useEffect(() => {
     setItems(JSON.parse(localStorage.getItem("cart") || "{}"));
     checkUser();
+  }, []);
+
+  const fetchDelivery = async () => {
+    try {
+      const res = await fetch(
+        `${process.env.NEXT_PUBLIC_API_URL}/customization`,
+        {
+          method: "GET",
+        },
+      );
+
+      const data = await res.json();
+      if (data.data === null) {
+        throw new Error(data.message);
+      }
+
+      setDeliveryPrice(data.data.deliveryPrice);
+    } catch (error) {
+      console.error(error);
+      toast({
+        title: "خطأ",
+        description: "حدث خطأ ما، يرجى المحاولة مرة أخرى!",
+        variant: "destructive",
+      });
+    }
+  };
+
+  useEffect(() => {
+    fetchDelivery();
   }, []);
   return (
     <div
@@ -370,7 +401,7 @@ const Page = () => {
                 </span>
                 <div className="flex flex-col gap-4 text-right text-neutral-600">
                   <font className="font-bold text-[var(--theme)]" dir="ltr">
-                    7DT
+                    {deliveryPrice}DT
                   </font>
                 </div>
               </div>
@@ -395,7 +426,7 @@ const Page = () => {
                     className="font-cairo text-2xl font-bold text-[var(--theme)]"
                     dir="ltr"
                   >
-                    {sumValues(totalPrice) + 7}DT
+                    {sumValues(totalPrice) + deliveryPrice}DT
                   </span>
                 </div>
               </div>
