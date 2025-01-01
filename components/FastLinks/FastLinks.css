@@ -5,7 +5,7 @@
   height: 50px;
   width: 50px;
   border-radius: 50%;
-  background: #fafafa;
+  /* background: #fafafa; */
   display: flex;
   justify-content: center;
   align-items: center;

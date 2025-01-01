@@ -34,13 +34,13 @@ const FastLinks = () => {
   return (
     <div>
       <div
-        className="gotop bottom-5 left-10 z-10"
+        className={cn("gotop bottom-5 left-10 z-10", pathname.includes("dashboard") ? "bg-[var(--dash-theme5)]" : "bg-[#fafafa]")}
         ref={Go_Top}
         onClick={() => {
           handleScroll();
         }}
       >
-        <i className={cn("fa-solid fa-chevron-up text-[var(--theme)]")}/>
+        <i className={cn("fa-solid fa-chevron-up", pathname.includes("dashboard") ? "text-[var(--dash-theme)]" : "text-[var(--theme)]")}/>
       </div>
     </div>
   );
