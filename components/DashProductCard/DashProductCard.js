@@ -6,7 +6,7 @@ const DashProductCard = ({ product, ChangeUrl }) => {
       onClick={() => {
         ChangeUrl(`/admin/dashboard/products/${product.id}`);
       }}
-      className="mx-auto flex w-full max-w-sm select-none flex-col overflow-hidden rounded-lg bg-[var(--dash-theme2)] shadow-md transition-all duration-200 hover:scale-[1.03] hover:cursor-pointer"
+      className="mx-auto flex w-full max-w-[500px] select-none flex-col overflow-hidden rounded-lg bg-[var(--dash-theme2)] shadow-md transition-all duration-200 hover:scale-[1.03] hover:cursor-pointer"
     >
       <div className="relative overflow-hidden">
         <img

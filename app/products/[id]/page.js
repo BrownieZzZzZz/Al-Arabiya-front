@@ -147,7 +147,7 @@ const page = () => {
     >
       {loadingPage && (
         <div className="fixed inset-0 z-50 flex h-full w-full items-center justify-center bg-white/60 backdrop-blur-sm">
-          <div className="h-14 w-14 animate-spin rounded-full border-b-4 border-[var(--theme)]"/>
+          <div className="h-14 w-14 animate-spin rounded-full border-b-4 border-[var(--theme)]" />
         </div>
       )}
       <div className="relative mx-5 flex w-full justify-center gap-6 max-md:flex-col max-md:items-center lg:gap-12">
@@ -189,7 +189,7 @@ const page = () => {
                     : "hover:cursor-pointer",
                 )}
               >
-                <i className="fa-solid fa-chevron-right text-xl text-neutral-900"/>
+                <i className="fa-solid fa-chevron-right text-xl text-neutral-900" />
               </div>
               <div
                 onClick={() => {
@@ -205,14 +205,14 @@ const page = () => {
                     : "hover:cursor-pointer",
                 )}
               >
-                <i className="fa-solid fa-chevron-left text-xl text-neutral-900"/>
+                <i className="fa-solid fa-chevron-left text-xl text-neutral-900" />
               </div>
             </div>
           </div>
           <div
             dir="ltr"
             className={cn(
-              "images-scroll flex gap-3 lg:px-3 lg:py-2 max-lg:px-2 max-lg:h-full max-lg:w-full max-lg:max-w-[600px] max-lg:overflow-x-auto max-lg:py-3 lg:h-[600px] lg:w-full lg:max-w-[110px] lg:flex-col lg:overflow-y-auto",
+              "images-scroll flex gap-3 max-lg:h-full max-lg:w-full max-lg:max-w-[600px] max-lg:overflow-x-auto max-lg:px-2 max-lg:py-3 lg:h-[600px] lg:w-full lg:max-w-[110px] lg:flex-col lg:overflow-y-auto lg:px-3 lg:py-2",
               !loadingPage ? "" : "lg:px-3",
             )}
           >
@@ -226,7 +226,7 @@ const page = () => {
                       key={index}
                       className="size-full rounded-sm bg-neutral-300"
                     />
-                    <div className="absolute left-0 top-0 z-10 h-[75px] w-[75px] rounded-sm bg-transparent opacity-20 shadow-md transition-all duration-200 hover:cursor-pointer"/>
+                    <div className="absolute left-0 top-0 z-10 h-[75px] w-[75px] rounded-sm bg-transparent opacity-20 shadow-md transition-all duration-200 hover:cursor-pointer" />
                   </div>
                 ))
               : product.img.map((image, index) => (
@@ -371,23 +371,34 @@ const page = () => {
               >{`${product.normalMultiPrice} DT`}</div>
             )}
           </div>
-          <div className="my-2 h-[1px] w-full bg-neutral-500"/>
+          <div className="my-2 h-[1px] w-full bg-neutral-500" />
+          {loadingProduct ? (
+            <Skeleton className={"h-6 w-[200px] bg-neutral-300"} />
+          ) : product.in_Stock ? (
+            <div className="-mb-2 font-medium text-emerald-500">
+              منتج متوفر{" "}
+            </div>
+          ) : (
+            <div className="-mb-2 font-medium text-red-500">
+              منتج غير متوفر{" "}
+            </div>
+          )}
           <div className="text-2xl font-bold text-neutral-900">كمية:</div>
 
           <div className="flex flex-row items-center gap-2">
             <div className="flex flex-row items-center gap-4">
               <div
                 onClick={() => {
-                  if (loadingProduct) {
+                  if (loadingProduct || !product.in_Stock) {
                     return;
                   }
                   decreaseProductNumber();
                 }}
                 className={cn(
-                  "group grid size-[50px] place-items-center border-2 border-neutral-700 bg-transparent shadow-md transition-all duration-200 active:scale-90",
-                  loadingProduct
+                  "group grid size-[50px] place-items-center border-2 border-neutral-700 bg-transparent shadow-md transition-all duration-200",
+                  loadingProduct || !product.in_Stock
                     ? "hover:cursor-not-allowed"
-                    : "hover:cursor-pointer hover:border-transparent hover:bg-neutral-700",
+                    : "hover:cursor-pointer hover:border-transparent active:scale-90 hover:bg-neutral-700",
                 )}
               >
                 {loadingProduct ? (
@@ -395,7 +406,14 @@ const page = () => {
                     <div className="h-5 w-5 animate-spin rounded-full border-b-2 border-neutral-700" />
                   </div>
                 ) : (
-                  <i className="fa-solid fa-minus text-xl text-neutral-700 transition-all duration-200 group-hover:text-white" />
+                  <i
+                    className={cn(
+                      "fa-solid fa-minus text-xl text-neutral-700 transition-all duration-200",
+                      loadingProduct || !product.in_Stock
+                        ? ""
+                        : "group-hover:text-white",
+                    )}
+                  />
                 )}
               </div>
               <div className="w-4 text-center text-2xl font-semibold text-neutral-700">
@@ -403,16 +421,16 @@ const page = () => {
               </div>
               <div
                 onClick={() => {
-                  if (loadingProduct) {
+                  if (loadingProduct || !product.in_Stock) {
                     return;
                   }
                   increaseProductNumber();
                 }}
                 className={cn(
-                  "group grid size-[50px] place-items-center border-2 border-neutral-700 bg-transparent shadow-md transition-all duration-200 active:scale-90",
-                  loadingProduct
+                  "group grid size-[50px] place-items-center border-2 border-neutral-700 bg-transparent shadow-md transition-all duration-200",
+                  loadingProduct || !product.in_Stock
                     ? "hover:cursor-not-allowed"
-                    : "hover:cursor-pointer hover:border-transparent hover:bg-neutral-700",
+                    : "hover:cursor-pointer hover:border-transparent hover:bg-neutral-700 active:scale-90",
                 )}
               >
                 {loadingProduct ? (
@@ -420,7 +438,14 @@ const page = () => {
                     <div className="h-5 w-5 animate-spin rounded-full border-b-2 border-neutral-700" />
                   </div>
                 ) : (
-                  <i className="fa-solid fa-plus duration-20 text-xl text-neutral-700 transition-all group-hover:text-white" />
+                  <i
+                    className={cn(
+                      "fa-solid fa-plus duration-20 text-xl text-neutral-700 transition-all",
+                      loadingProduct || !product.in_Stock
+                        ? ""
+                        : "group-hover:text-white",
+                    )}
+                  />
                 )}
               </div>
             </div>
@@ -443,16 +468,16 @@ const page = () => {
           </div>
           <button
             onClick={() => {
-              if (loadingProduct) {
+              if (loadingProduct || !product.in_Stock) {
                 return;
               }
               handleAddToCart();
             }}
             className={cn(
-              "mt-2 w-full border-2 border-transparent bg-neutral-700 py-3 text-2xl font-semibold text-[#ffffff] transition-all duration-200 active:scale-95",
-              loadingProduct
+              "mt-2 w-full border-2 border-transparent bg-neutral-700 py-3 text-2xl font-semibold text-[#ffffff] transition-all duration-200",
+              loadingProduct || !product.in_Stock
                 ? "hover:cursor-not-allowed"
-                : "hover:cursor-pointer hover:border-neutral-700 hover:bg-transparent hover:text-neutral-700",
+                : "hover:cursor-pointer hover:border-neutral-700 hover:bg-transparent active:scale-95 hover:text-neutral-700",
             )}
           >
             {loadingProduct ? (
@@ -465,16 +490,16 @@ const page = () => {
           </button>
           <button
             onClick={() => {
-              if (loadingProduct) {
+              if (loadingProduct || !product.in_Stock) {
                 return;
               }
               handleBuyDirectly();
             }}
             className={cn(
-              "w-full border-2 border-transparent bg-neutral-700 py-3 text-2xl font-semibold text-[#ffffff] transition-all duration-200 active:scale-95",
-              loadingProduct
+              "w-full border-2 border-transparent bg-neutral-700 py-3 text-2xl font-semibold text-[#ffffff] transition-all duration-200",
+              loadingProduct || !product.in_Stock
                 ? "hover:cursor-not-allowed"
-                : "hover:cursor-pointer hover:border-neutral-700 hover:bg-transparent hover:text-neutral-700",
+                : "hover:cursor-pointer hover:border-neutral-700 hover:bg-transparent active:scale-95 hover:text-neutral-700",
             )}
           >
             {loadingProduct ? (

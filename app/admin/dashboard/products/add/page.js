@@ -27,12 +27,12 @@ const page = () => {
     categoryOption = option;
   };
   const handleAddImage = () => {
-    if(!fileInput.current.files[0] || !loaded){
+    if (!fileInput.current.files[0] || !loaded) {
       toast({
-        title:"خطأ",
+        title: "خطأ",
         variant: "destructive",
-        description: "يجب عليك اختيار صورة"
-      })
+        description: "يجب عليك اختيار صورة",
+      });
       return;
     }
     const file = fileInput.current.files[0];
@@ -43,7 +43,7 @@ const page = () => {
     reader.readAsDataURL(file);
     setImageNumber(imageNumber + 1);
     setLoaded(false);
-  }
+  };
   const nameRef = useRef(null);
   const descRef = useRef(null);
   const normalSinglePriceRef = useRef(null);
@@ -53,92 +53,97 @@ const page = () => {
   const soldMultiPriceRef = useRef(null);
 
   const handleAddProduct = () => {
-    if(nameRef.current.value.trim() === ""){
+    if (nameRef.current.value.trim() === "") {
       toast({
-        title:"خطأ",
+        title: "خطأ",
         variant: "destructive",
-        description: "يجب عليك كتابة اسم المنتج"
+        description: "يجب عليك كتابة اسم المنتج",
       });
       return;
     }
-    if(descRef.current.value.trim() === ""){
+    if (descRef.current.value.trim() === "") {
       toast({
-        title:"خطأ",
+        title: "خطأ",
         variant: "destructive",
-        description: "يجب عليك كتابة وصف المنتج"
+        description: "يجب عليك كتابة وصف المنتج",
       });
       return;
     }
-    if(normalSinglePriceRef.current.value.trim() === ""){ // Here do REGEX check maybe? for correct price format
+    if (normalSinglePriceRef.current.value.trim() === "") {
+      // Here do REGEX check maybe? for correct price format
       toast({
-        title:"خطأ",
+        title: "خطأ",
         variant: "destructive",
-        description: "يجب عليك كتابة سعر المنتج العادي بالتفصيل"
+        description: "يجب عليك كتابة سعر المنتج العادي بالتفصيل",
       });
       return;
     }
-    if(normalMultiPriceRef.current.value.trim() === ""){ // Here do REGEX check maybe? for correct price format
+    if (normalMultiPriceRef.current.value.trim() === "") {
+      // Here do REGEX check maybe? for correct price format
       toast({
-        title:"خطأ",
+        title: "خطأ",
         variant: "destructive",
-        description: "يجب عليك كتابة سعر المنتج العادي بالجملة"
+        description: "يجب عليك كتابة سعر المنتج العادي بالجملة",
       });
       return;
     }
-    if(onSold){
-      if(soldPercentageRef.current.value.trim() === ""){ // Here do REGEX check maybe? for correct percentage format
+    if (onSold) {
+      if (soldPercentageRef.current.value.trim() === "") {
+        // Here do REGEX check maybe? for correct percentage format
         toast({
-          title:"خطأ",
+          title: "خطأ",
           variant: "destructive",
-          description: "يجب عليك كتابة نسبة التخفيض"
+          description: "يجب عليك كتابة نسبة التخفيض",
         });
         return;
       }
-      if(soldSinglePriceRef.current.value.trim() === ""){ // Here do REGEX check maybe? for correct price format
+      if (soldSinglePriceRef.current.value.trim() === "") {
+        // Here do REGEX check maybe? for correct price format
         toast({
-          title:"خطأ",
+          title: "خطأ",
           variant: "destructive",
-          description: "يجب عليك كتابة سعر المنتج بالتفصيل بعد التخفيض"
+          description: "يجب عليك كتابة سعر المنتج بالتفصيل بعد التخفيض",
         });
         return;
       }
-      if(soldMultiPriceRef.current.value.trim() === ""){ // Here do REGEX check maybe? for correct price format
+      if (soldMultiPriceRef.current.value.trim() === "") {
+        // Here do REGEX check maybe? for correct price format
         toast({
-          title:"خطأ",
+          title: "خطأ",
           variant: "destructive",
-          description: "يجب عليك كتابة سعر المنتج بالجملة بعد التخفيض"
+          description: "يجب عليك كتابة سعر المنتج بالجملة بعد التخفيض",
         });
         return;
       }
     }
-    if(brandOption === "إختر ماركة"){
+    if (brandOption === "إختر ماركة") {
       toast({
-        title:"خطأ",
+        title: "خطأ",
         variant: "destructive",
-        description: "يجب عليك اختيار ماركة المنتج"
+        description: "يجب عليك اختيار ماركة المنتج",
       });
       return;
     }
-    if(categoryOption === "إختر فئة"){
+    if (categoryOption === "إختر فئة") {
       toast({
-        title:"خطأ",
+        title: "خطأ",
         variant: "destructive",
-        description: "يجب عليك اختيار فئة المنتج"
+        description: "يجب عليك اختيار فئة المنتج",
       });
       return;
     }
-    if(images.length === 0){
+    if (images.length === 0) {
       toast({
-        title:"خطأ",
+        title: "خطأ",
         variant: "destructive",
-        description: "يجب عليك اختيار صورة واحدة على الأقل"
+        description: "يجب عليك اختيار صورة واحدة على الأقل",
       });
       return;
     }
     toast({
-      title:"تم",
+      title: "تم",
       variant: "success",
-      description: "تمت عملية إضافة المنتج بنجاح"
+      description: "تمت عملية إضافة المنتج بنجاح",
     });
 
     // DO BACKEND LOGIC HERE
@@ -159,8 +164,8 @@ const page = () => {
     setImageValue(null);
     brandOption = "إختر ماركة";
     categoryOption = "إختر فئة";
-  }
-  
+  };
+
   return (
     <div className="flex w-full flex-col items-center gap-10 px-5 pb-10 pt-5 md:px-0 md:pl-10 md:pt-8 lg:pl-20 lg:pt-10">
       <div className="text-4xl font-bold text-[var(--dash-theme5)]">
@@ -319,7 +324,7 @@ const page = () => {
               fileInput.current.click();
             }}
             className={cn(
-              "relative flex h-[300px] max-w-[300px] w-full items-center justify-center rounded-lg border-[var(--dash-theme5)] hover:cursor-pointer",
+              "relative flex h-[300px] w-full max-w-[300px] items-center justify-center rounded-lg border-[var(--dash-theme5)] hover:cursor-pointer",
               loaded ? "border-0" : "border-4 border-dashed",
             )}
           >
@@ -356,9 +361,13 @@ const page = () => {
               </div>
             )}
           </div>
-          <button onClick={() => {
-            handleAddImage();
-          }} type="button" className="w-[200px] py-2.5 mt-1 text-lg font-semibold transition-all duration-200 bg-[var(--dash-theme5)] border-2 border-[var(--dash-theme5)] text-[#ffffff] hover:bg-transparent hover:text-[var(--dash-theme5)]">
+          <button
+            onClick={() => {
+              handleAddImage();
+            }}
+            type="button"
+            className="mt-1 w-[200px] border-2 border-[var(--dash-theme5)] bg-[var(--dash-theme5)] py-2.5 text-lg font-semibold text-[#ffffff] transition-all duration-200 hover:bg-transparent hover:text-[var(--dash-theme5)]"
+          >
             أضف الصورة
           </button>
         </div>
@@ -368,12 +377,24 @@ const page = () => {
             <div className="text-lg font-semibold text-[var(--dash-theme5)]">
               صورة رقم {index + 1}
             </div>
-            <img src={image} key={index} className="object-cover h-[300px] w-[300px] rounded-lg"/>
+            <img
+              src={image}
+              key={index}
+              className="h-[300px] w-[300px] rounded-lg object-cover"
+            />
           </div>
         ))}
       </div>
-      <div className="flex w-full max-w-[800px] -mt-8 sm:pr-10 pr-4">
-      <button onClick={() => {handleAddProduct()}} type="button" className="self-start w-[200px] py-3 mt-8 text-lg font-semibold transition-all duration-200 bg-[var(--dash-theme6)] text-[#ffffff] hover:bg-[var(--dash-theme5)]">أضف المنتج </button>
+      <div className="-mt-8 flex w-full max-w-[800px] pr-4 sm:pr-10">
+        <button
+          onClick={() => {
+            handleAddProduct();
+          }}
+          type="button"
+          className="mt-8 w-[200px] self-start bg-[var(--dash-theme6)] py-3 text-lg font-semibold text-[#ffffff] transition-all duration-200 hover:bg-[var(--dash-theme5)]"
+        >
+          أضف المنتج{" "}
+        </button>
       </div>
     </div>
   );

@@ -34,7 +34,7 @@ const FastLinks = () => {
   return (
     <div>
       <div
-        className={cn("gotop bottom-5 left-10 z-10", pathname.includes("dashboard") ? "bg-[var(--dash-theme5)]" : "bg-[#fafafa]")}
+        className={cn("gotop bottom-5 left-4 sm:left-10 z-10", pathname.includes("dashboard") ? "bg-[var(--dash-theme5)]" : "bg-[#fafafa]")}
         ref={Go_Top}
         onClick={() => {
           handleScroll();
