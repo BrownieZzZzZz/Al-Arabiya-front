@@ -19,6 +19,11 @@ const DashMenu = ({ closeButton, ChangeUrl, setLoadingPage }) => {
       icon: "fa-regular fa-user",
     },
     {
+      title: "الطلبات",
+      path: "/orders",
+      icon: "fa-solid fa-shopping-cart"
+    },
+    {
       title: "منتجات",
       path: "/products",
       icon: "fa-solid fa-layer-group",
