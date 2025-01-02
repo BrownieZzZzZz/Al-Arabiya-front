@@ -39,6 +39,11 @@ const DashMenu = ({ closeButton, ChangeUrl, setLoadingPage }) => {
       icon: "fa-solid fa-sliders",
     },
     {
+      title: "المستخدمين",
+      path: "/users",
+      icon: "fa-solid fa-users",
+    },
+    {
       title: "الخروج",
       path: "/sign-in",
       icon: "fa-solid fa-arrow-right-from-bracket",
