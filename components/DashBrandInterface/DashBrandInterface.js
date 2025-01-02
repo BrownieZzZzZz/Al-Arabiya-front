@@ -11,35 +11,30 @@ import {
 } from "@/components/ui/select";
 
 const DashBrandInterface = ({ values, changeBrandOption }) => {
-    let optionParam =  "إختر ماركة";
-  
-    const [value, setValue] = useState(optionParam);
-    useEffect(() => {
-      changeBrandOption(value);
-    }, [value]);
-    useEffect(() => {
-      setValue(optionParam);
-    }, [optionParam]);
-  
-    return (
-      <div>
-        <Select key={123} value={value} onValueChange={setValue} dir="rtl">
-          <SelectTrigger className="w-[180px] bg-[var(--dash-theme)] text-white border-none focus:ring-[var(--dash-theme6)]">
-            <SelectValue />
-          </SelectTrigger>
-          <SelectContent>
-            <SelectGroup>
-              <SelectItem value={"إختر ماركة"}>إختر ماركة </SelectItem>
-              {values.map((value, index) => (
-                <SelectItem key={index} value={value.name}>
-                  {value.name}
-                </SelectItem>
-              ))}
-            </SelectGroup>
-          </SelectContent>
-        </Select>
-      </div>
-    );
-}
+  const [value, setValue] = useState("");
 
-export default DashBrandInterface
+  useEffect(() => {
+    changeBrandOption(value);
+  }, [value]);
+
+  return (
+    <div>
+      <Select value={value} onValueChange={setValue} dir="rtl">
+        <SelectTrigger className="w-[180px] border-none bg-[var(--dash-theme)] text-white focus:ring-[var(--dash-theme6)]">
+          <SelectValue placeholder="إختر ماركة " />
+        </SelectTrigger>
+        <SelectContent>
+          <SelectGroup>
+            {values.map((value, index) => (
+              <SelectItem key={index} value={value.id}>
+                {value.name}
+              </SelectItem>
+            ))}
+          </SelectGroup>
+        </SelectContent>
+      </Select>
+    </div>
+  );
+};
+
+export default DashBrandInterface;

@@ -17,7 +17,7 @@ import {
 
 const ProfilePage = () => {
   const searchParams = useSearchParams();
-  const [loadingPage, setLoadingPage] = useState(true);
+  const [loadingPage, setLoadingPage] = useState(false);
   const [isPending, startTransition] = useTransition();
   const [loadingUser, setLoadingUser] = useState(true);
   var menu = parseInt(searchParams.get("menu")) || 1;

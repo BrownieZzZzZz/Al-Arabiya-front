@@ -9,7 +9,7 @@ import { cn } from "@/lib/utils";
 import CartItem from "@/components/SideCartItem/CartItem";
 
 const page = () => {
-  const [loadingPage, setLoadingPage] = useState(true);
+  const [loadingPage, setLoadingPage] = useState(false);
   const [isPending, startTransition] = useTransition();
   const [totalPrice, setTotalPrice] = useState({});
 

@@ -16,7 +16,7 @@ import { useRouter } from "next/navigation";
 
 const DashNav = () => {
   const closeButton = useRef(null);
-  const [loadingPage, setLoadingPage] = useState(true);
+  const [loadingPage, setLoadingPage] = useState(false);
   const [isPending, startTransition] = useTransition();
   const router = useRouter();
 

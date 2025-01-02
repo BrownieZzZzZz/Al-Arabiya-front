@@ -6,7 +6,7 @@ import { useRouter, useSearchParams } from "next/navigation";
 const SuccessPage = () => {
   const searchParam = useSearchParams();
   const router = useRouter();
-  const [loadingPage, setLoadingPage] = useState(true);
+  const [loadingPage, setLoadingPage] = useState(false);
   const [isPending, startTransition] = useTransition();
 
   const ChangeUrl = (url) => {

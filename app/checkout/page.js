@@ -26,7 +26,7 @@ import { useEffect, useTransition, useState, useRef } from "react";
 
 const Page = () => {
   const [loadingOrder, setLoadingOrder] = useState(false);
-  const [loadingPage, setLoadingPage] = useState(true);
+  const [loadingPage, setLoadingPage] = useState(false);
   const [isPending, startTransition] = useTransition();
   const router = useRouter();
   const firstNameRef = useRef(null);

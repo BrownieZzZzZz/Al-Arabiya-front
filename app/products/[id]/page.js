@@ -14,7 +14,7 @@ const page = () => {
   const router = useRouter();
   const searchParams = useParams();
   const id = searchParams.id;
-  const [loadingPage, setLoadingPage] = useState(true);
+  const [loadingPage, setLoadingPage] = useState(false);
   const [isPending, startTransition] = useTransition();
   const [product, setProduct] = useState({});
   const [imageIndex, setImageIndex] = useState(0);

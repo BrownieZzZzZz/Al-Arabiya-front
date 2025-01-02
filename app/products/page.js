@@ -42,7 +42,7 @@ import MultiRangeSlider from "@/components/multiRangeSlider/multiRangeSlider";
 const ProductPage = () => {
   const router = useRouter();
   const searchParams = useSearchParams();
-  const [loadingPage, setLoadingPage] = useState(true);
+  const [loadingPage, setLoadingPage] = useState(false);
   const [isPending, startTransition] = useTransition();
 
   const [products, setProducts] = useState([]);
