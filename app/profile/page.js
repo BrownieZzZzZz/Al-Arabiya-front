@@ -157,7 +157,7 @@ const ProfilePage = () => {
   };
 
   const savePassword = async () => {
-    if (!passwordInput.current.value) {
+    if (!passwordRef.current.value) {
       toast({
         title: "خطأ",
         description: "الرجاء ادخال كلمة المرور",
@@ -166,7 +166,7 @@ const ProfilePage = () => {
       });
       return;
     }
-    if (!confirmpasswordInput.current.value) {
+    if (!confirmPasswordRef.current.value) {
       toast({
         title: "خطأ",
         description: "الرجاء ادخال تأكيد كلمة المرور",

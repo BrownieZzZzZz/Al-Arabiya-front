@@ -15,7 +15,7 @@ const DashMenu = ({ closeButton, ChangeUrl, setLoadingPage }) => {
     },
     {
       title: "حسابك",
-      path: "/profile",
+      path: "/account",
       icon: "fa-regular fa-user",
     },
     {

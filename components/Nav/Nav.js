@@ -262,6 +262,7 @@ const Nav = () => {
             <i className="fa-solid fa-magnifying-glass text-md px-2 text-neutral-500" />
             <input
               dir="rtl"
+              type="text"
               placeholder={"ابحث عن منتج"}
               className="bg-transparent placeholder-neutral-500 outline-none"
               ref={searchInputPC}
@@ -296,6 +297,7 @@ const Nav = () => {
                 <div className="flex w-full flex-row items-center gap-2 rounded-md border px-2 py-2">
                   <input
                     dir="rtl"
+                    type="text"
                     placeholder={"ابحث عن منتج "}
                     className="w-full placeholder-neutral-500 outline-none"
                     ref={searchInputMB}
