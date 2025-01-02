@@ -18,11 +18,13 @@ const page = () => {
     },
     {
       question: "هل يمكنني استرجاع المنتج إذا لم يعجبني؟",
-      answer: "نعم، يمكنك استرجاع المنتج خلال 14 يومًا من تاريخ الاستلام بشرط أن يكون بحالته الأصلية.",
+      answer:
+        "نعم، يمكنك استرجاع المنتج خلال 14 يومًا من تاريخ الاستلام بشرط أن يكون بحالته الأصلية.",
     },
     {
       question: "كيف أستفيد من الخصومات والعروض؟",
-      answer: "قم بمتابعة صفحتنا للحصول على آخر العروض أو اشترك في النشرة البريدية لتصلك التنبيهات.",
+      answer:
+        "قم بمتابعة صفحتنا للحصول على آخر العروض أو اشترك في النشرة البريدية لتصلك التنبيهات.",
     },
     {
       question: "هل يمكنني تعديل الطلب بعد تأكيده؟",
@@ -34,27 +36,24 @@ const page = () => {
     },
     {
       question: "هل يتم توفير عينات مجانية مع الطلبات؟",
-      answer: "في بعض الحملات الترويجية، نقدم عينات مجانية من منتجات مختارة مع طلبك.",
+      answer:
+        "في بعض الحملات الترويجية، نقدم عينات مجانية من منتجات مختارة مع طلبك.",
     },
   ];
   const aboutCards = [
     {
       text: "تنبيهات المنتجات الجديدة",
-      logo: (
-        <i className="fa-solid fa-bell text-7xl text-[var(--theme)]"/>
-      ),
+      logo: <i className="fa-solid fa-bell text-7xl text-[var(--theme)]" />,
     },
     {
       text: "إرشادات استخدام المنتج",
       logo: (
-        <i className="fa-solid fa-person-chalkboard fa-flip-horizontal text-7xl text-[var(--theme)]"/>
+        <i className="fa-solid fa-person-chalkboard fa-flip-horizontal text-7xl text-[var(--theme)]" />
       ),
     },
     {
       text: "الدعم الفني",
-      logo: (
-        <i className="fa-solid fa-comments text-7xl text-[var(--theme)]"/>
-      ),
+      logo: <i className="fa-solid fa-comments text-7xl text-[var(--theme)]" />,
     },
     {
       text: "ضمان الجودة",
@@ -75,8 +74,9 @@ const page = () => {
   ];
 
   useEffect(() => {
-    document.title = "Al-Arabiya";
+    document.title = "Al-Arabiya: About Us";
   }, []);
+
   return (
     <div
       dir="rtl"
@@ -84,11 +84,11 @@ const page = () => {
     >
       <div className="flex w-full flex-col items-center justify-center gap-2 self-center">
         <div className="flex w-full flex-row items-center justify-center gap-3">
-          <div className="h-[2px] w-10 bg-[var(--theme)] md:w-16"/>
+          <div className="h-[2px] w-10 bg-[var(--theme)] md:w-16" />
           <span className="font-lato text-center text-5xl font-bold text-neutral-800 sm:text-6xl">
             معلومات عنا
           </span>
-          <div className="h-[2px] w-10 bg-[var(--theme)] md:w-16"/>
+          <div className="h-[2px] w-10 bg-[var(--theme)] md:w-16" />
         </div>
         <span className="font-lato text-center text-lg text-slate-700 sm:text-xl md:text-2xl lg:text-3xl">
           من نحن
@@ -96,22 +96,25 @@ const page = () => {
       </div>
 
       <div className="group mx-10 grid grid-cols-1 gap-10 lg:grid-cols-2">
-        <div className="flex flex-col lg:gap-4 items-center justify-evenly">
+        <div className="flex flex-col items-center justify-evenly lg:gap-4">
           <div className="font-lato relative hidden text-4xl font-semibold before:absolute before:left-full before:top-3 before:h-10 before:w-10 before:border-b-2 before:border-r-2 before:border-[var(--theme)] before:content-[''] after:absolute after:-left-10 after:-top-2 after:h-10 after:w-10 after:border-l-2 after:border-t-2 after:border-[var(--theme)] after:bg-transparent after:transition-all after:content-[''] lg:block">
             <span className="tracking-wide">شركتنا</span>
           </div>
 
-          <img src="/images/logo.png" className="max-h-[250px] max-lg:max-w-[300px]"/>
+          <img
+            src="/images/logo.png"
+            className="max-h-[250px] max-lg:max-w-[300px]"
+          />
         </div>
 
         <div
           id="faqs"
-          className="xsm:px-12 flex max-w-[600px] flex-col gap-4 rounded-md border-[1px] border-neutral-200 bg-white px-6 py-8 shadow-md drop-shadow-md"
+          className="flex max-w-[600px] flex-col gap-4 rounded-md border-[1px] border-neutral-200 bg-white px-6 py-8 shadow-md drop-shadow-md xsm:px-12"
         >
           <span className="text-center text-xl font-semibold text-[var(--theme)]">
             نبذة عن متجرنا الإلكتروني
           </span>
-          <span className="text-neutral-800 text-lg tracking-wider">
+          <span className="text-lg tracking-wider text-neutral-800">
             العربية – متجر إلكتروني رائد متخصص في بيع مستحضرات التجميل عالية
             الجودة. نقدم لكِ مجموعة متكاملة من منتجات العناية بالبشرة، المكياج،
             والعطور المصممة لتلبية احتياجاتك اليومية وتعزيز جمالك الطبيعي. في
@@ -123,7 +126,7 @@ const page = () => {
       </div>
 
       <span className="font-lato mt-5 border-b-2 border-[var(--theme)] pb-2 text-center text-4xl font-semibold">
-      التعليمات
+        التعليمات
       </span>
       <div className="mx-5 flex w-10/12 flex-col gap-3 sm:max-w-[800px]">
         <Accordion type="single" collapsible className="w-full">
@@ -139,10 +142,10 @@ const page = () => {
       </div>
 
       <span className="font-lato mt-5 border-b-2 border-[var(--theme)] pb-2 text-center text-4xl font-semibold">
-      خدمات ما بعد البيع
+        خدمات ما بعد البيع
       </span>
 
-      <div className="grid auto-rows-fr w-full grid-cols-1 place-items-center gap-6 px-10 md:grid-cols-2 min-[1360px]:grid-cols-4 min-[1550px]:px-28 min-[1700px]:px-36 min-[1900px]:px-48">
+      <div className="grid w-full auto-rows-fr grid-cols-1 place-items-center gap-6 px-10 md:grid-cols-2 min-[1360px]:grid-cols-4 min-[1550px]:px-28 min-[1700px]:px-36 min-[1900px]:px-48">
         {aboutCards.map((item, index) => (
           <AboutCard key={index} text={item.text} logo={item.logo} />
         ))}
