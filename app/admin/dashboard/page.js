@@ -20,6 +20,7 @@ const page = () => {
   const router = useRouter();
   const [isPending, startTransition] = useTransition();
   const [loadingPage, setLoadingPage] = useState(false);
+  const [CustomizationData, setCustomizationData] = useState({});
   const [featuredProducts, setFeaturedProducts] = useState([]);
   const [brands, setBrands] = useState([]);
   const [categories, setCategories] = useState([]);
@@ -34,7 +35,7 @@ const page = () => {
   const fetchData = async () => {
     try {
       setLoading(true);
-      const res = await fetch(
+      const response = await fetch(
         `${process.env.NEXT_PUBLIC_API_URL}/admins/customization`,
         {
           method: "GET",
@@ -45,12 +46,12 @@ const page = () => {
         },
       );
 
-      const data = await res.json();
+      const data = await response.json();
       if (data.data === null) {
         throw new Error(data.message);
       }
       setLoading(false);
-
+      setCustomizationData(data.data);
       setFeaturedProducts(data.data.featuredProducts);
       setBrands(data.data.brands);
       setCategories(data.data.categories);
@@ -60,6 +61,133 @@ const page = () => {
       console.error(error);
       toast({
         title: "خطأ",
+        description: "حدث خطأ ما، يرجى المحاولة مرة أخرى!",
+        variant: "destructive",
+      });
+    }
+  };
+
+  const addProduct = async (productId) => {
+    if (!productId) {
+      toast({
+        title: "خطأ في إضافة المنتج",
+        description: "حدث خطأ ما، يرجى المحاولة مرة أخرى!",
+        variant: "destructive",
+      });
+      return;
+    }
+    try {
+      setLoading(true);
+      toast({
+        title: "جاري الإضافة",
+        description: "جاري إضافة المنتج إلى المنتجات الأكثر طلباً",
+      });
+      const response = await fetch(
+        `${process.env.NEXT_PUBLIC_API_URL}/admins/customization/${CustomizationData.id}`,
+        {
+          method: "PUT",
+          headers: {
+            "Content-Type": "application/json",
+            access_token: Cookies.get("admin_access_token"),
+          },
+          body: JSON.stringify({
+            featuredProducts: [
+              ...featuredProducts.map((featuredProduct) => ({
+                id: featuredProduct.id,
+              })),
+              { id: productId },
+            ],
+          }),
+        },
+      );
+
+      const data = await response.json();
+      if (data.data === null) {
+        throw new Error(data.message);
+      }
+      toast({
+        title: "تمت العملية بنجاح",
+        description: "تمت إضافة المنتج إلى المنتجات الأكثر طلباً بنجاح",
+        variant: "success",
+        duration: 3000,
+      });
+      setLoading(false);
+      setFeaturedProducts(data.data.featuredProducts);
+    } catch (error) {
+      setLoading(false);
+
+      console.error(error);
+      toast({
+        title: "خطأ في إضافة المنتج",
+        description: "حدث خطأ ما، يرجى المحاولة مرة أخرى!",
+        variant: "destructive",
+      });
+    }
+  };
+
+  const deleteProduct = async (productId) => {
+    if (featuredProducts.length < 8) {
+      toast({
+        title: "خطأ في إضافة المنتج",
+        description:
+          "يجب أن تكون المنتجات الأكثر طلباً تحتوي على 8 منتجات على الأكثر",
+        variant: "destructive",
+        duration: 10000,
+      });
+      return;
+    }
+    if (!productId) {
+      toast({
+        title: "خطأ في مسح المنتج",
+        description: "حدث خطأ ما، يرجى المحاولة مرة أخرى!",
+        variant: "destructive",
+      });
+      return;
+    }
+    try {
+      setLoading(true);
+      toast({
+        title: "جاري الإضافة",
+        description: "جاري مسح المنتج من المنتجات الأكثر طلباً",
+      });
+      const response = await fetch(
+        `${process.env.NEXT_PUBLIC_API_URL}/admins/customization/${CustomizationData.id}`,
+        {
+          method: "PUT",
+          headers: {
+            "Content-Type": "application/json",
+            access_token: Cookies.get("admin_access_token"),
+          },
+          body: JSON.stringify({
+            featuredProducts: [
+              ...featuredProducts
+                .filter((featuredProduct) => featuredProduct.id != productId)
+                .map((featuredProduct) => ({
+                  id: featuredProduct.id,
+                })),
+            ],
+          }),
+        },
+      );
+
+      const data = await response.json();
+      if (data.data === null) {
+        throw new Error(data.message);
+      }
+      toast({
+        title: "تمت العملية بنجاح",
+        description: "تم مسح المنتج من المنتجات الأكثر طلباً بنجاح",
+        variant: "success",
+        duration: 3000,
+      });
+      setLoading(false);
+      setFeaturedProducts(data.data.featuredProducts);
+    } catch (error) {
+      setLoading(false);
+
+      console.error(error);
+      toast({
+        title: "خطأ في مسح المنتج",
         description: "حدث خطأ ما، يرجى المحاولة مرة أخرى!",
         variant: "destructive",
       });
@@ -93,6 +221,8 @@ const page = () => {
               setFeaturedProducts={setFeaturedProducts}
               loading={loading}
               setLoading={setLoading}
+              addProduct={addProduct}
+              deleteProduct={deleteProduct}
             />
           </AccordionContent>
         </AccordionItem>

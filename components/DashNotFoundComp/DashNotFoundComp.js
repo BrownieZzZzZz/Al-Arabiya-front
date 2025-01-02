@@ -1,8 +1,6 @@
-import React from 'react'
-
 const DashNotFoundComp = ({ text }) => {
   return (
-    <div className="mt-20  col-span-full flex w-full flex-col items-center justify-center gap-4">
+    <div className="col-span-full mt-20 flex w-full flex-col items-center justify-center gap-4">
       <div className="flex flex-col items-center justify-center gap-4">
         <div>
           <svg
@@ -18,11 +16,11 @@ const DashNotFoundComp = ({ text }) => {
           </svg>
         </div>
         <div className="text-3xl font-semibold text-[var(--dash-theme5)]">
-          { text }
+          {text}
         </div>
       </div>
     </div>
-  )
-}
+  );
+};
 
-export default DashNotFoundComp
+export default DashNotFoundComp;
