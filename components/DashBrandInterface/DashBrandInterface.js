@@ -10,16 +10,30 @@ import {
   SelectValue,
 } from "@/components/ui/select";
 
-const DashBrandInterface = ({ values, changeBrandOption }) => {
-  const [value, setValue] = useState("");
+const DashBrandInterface = ({
+  values,
+  changeBrandOption,
+  defaultValue = "",
+  disabled = false,
+}) => {
+  const [value, setValue] = useState(defaultValue);
 
   useEffect(() => {
     changeBrandOption(value);
   }, [value]);
 
+  useEffect(() => {
+    setValue(defaultValue);
+  }, [defaultValue]);
+
   return (
     <div>
-      <Select value={value} onValueChange={setValue} dir="rtl">
+      <Select
+        value={value}
+        onValueChange={setValue}
+        dir="rtl"
+        disabled={disabled}
+      >
         <SelectTrigger className="w-[180px] border-none bg-[var(--dash-theme)] text-white focus:ring-[var(--dash-theme6)]">
           <SelectValue placeholder="إختر ماركة " />
         </SelectTrigger>

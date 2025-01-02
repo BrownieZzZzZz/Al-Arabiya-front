@@ -1,15 +1,13 @@
 "use client";
 import DashBrandInterface from "@/components/DashBrandInterface/DashBrandInterface";
 import DashCategoryInterface from "@/components/DashCategoryInterface/DashCategoryInterface";
-import SelectBrandInterface from "@/components/SelectBrandInterface/SelectBrandInterface";
-import { useToast } from "@/hooks/use-toast";
+import { toast } from "@/hooks/use-toast";
 import { cn, validatePercentageInput, validatePriceInput } from "@/lib/utils";
 import React, { useEffect, useRef, useState, useTransition } from "react";
 import Cookies from "js-cookie";
 import { useRouter } from "next/navigation";
 
 const page = () => {
-  const { toast } = useToast();
   const router = useRouter();
   const [isPending, startTransition] = useTransition();
   const [loadingPage, setLoadingPage] = useState(false);
@@ -19,7 +17,6 @@ const page = () => {
   const [brands, setBrands] = useState([]);
   const [categories, setCategories] = useState([]);
   const [onSold, setOnSold] = useState(false);
-  const [ , setImageNumber] = useState(1);
   const [images, setImages] = useState([]);
   const [imageValue, setImageValue] = useState(null);
   const [loaded, setLoaded] = useState(false);
@@ -68,7 +65,6 @@ const page = () => {
       }
 
       setImages((prevImages) => [...prevImages, reader.result]);
-      setImageNumber((prev) => prev + 1);
       setLoaded(false);
 
       if (fileInput.current) {
@@ -274,7 +270,6 @@ const page = () => {
       setOnSold(false);
       setSoldText("لا يوجد ");
       setImages([]);
-      setImageNumber(1);
       setLoaded(false);
       setImageValue(null);
       setSelectedBrand("");
@@ -377,6 +372,7 @@ const page = () => {
   useEffect(() => {
     setLoadingPage(isPending);
   }, [isPending]);
+
   return (
     <div className="flex w-full flex-col items-center gap-10 px-5 pb-10 pt-5 md:px-0 md:pl-10 md:pt-8 lg:pl-20 lg:pt-10">
       {(loadingPage || loadingBrands || loadingCategories) && (
@@ -544,7 +540,7 @@ const page = () => {
             ملاحضة هامة: الصورة الأولى هي التي سيتم عرضها على البطاقات.
           </div>
           <div className="text-lg font-semibold text-[var(--dash-theme5)]">
-            إضافة الصورة رقم {  }
+            إضافة الصورة رقم {images.length + 1}
           </div>
           <div
             onClick={() => {
