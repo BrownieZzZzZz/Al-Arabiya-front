@@ -57,8 +57,6 @@ const Brand = ({ brand, fetchBrands }) => {
       if (brand.img.trim() != imageRef.current.src.trim()) {
         body["img"] = imageRef.current.src.trim();
       }
-      console.log("body");
-      console.log(body);
 
       const response = await fetch(
         `${process.env.NEXT_PUBLIC_API_URL}/admins/brand/${brand.id}`,
@@ -179,7 +177,7 @@ const Brand = ({ brand, fetchBrands }) => {
                 "mt-4 w-3/4 rounded-lg border-2 bg-red-900 py-2 text-lg font-semibold text-[#ffffff] transition-all duration-200",
                 loadingBrand
                   ? "opacity-50 hover:cursor-not-allowed"
-                  : " hover:bg-red-500",
+                  : "hover:bg-red-500",
               )}
             >
               {loadingBrand ? (

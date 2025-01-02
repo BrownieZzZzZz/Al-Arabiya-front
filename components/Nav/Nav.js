@@ -166,7 +166,7 @@ const Nav = () => {
         ChangeUrl("/profile");
         return;
       }
-    } else {
+    } else if (!signed && !loadingUser) {
       if (pathname.includes("profile")) {
         ChangeUrl("/sign-in");
         return;
