@@ -98,12 +98,16 @@ const ProfilePage = () => {
       }
 
       if (errorTest) {
-        firstNameRef.current.value = user.first_name;
-        lastNameRef.current.value = user.last_name;
+        firstNameRef.current.value = user.full_name.split(" ")[0];
+        lastNameRef.current.value =
+          user.full_name.split(" ").length > 1
+            ? user.full_name.split(" ")[1]
+            : "";
         emailRef.current.value = user.email;
         phoneRef.current.value = user.phone;
         addressRef.current.value = user.address;
         setSelectedCity(user.city);
+        setIsEditing(false);
         setEditText("تعديل");
         return;
       }

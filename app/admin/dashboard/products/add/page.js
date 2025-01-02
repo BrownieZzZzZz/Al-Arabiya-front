@@ -306,12 +306,6 @@ const page = () => {
         throw new Error(data.message);
       }
 
-      // const categoriesData = data.data.data.map((category) =>
-      //   Object({ value: category.id, text: category.name }),
-      // );
-
-      // setCategories(categoriesData);
-
       setCategories(data.data.data);
       setLoadingCategories(false);
     } catch (error) {
@@ -344,12 +338,6 @@ const page = () => {
       if (data.data === null) {
         throw new Error(data.message);
       }
-
-      // const brandsData = data.data.data.map((brand) =>
-      //   Object({ value: brand.id, text: brand.name }),
-      // );
-
-      // setBrands(brandsData);
 
       setBrands(data.data.data);
       setLoadingBrands(false);
