@@ -1,7 +1,7 @@
 "use client";
 import ServiceCard from "@/components/ServiceCard/ServiceCard";
 import ServiceDescCard from "@/components/ServiceDescCard/ServiceDescCard";
-import React from "react";
+
 
 const page = () => {
   const serviceCardData = [

@@ -19,6 +19,8 @@ const DashFeaturedProducts = ({
   setFeaturedProducts,
   loading,
   setLoading,
+  addProduct,
+  deleteProduct,
 }) => {
   const [loadingProducts, setLoadingProducts] = useState(true);
   const [products, setProducts] = useState([]);
@@ -43,11 +45,7 @@ const DashFeaturedProducts = ({
         throw new Error(data.message);
       }
 
-      setProducts(
-        data.data.data.filter(
-          (itemB) => !featuredProducts.some((itemA) => itemA.id === itemB.id),
-        ),
-      );
+      setProducts(data.data.data);
 
       setLoadingProducts(false);
     } catch (error) {
@@ -94,7 +92,7 @@ const DashFeaturedProducts = ({
                     ))
                   : featuredProducts.map((product, index) => (
                       <CarouselItem
-                        key={index}
+                        key={product.id}
                         className="flex w-full pl-1 min-[630px]:basis-1/2 md:basis-2/3 lg:basis-1/2 xl:basis-1/3"
                       >
                         <div className="flex w-full p-2">
@@ -103,6 +101,7 @@ const DashFeaturedProducts = ({
                             ChangeUrl={ChangeUrl}
                             product={product}
                             isDelete={true}
+                            deleteProduct={deleteProduct}
                           />
                         </div>
                       </CarouselItem>
@@ -114,7 +113,10 @@ const DashFeaturedProducts = ({
           </div>
         </div>
       </section>
-      <div className="my-10 flex w-full flex-col gap-10">
+      <div className="mb-10 mt-16 flex w-full flex-col gap-10">
+        <div className="text-center text-4xl font-bold text-[var(--dash-theme5)]">
+          أضف منتج
+        </div>
         <DashSearch
           placeholder="عطر زهر، كريم مرطب، أو يمكنك إدخال معرف المنتوج... "
           search={(query) => fetchProducts(query)}
@@ -124,14 +126,22 @@ const DashFeaturedProducts = ({
             ? Array.from({ length: limit }).map((_, index) => (
                 <SkeletonDashProductCard key={index} />
               ))
-            : products.map((product, index) => (
-                <DashProductCard
-                  key={index}
-                  product={product}
-                  ChangeUrl={ChangeUrl}
-                  isAdd={true}
-                />
-              ))}
+            : products
+                .filter(
+                  (product) =>
+                    !featuredProducts.some(
+                      (featuredProduct) => featuredProduct.id === product.id,
+                    ),
+                )
+                .map((product, index) => (
+                  <DashProductCard
+                    key={product.id}
+                    product={product}
+                    ChangeUrl={ChangeUrl}
+                    isAdd={true}
+                    addProduct={addProduct}
+                  />
+                ))}
         </div>
       </div>
     </div>

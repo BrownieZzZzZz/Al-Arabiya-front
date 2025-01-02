@@ -13,14 +13,28 @@ const DashProductCard = ({
   product,
   ChangeUrl,
   isDelete = false,
+  deleteProduct = null,
   isAdd = false,
+  addProduct = null,
 }) => {
   const [loadingProduct, setLoadingProduct] = useState(false);
   const confirmDeleteRef = useRef(null);
 
-  const handleAddProduct = async () => {};
+  const handleAddProduct = async () => {
+    setLoadingProduct(true);
+    if (addProduct) {
+      await addProduct(product.id);
+      setLoadingProduct(false);
+    }
+  };
 
-  const handleDelete = async () => {};
+  const handleDelete = async () => {
+    setLoadingProduct(true);
+    if (deleteProduct) {
+      await deleteProduct(product.id);
+      setLoadingProduct(false);
+    }
+  };
 
   const confirmDeletePopUp = () => {
     confirmDeleteRef.current.click();
@@ -106,6 +120,9 @@ const DashProductCard = ({
         <p dir="rtl" className="mt-2 text-sm text-neutral-400">
           {product.description}
         </p>
+        <p dir="rtl" className="mt-2 text-sm font-semibold text-white">
+          {product.orderProducts.length} عملية شراء
+        </p>
 
         <div
           className={cn("mt-auto flex items-center", {
@@ -137,7 +154,12 @@ const DashProductCard = ({
               onClick={() => confirmDeletePopUp()}
               type="button"
               disabled={loadingProduct}
-              className="mt-2 rounded-lg border-2 border-red-500 bg-red-500 px-3 py-1 text-lg font-semibold text-[#ffffff] transition-all duration-200 hover:bg-transparent hover:text-red-500"
+              className={cn(
+                "mt-2 rounded-lg border-2 border-red-500 bg-red-500 px-3 py-1 text-lg font-semibold text-[#ffffff] transition-all duration-200 hover:text-red-500",
+                loadingProduct
+                  ? "hover:cursor-not-allowed"
+                  : "hover:bg-transparent",
+              )}
             >
               {loadingProduct ? (
                 <div className="flex items-center justify-center">

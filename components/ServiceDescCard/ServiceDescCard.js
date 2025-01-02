@@ -1,5 +1,5 @@
 import { cn } from "@/lib/utils";
-import React from "react";
+
 
 const ServiceDescCard = ({ title, description, items }) => {
   return (
