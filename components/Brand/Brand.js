@@ -176,10 +176,10 @@ const Brand = ({ brand, fetchBrands }) => {
               disabled={loadingBrand}
               type="button"
               className={cn(
-                "mt-4 w-3/4 rounded-lg border-2 border-red-500 bg-red-500 py-2 text-lg font-semibold text-[#ffffff] transition-all duration-200",
+                "mt-4 w-3/4 rounded-lg border-2 bg-red-900 py-2 text-lg font-semibold text-[#ffffff] transition-all duration-200",
                 loadingBrand
                   ? "opacity-50 hover:cursor-not-allowed"
-                  : "hover:border-red-900 hover:bg-red-900",
+                  : " hover:bg-red-500",
               )}
             >
               {loadingBrand ? (
