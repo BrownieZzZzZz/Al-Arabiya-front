@@ -1,7 +1,6 @@
-import React from "react";
 import { Skeleton } from "../ui/skeleton";
 
-const SkeletonDashProductCard = ({ product }) => {
+const SkeletonDashProductCard = () => {
   return (
     <div className="mx-auto flex w-full max-w-sm select-none flex-col overflow-hidden rounded-lg bg-[var(--dash-theme2)] shadow-md transition-all duration-200 hover:scale-[1.03] hover:cursor-pointer">
       <Skeleton className="h-[200px] w-full rounded-sm bg-neutral-200" />

@@ -9,7 +9,7 @@ import {
   DialogTrigger,
 } from "@/components/ui/dialog";
 import { cn } from "@/lib/utils";
-import { useToast } from "@/hooks/use-toast";
+import { toast } from "@/hooks/use-toast";
 import Cookies from "js-cookie";
 
 const Category = ({ category, fetchCategories }) => {
@@ -17,7 +17,6 @@ const Category = ({ category, fetchCategories }) => {
   const [editText, setEditText] = useState("تعديل");
   const [loadingCategory, setLoadingCategory] = useState(false);
   const categoryRef = useRef(null);
-  const { toast } = useToast();
   const confirmDeleteRef = useRef(null);
 
   const handleEdit = async () => {

@@ -400,6 +400,7 @@ const ProductPage = () => {
     fetchCategories();
     fetchBrands();
   }, []);
+
   return (
     <div
       dir="rtl"

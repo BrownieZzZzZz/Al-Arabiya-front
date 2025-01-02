@@ -25,7 +25,15 @@ const ProductCard = ({ product, ChangeUrl }) => {
       </div>
 
       <div className="flex flex-1 flex-col p-4">
-        {product.in_Stock ? (<div dir="rtl" className="font-medium text-sm text-emerald-500">منتج متوفر </div>) : <div dir="rtl" className="font-medium text-sm text-red-500">منتج غير متوفر </div>}
+        {product.in_Stock ? (
+          <div dir="rtl" className="text-sm font-medium text-emerald-500">
+            منتج متوفر{" "}
+          </div>
+        ) : (
+          <div dir="rtl" className="text-sm font-medium text-red-500">
+            منتج غير متوفر{" "}
+          </div>
+        )}
         <h2 dir="rtl" className="text-lg font-bold text-gray-800">
           {product.name}
         </h2>
