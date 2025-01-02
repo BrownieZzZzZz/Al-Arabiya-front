@@ -356,7 +356,7 @@ const ProfilePage = () => {
                   <input
                     defaultValue={user.full_name.split(" ")[0]}
                     ref={firstNameRef}
-                    readOnly={!isEditing}
+                    readOnly={!isEditing} 
                     type="text"
                     placeholder="الاسم"
                     className={cn(
