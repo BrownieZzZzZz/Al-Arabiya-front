@@ -19,7 +19,7 @@ const page = () => {
   const [brands, setBrands] = useState([]);
   const [categories, setCategories] = useState([]);
   const [onSold, setOnSold] = useState(false);
-  const [imageNumber, setImageNumber] = useState(1);
+  const [ , setImageNumber] = useState(1);
   const [images, setImages] = useState([]);
   const [imageValue, setImageValue] = useState(null);
   const [loaded, setLoaded] = useState(false);
@@ -45,7 +45,7 @@ const page = () => {
   };
 
   const handleAddImage = () => {
-    if (!fileInput.current.files[0] || !loaded) {
+    if (!fileInput.current?.files?.[0] || !loaded) {
       toast({
         title: "خطأ",
         variant: "destructive",
@@ -53,14 +53,38 @@ const page = () => {
       });
       return;
     }
+
     const file = fileInput.current.files[0];
     const reader = new FileReader();
+
     reader.onloadend = () => {
-      setImages([...images, reader.result]);
+      if (images.includes(reader.result)) {
+        toast({
+          title: "خطأ",
+          variant: "destructive",
+          description: "هذه الصورة موجودة بالفعل",
+        });
+        return;
+      }
+
+      setImages((prevImages) => [...prevImages, reader.result]);
+      setImageNumber((prev) => prev + 1);
+      setLoaded(false);
+
+      if (fileInput.current) {
+        fileInput.current.value = "";
+      }
     };
+
+    reader.onerror = () => {
+      toast({
+        title: "خطأ",
+        variant: "destructive",
+        description: "فشل في قراءة الصورة",
+      });
+    };
+
     reader.readAsDataURL(file);
-    setImageNumber(imageNumber + 1);
-    setLoaded(false);
   };
 
   const handleAddProduct = async () => {
@@ -183,7 +207,7 @@ const page = () => {
 
       const body = {
         name: nameRef.current.value.trim(),
-        img: images,
+        img: [...images],
         description: descRef.current.value.trim(),
         normalSinglePrice: Number(normalSinglePriceRef.current.value.trim()),
         normalMultiPrice: Number(normalMultiPriceRef.current.value.trim()),
@@ -520,7 +544,7 @@ const page = () => {
             ملاحضة هامة: الصورة الأولى هي التي سيتم عرضها على البطاقات.
           </div>
           <div className="text-lg font-semibold text-[var(--dash-theme5)]">
-            إضافة الصورة رقم {imageNumber}
+            إضافة الصورة رقم {  }
           </div>
           <div
             onClick={() => {
