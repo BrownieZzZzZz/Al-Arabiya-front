@@ -30,6 +30,7 @@ import {
 } from "@/components/ui/tooltip";
 import SideCartItem from "../SideCartItem/SideCartItem";
 import Menu from "../Menu/Menu";
+import { toast } from "@/hooks/use-toast";
 
 const Nav = () => {
   const router = useRouter();
@@ -116,11 +117,23 @@ const Nav = () => {
   const ChangePath = () => {
     if (signed) {
       if (pathname.includes("sign") || pathname.includes("reset")) {
+        toast({
+          title: "تم تسجيل الدخول بالفعل",
+          description: "سيتم تحويلك إلى صفحة الملف الشخصي",
+          variant: "warning",
+          duration: 5000,
+        });
         ChangeUrl("/profile");
         return;
       }
     } else if (!signed) {
       if (pathname.includes("profile")) {
+        toast({
+          title: "غير مسموح بالوصول",
+          description: "يرجى تسجيل الدخول أولاً",
+          variant: "warning",
+          duration: 5000,
+        });
         ChangeUrl("/sign-in");
         return;
       }

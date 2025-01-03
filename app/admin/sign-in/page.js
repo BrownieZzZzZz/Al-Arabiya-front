@@ -7,7 +7,7 @@ import DashSignHeader from "@/components/DashSignHeader/DashSignHeader";
 import { cn, validateEmail } from "@/lib/utils";
 
 import Cookies from "js-cookie";
-import  { useRef, useState, useTransition, useEffect } from "react";
+import { useRef, useState, useTransition, useEffect } from "react";
 import { useRouter } from "next/navigation";
 import { useToast } from "@/hooks/use-toast";
 
@@ -123,7 +123,7 @@ const page = () => {
 
   return (
     <div
-      className="image flex min-h-[100dvh] items-center justify-center bg-cover bg-center"
+      className="image flex min-h-[100dvh] flex-1 items-center justify-center bg-cover bg-center"
       dir="rtl"
     >
       {loadingPage && (

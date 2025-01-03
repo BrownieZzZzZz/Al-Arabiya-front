@@ -5,6 +5,7 @@ import { useRouter, usePathname } from "next/navigation";
 import Cookies from "js-cookie";
 
 import { cn } from "@/lib/utils";
+import { toast } from "@/hooks/use-toast";
 
 import {
   Sheet,
@@ -35,10 +36,24 @@ const DashNav = () => {
   const ChangePath = () => {
     if (Adminsigned) {
       if (pathname.includes("sign") || pathname.includes("reset")) {
+        toast({
+          title: "تم تسجيل دخول المسؤول بالفعل",
+          description: "سيتم تحويلك إلى لوحة التحكم",
+          variant: "warning",
+          duration: 5000,
+        });
         ChangeUrl("/admin/dashboard");
         return;
       }
     } else if (!Adminsigned) {
+      if (pathname.includes("sign") || pathname.includes("reset")) return;
+
+      toast({
+        title: "صلاحيات المسؤول مطلوبة",
+        description: "يرجى تسجيل الدخول كمسؤول للمتابعة",
+        variant: "warning",
+        duration: 5000,
+      });
       ChangeUrl("/admin/sign-in");
       return;
     }
@@ -94,6 +109,18 @@ const DashNav = () => {
       closeButton.current.click();
     }
   });
+
+  if (pathname.includes("sign") || pathname.includes("reset")) {
+    return (
+      <>
+        {(loadingPage || loadingAdmin) && (
+          <div className="fixed inset-0 z-50 flex h-full w-full items-center justify-center bg-white/60 backdrop-blur-sm">
+            <div className="h-14 w-14 animate-spin rounded-full border-b-4 border-[var(--theme)]" />
+          </div>
+        )}
+      </>
+    );
+  }
 
   return (
     <div className="relative">
