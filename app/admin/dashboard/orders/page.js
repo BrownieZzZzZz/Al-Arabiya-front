@@ -1,7 +1,7 @@
 "use client";
 import DashSearch from "@/components/DashSearch/DashSearch";
 import "./page.css";
-import  { useState } from "react";
+import { useState } from "react";
 import {
   Table,
   TableBody,
@@ -11,9 +11,9 @@ import {
   TableHeader,
   TableRow,
 } from "@/components/ui/table";
-import { cn } from "@/lib/utils";
+import { cn, formattedDate } from "@/lib/utils";
 
-const page = () => {  
+const page = () => {
   const [orderState, setOrderState] = useState(1);
   const [orders, setOrders] = useState([
     {
@@ -883,12 +883,43 @@ const page = () => {
     <div className="table-scroll flex w-full flex-col gap-10 overflow-x-auto px-5 pb-10 pt-5 md:px-0 md:pl-10 md:pt-8 lg:pl-20 lg:pt-10">
       <DashSearch placeholder="بحث عن طلب " />
 
-      <div className="flex justify-between rounded-lg items-center gap-4 sm:gap-1 max-w-[500px] w-full px-1 py-2 bg-[var(--dash-theme2)] overflow-x-auto">
-        <div onClick={() => setOrderState(1)} className={cn("font-medium px-2 text-nowrap rounded-xl text-center hover:cursor-pointer py-2 w-full text-white text-lg transition-all duration-200 bg-transparent", orderState === 1 && "bg-gray-500/50")}>كل الطلبات</div>
-        <div onClick={() => setOrderState(2)} className={cn("font-medium px-2 text-nowrap rounded-xl text-center hover:cursor-pointer py-2 w-full text-white text-lg transition-all duration-200 bg-transparent", orderState === 2 && "bg-gray-500/50")}>تم القبول</div>
-        <div onClick={() => setOrderState(3)} className={cn("font-medium px-2 text-nowrap rounded-xl text-center hover:cursor-pointer py-2 w-full text-white text-lg transition-all duration-200 bg-transparent", orderState === 3 && "bg-gray-500/50")}>قيد الانتظار</div>
-        <div onClick={() => setOrderState(4)} className={cn("font-medium px-2 text-nowrap rounded-xl text-center hover:cursor-pointer py-2 w-full text-white text-lg transition-all duration-200 bg-transparent", orderState === 4 && "bg-gray-500/50")}>تم الالغاء</div>
-
+      <div className="flex w-full max-w-[500px] items-center justify-between gap-4 overflow-x-auto rounded-lg bg-[var(--dash-theme2)] px-1 py-2 sm:gap-1">
+        <div
+          onClick={() => setOrderState(1)}
+          className={cn(
+            "w-full text-nowrap rounded-xl bg-transparent px-2 py-2 text-center text-lg font-medium text-white transition-all duration-200 hover:cursor-pointer",
+            orderState === 1 && "bg-gray-500/50",
+          )}
+        >
+          كل الطلبات
+        </div>
+        <div
+          onClick={() => setOrderState(2)}
+          className={cn(
+            "w-full text-nowrap rounded-xl bg-transparent px-2 py-2 text-center text-lg font-medium text-white transition-all duration-200 hover:cursor-pointer",
+            orderState === 2 && "bg-gray-500/50",
+          )}
+        >
+          تم القبول
+        </div>
+        <div
+          onClick={() => setOrderState(3)}
+          className={cn(
+            "w-full text-nowrap rounded-xl bg-transparent px-2 py-2 text-center text-lg font-medium text-white transition-all duration-200 hover:cursor-pointer",
+            orderState === 3 && "bg-gray-500/50",
+          )}
+        >
+          قيد الانتظار
+        </div>
+        <div
+          onClick={() => setOrderState(4)}
+          className={cn(
+            "w-full text-nowrap rounded-xl bg-transparent px-2 py-2 text-center text-lg font-medium text-white transition-all duration-200 hover:cursor-pointer",
+            orderState === 4 && "bg-gray-500/50",
+          )}
+        >
+          تم الالغاء
+        </div>
       </div>
 
       <Table>
@@ -898,9 +929,13 @@ const page = () => {
             <TableHead className="text-start text-lg text-[var(--dash-theme5)]">
               معرف
             </TableHead>
-            <TableHead className="flex flex-row justify-start gap-2 items-center text-lg text-[var(--dash-theme5)]">
-             <span>تاريخ الطلب</span>
-             <i className={cn("fa-solid fa-up-down text-[var(--dash-theme5)] mt-1 hover:cursor-pointer transition-all duration-200  text-lg")}></i>
+            <TableHead className="flex flex-row items-center justify-start gap-2 text-lg text-[var(--dash-theme5)]">
+              <span>تاريخ الطلب</span>
+              <i
+                className={cn(
+                  "fa-solid fa-up-down mt-1 text-lg text-[var(--dash-theme5)] transition-all duration-200 hover:cursor-pointer",
+                )}
+              ></i>
             </TableHead>
             <TableHead className="text-start text-lg text-[var(--dash-theme5)]">
               الاسم
@@ -920,17 +955,25 @@ const page = () => {
             <TableHead className="text-start text-lg text-[var(--dash-theme5)]">
               العنوان
             </TableHead>
-            <TableHead className="flex flex-row justify-start gap-2 items-center text-lg text-[var(--dash-theme5)]">
-               <span>المنتجات</span> 
-               <i className={cn("fa-solid fa-up-down text-[var(--dash-theme5)] mt-1 hover:cursor-pointer transition-all duration-200  text-lg")}></i>
+            <TableHead className="flex flex-row items-center justify-start gap-2 text-lg text-[var(--dash-theme5)]">
+              <span>المنتجات</span>
+              <i
+                className={cn(
+                  "fa-solid fa-up-down mt-1 text-lg text-[var(--dash-theme5)] transition-all duration-200 hover:cursor-pointer",
+                )}
+              ></i>
             </TableHead>
 
             <TableHead className="text-start text-lg text-[var(--dash-theme5)]">
               الحالة
             </TableHead>
-            <TableHead className="flex flex-row justify-start gap-2 items-center text-lg text-[var(--dash-theme5)]">
+            <TableHead className="flex flex-row items-center justify-start gap-2 text-lg text-[var(--dash-theme5)]">
               <span>المبلغ</span>
-              <i className={cn("fa-solid fa-up-down text-[var(--dash-theme5)] mt-1 hover:cursor-pointer transition-all duration-200  text-lg")}></i>
+              <i
+                className={cn(
+                  "fa-solid fa-up-down mt-1 text-lg text-[var(--dash-theme5)] transition-all duration-200 hover:cursor-pointer",
+                )}
+              ></i>
             </TableHead>
           </TableRow>
         </TableHeader>
@@ -942,7 +985,9 @@ const page = () => {
               className="border-[#2c2d33] text-white hover:cursor-pointer hover:bg-muted/10"
             >
               <TableCell className="font-medium">{order.id}</TableCell>
-              <TableCell className="font-medium">{order.created_At}</TableCell>
+              <TableCell className="font-medium">
+                {formattedDate(order.created_At)}
+              </TableCell>
               <TableCell className="font-medium">{order.first_name}</TableCell>
               <TableCell className="font-medium">{order.last_name}</TableCell>
               <TableCell className="font-medium">{order.phone}</TableCell>

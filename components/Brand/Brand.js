@@ -87,7 +87,7 @@ const Brand = ({
           method: "PUT",
           headers: {
             "Content-Type": "application/json",
-            access_token: Cookies.get("admin_access_token"),
+            admin_access_token: Cookies.get("admin_access_token"),
           },
           body: JSON.stringify(body),
         },
@@ -142,7 +142,7 @@ const Brand = ({
           method: "DELETE",
           headers: {
             "Content-Type": "application/json",
-            access_token: Cookies.get("admin_access_token"),
+            admin_access_token: Cookies.get("admin_access_token"),
           },
         },
       );

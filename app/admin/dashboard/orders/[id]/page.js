@@ -1,8 +1,8 @@
 "use client";
 import { useToast } from "@/hooks/use-toast";
-import { cn } from "@/lib/utils";
+import { cn, formattedDate } from "@/lib/utils";
 import { useParams } from "next/navigation";
-import  { useRef, useState } from "react";
+import { useRef, useState } from "react";
 import {
   Dialog,
   DialogContent,
@@ -404,7 +404,7 @@ const page = () => {
                 type="text"
                 readOnly
                 disabled
-                defaultValue={order.created_At}
+                defaultValue={formattedDate(order.created_At)}
                 className="bg-[var(--dash-theme)] p-3 text-lg font-semibold text-white"
               />
             </div>
@@ -465,7 +465,7 @@ const page = () => {
               تحذير
             </div>
             <div className="text-medium w-3/4 text-center text-xl text-white">
-              حذف هذا الطلب  سينجم عنه حذف كل البيانات المرتبطة بهذا المنتج
+              حذف هذا الطلب سينجم عنه حذف كل البيانات المرتبطة بهذا المنتج
             </div>
             <button
               onClick={() => handleDelete()}

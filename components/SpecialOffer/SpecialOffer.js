@@ -34,7 +34,7 @@ const SpecialOffer = ({ specialOffer, fetchSpecialOffers = null }) => {
           method: "DELETE",
           headers: {
             "Content-Type": "application/json",
-            access_token: Cookies.get("admin_access_token"),
+            admin_access_token: Cookies.get("admin_access_token"),
           },
         },
       );

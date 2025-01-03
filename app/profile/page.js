@@ -1,7 +1,13 @@
 "use client";
 
-import { useToast } from "@/hooks/use-toast";
-import { cn, validateEmail, validateNumberInput, cities } from "@/lib/utils";
+import { toast } from "@/hooks/use-toast";
+import {
+  cn,
+  validateEmail,
+  validateNumberInput,
+  cities,
+  formattedDate,
+} from "@/lib/utils";
 import { useRef, useState, useTransition, useEffect, Suspense } from "react";
 import { useRouter, useSearchParams } from "next/navigation";
 import Cookies from "js-cookie";
@@ -10,39 +16,28 @@ import {
   SelectContent,
   SelectGroup,
   SelectItem,
-  SelectLabel,
   SelectTrigger,
   SelectValue,
 } from "@/components/ui/select";
 
 const ProfilePage = () => {
+  const router = useRouter();
   const searchParams = useSearchParams();
   const [loadingPage, setLoadingPage] = useState(false);
   const [isPending, startTransition] = useTransition();
   const [loadingUser, setLoadingUser] = useState(true);
   var menu = parseInt(searchParams.get("menu")) || 1;
   const [isEditing, setIsEditing] = useState(false);
-  const [user, setUser] = useState({
-    id: "",
-    full_name: "",
-    email: "",
-    phone: "",
-    city: "",
-    address: "",
-    orders: [],
-  });
+  const [user, setUser] = useState({});
   const [editText, setEditText] = useState("تعديل");
+  const [selectedCity, setSelectedCity] = useState("");
   const firstNameRef = useRef(null);
   const lastNameRef = useRef(null);
   const emailRef = useRef(null);
   const phoneRef = useRef(null);
-  const [selectedCity, setSelectedCity] = useState("");
   const addressRef = useRef(null);
   const passwordRef = useRef(null);
   const confirmPasswordRef = useRef(null);
-  const router = useRouter();
-
-  const { toast } = useToast();
 
   const handleEdit = async () => {
     if (isEditing) {
@@ -98,10 +93,10 @@ const ProfilePage = () => {
       }
 
       if (errorTest) {
-        firstNameRef.current.value = user.full_name.split(" ")[0];
+        firstNameRef.current.value = user.full_name?.split(" ")[0];
         lastNameRef.current.value =
-          user.full_name.split(" ").length > 1
-            ? user.full_name.split(" ")[1]
+          user.full_name?.split(" ").length > 1
+            ? user.full_name?.split(" ")[1]
             : "";
         emailRef.current.value = user.email;
         phoneRef.current.value = user.phone;
@@ -134,6 +129,22 @@ const ProfilePage = () => {
           },
         );
         const data = await response.json();
+        if (data.data == null) {
+          if (data.message === "Email already exists") {
+            setLoadingUser(false);
+            toast({
+              title: "خطأ",
+              description:
+                "البريد الإلكتروني مستخدم بالفعل، الرجاء استخدام بريد آخر!",
+
+              variant: "destructive",
+              duration: 2500,
+            });
+            emailRef.current.value = user.email;
+            return;
+          }
+          throw new Error(data.message);
+        }
         if (data.message === "User updated successfully") {
           toast({
             title: "تم",
@@ -354,9 +365,9 @@ const ProfilePage = () => {
                 <div className="flex w-full flex-col gap-1">
                   <div className="text-neutral-400">الاسم</div>
                   <input
-                    defaultValue={user.full_name.split(" ")[0]}
+                    defaultValue={user.full_name?.split(" ")[0]}
                     ref={firstNameRef}
-                    readOnly={!isEditing} 
+                    readOnly={!isEditing}
                     type="text"
                     placeholder="الاسم"
                     className={cn(
@@ -372,8 +383,8 @@ const ProfilePage = () => {
                   <div className="text-neutral-400">اللقب </div>
                   <input
                     defaultValue={
-                      user.full_name.split(" ").length > 1
-                        ? user.full_name.split(" ")[1]
+                      user.full_name?.split(" ").length > 1
+                        ? user.full_name?.split(" ")[1]
                         : ""
                     }
                     ref={lastNameRef}
@@ -539,9 +550,9 @@ const ProfilePage = () => {
             <div className="w-full text-right text-2xl font-semibold text-neutral-700">
               طلباتك
             </div>
-            {user.orders.length > 0 ? (
+            {user.orders?.length > 0 ? (
               <div className="flex w-full flex-col gap-6">
-                {user.orders.map((order) => (
+                {user.orders?.map((order) => (
                   <div
                     key={order.id}
                     className="w-full rounded-lg bg-[var(--theme2)] p-6 shadow-lg"
@@ -555,7 +566,7 @@ const ProfilePage = () => {
                       </div>
                       <div className="text-sm text-neutral-500">
                         تاريخ الإنشاء:
-                        {new Date(order.created_At).toLocaleDateString("ar")}
+                        {formattedDate(order.created_At)}
                       </div>
                     </div>
                     <div className="mb-4 text-right">

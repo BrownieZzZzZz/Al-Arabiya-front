@@ -70,7 +70,7 @@ const Nav = () => {
         {
           method: "GET",
           headers: {
-            access_token: Cookies.get("admin_access_token"),
+            admin_access_token: Cookies.get("admin_access_token"),
             "Content-Type": "application/json",
           },
         },

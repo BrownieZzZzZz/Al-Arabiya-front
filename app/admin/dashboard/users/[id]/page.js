@@ -1,16 +1,23 @@
 "use client";
 
-import { useToast } from "@/hooks/use-toast";
-import { cn, validateEmail, validateNumberInput, cities } from "@/lib/utils";
 import { useRef, useState, useTransition, useEffect, Suspense } from "react";
 import { useParams, useRouter, useSearchParams } from "next/navigation";
 import Cookies from "js-cookie";
+
+import {
+  cn,
+  validateEmail,
+  validateNumberInput,
+  cities,
+  formattedDate,
+} from "@/lib/utils";
+import { toast } from "@/hooks/use-toast";
+
 import {
   Select,
   SelectContent,
   SelectGroup,
   SelectItem,
-  SelectLabel,
   SelectTrigger,
   SelectValue,
 } from "@/components/ui/select";
@@ -22,6 +29,7 @@ import {
 } from "@/components/ui/dialog";
 
 const UserPage = () => {
+  const router = useRouter();
   const params = useParams();
   const id = params.id;
   const searchParams = useSearchParams();
@@ -30,28 +38,18 @@ const UserPage = () => {
   const [loadingUser, setLoadingUser] = useState(true);
   var menu = parseInt(searchParams.get("menu")) || 1;
   const [isEditing, setIsEditing] = useState(false);
-  const [user, setUser] = useState({
-    id: "",
-    full_name: "",
-    email: "",
-    phone: "",
-    city: "",
-    address: "",
-    orders: [],
-  });
-  const [editText, setEditText] = useState("تعديل");
+  const [user, setUser] = useState({});
+  const [selectedCity, setSelectedCity] = useState("");
+  const [role, setRole] = useState("");
   const firstNameRef = useRef(null);
   const lastNameRef = useRef(null);
   const emailRef = useRef(null);
   const phoneRef = useRef(null);
-  const [selectedCity, setSelectedCity] = useState("");
   const addressRef = useRef(null);
-  const passwordRef = useRef(null);
-  const confirmPasswordRef = useRef(null);
-  const router = useRouter();
-
-  const { toast } = useToast();
-
+  const deleteRef = useRef(null);
+  const deletePopUp = () => {
+    deleteRef.current.click();
+  };
   const handleEdit = async () => {
     if (isEditing) {
       var errorTest = false;
@@ -106,17 +104,16 @@ const UserPage = () => {
       }
 
       if (errorTest) {
-        firstNameRef.current.value = user.full_name.split(" ")[0];
+        firstNameRef.current.value = user.full_name?.split(" ")[0];
         lastNameRef.current.value =
-          user.full_name.split(" ").length > 1
-            ? user.full_name.split(" ")[1]
+          user.full_name?.split(" ").length > 1
+            ? user.full_name?.split(" ")[1]
             : "";
         emailRef.current.value = user.email;
         phoneRef.current.value = user.phone;
         addressRef.current.value = user.address;
         setSelectedCity(user.city);
         setIsEditing(false);
-        setEditText("تعديل");
         return;
       }
 
@@ -127,21 +124,40 @@ const UserPage = () => {
         address: addressRef.current.value.trim(),
         city: selectedCity,
       };
+      if (role !== user.role) {
+        body.role = role;
+      }
 
       try {
         setLoadingUser(true);
         const response = await fetch(
-          `${process.env.NEXT_PUBLIC_API_URL}/users/${user.id}`,
+          `${process.env.NEXT_PUBLIC_API_URL}/admins/user/${user.id}`,
           {
             method: "PUT",
             headers: {
-              access_token: Cookies.get("access_token"),
+              admin_access_token: Cookies.get("admin_access_token"),
               "Content-Type": "application/json",
             },
             body: JSON.stringify(body),
           },
         );
         const data = await response.json();
+        if (data.data == null) {
+          if (data.message === "Email already exists") {
+            setLoadingUser(false);
+            toast({
+              title: "خطأ",
+              description:
+                "البريد الإلكتروني مستخدم بالفعل، الرجاء استخدام بريد آخر!",
+
+              variant: "destructive",
+              duration: 2500,
+            });
+            emailRef.current.value = user.email;
+            return;
+          }
+          throw new Error(data.message);
+        }
         if (data.message === "User updated successfully") {
           toast({
             title: "تم",
@@ -161,23 +177,61 @@ const UserPage = () => {
         });
         setLoadingUser(false);
       }
-      setEditText("تعديل");
     } else {
-      setEditText("حفظ");
     }
     setIsEditing(!isEditing);
   };
 
-  
+  const handleDelete = async () => {
+    deletePopUp();
+    try {
+      setLoadingUser(true);
+      toast({
+        title: "جاري مسح البيانات",
+        description: "يرجى الانتظار...",
+      });
+      const response = await fetch(
+        `${process.env.NEXT_PUBLIC_API_URL}/admins/user/${user.id}`,
+        {
+          method: "DELETE",
+          headers: {
+            admin_access_token: Cookies.get("admin_access_token"),
+            "Content-Type": "application/json",
+          },
+        },
+      );
 
-  const checkUser = async () => {
+      const data = await response.json();
+      if (data.data === null) {
+        throw new Error(data.message);
+      }
+      toast({
+        title: "تم",
+        description: "تم مسح البيانات بنجاح",
+        variant: "success",
+      });
+      ChangeUrl("/admin/dashboard/users");
+      // setLoadingUser(false);
+    } catch (error) {
+      console.error(error);
+      setLoadingUser(false);
+      toast({
+        title: "خطأ",
+        description: "حدث خطأ أثناء مسح البيانات",
+        variant: "destructive",
+        duration: 8000,
+      });
+    }
+  };
+
+  const fetchUser = async () => {
     try {
       const response = await fetch(
-        `${process.env.NEXT_PUBLIC_API_URL}/users/account`,
+        `${process.env.NEXT_PUBLIC_API_URL}/admins/user/byid/${id}`,
         {
           method: "GET",
           headers: {
-            access_token: Cookies.get("access_token"),
+            admin_access_token: Cookies.get("admin_access_token"),
             "Content-Type": "application/json",
           },
         },
@@ -189,12 +243,12 @@ const UserPage = () => {
       }
 
       setUser(data.data);
+      setRole(data.data.role);
       setSelectedCity(data.data.city);
       setLoadingUser(false);
     } catch (error) {
       console.error(error);
-      setLoadingPage(true);
-      location.href = "/sign-in";
+      setLoadingUser(false);
       toast({
         title: "خطأ",
         description: "حدث خطأ أثناء جلب البيانات",
@@ -202,12 +256,6 @@ const UserPage = () => {
       });
     }
   };
-  
-  const deleteRef = useRef(null);
-
-  const deletePopUp = () => {
-    deleteRef.current.click();
-  }
 
   const ChangeUrl = (url) => {
     startTransition(() => {
@@ -216,7 +264,7 @@ const UserPage = () => {
   };
 
   useEffect(() => {
-    checkUser();
+    fetchUser();
   }, []);
 
   useEffect(() => {
@@ -265,7 +313,6 @@ const UserPage = () => {
           </div>
         </div>
 
-
         {menu === 1 && (
           <div className="flex w-full flex-col items-center gap-4 px-4 py-6 min-[600px]:px-8">
             <div className="flex w-full flex-col gap-2">
@@ -278,7 +325,7 @@ const UserPage = () => {
                     الاسم
                   </div>
                   <input
-                    defaultValue={user.full_name.split(" ")[0]}
+                    defaultValue={user.full_name?.split(" ")[0]}
                     ref={firstNameRef}
                     readOnly={!isEditing}
                     type="text"
@@ -298,8 +345,8 @@ const UserPage = () => {
                   </div>
                   <input
                     defaultValue={
-                      user.full_name.split(" ").length > 1
-                        ? user.full_name.split(" ")[1]
+                      user.full_name?.split(" ").length > 1
+                        ? user.full_name?.split(" ")[1]
                         : ""
                     }
                     ref={lastNameRef}
@@ -376,6 +423,18 @@ const UserPage = () => {
                   disabled={!isEditing}
                 />
               </div>
+              <div className="flex flex-col gap-2">
+                <span className="text-lg font-semibold text-[var(--dash-theme5)]">
+                  تاريخ الانشاء
+                </span>
+                <input
+                  type="text"
+                  readOnly
+                  disabled
+                  defaultValue={formattedDate(user.created_At)}
+                  className="bg-[var(--dash-theme)] p-3 text-lg font-semibold text-white"
+                />
+              </div>
               <div className="flex flex-col gap-1">
                 <div className="text-lg font-semibold text-[var(--dash-theme5)]">
                   المدينة
@@ -419,6 +478,52 @@ const UserPage = () => {
                   </SelectContent>
                 </Select>
               </div>
+              <div className="flex flex-col gap-1">
+                <div className="text-lg font-semibold text-[var(--dash-theme5)]">
+                  الدور
+                </div>
+
+                <Select
+                  onValueChange={setRole}
+                  value={role}
+                  className={cn(
+                    "w-full bg-[var(--theme2)] px-3 py-2 text-lg placeholder-neutral-300 outline-transparent",
+                    !isEditing
+                      ? "hover:cursor-default"
+                      : "outline-[var(--theme)]",
+                  )}
+                  disabled={!isEditing}
+                >
+                  <SelectTrigger
+                    dir="rtl"
+                    className={cn(
+                      "w-full bg-[var(--dash-theme)] px-3 py-2 text-lg text-white placeholder-neutral-300 outline-none",
+                      !isEditing
+                        ? "hover:cursor-default"
+                        : "focus:outline-[var(--dash-theme5)]",
+                    )}
+                  >
+                    <SelectValue dir="rtl" placeholder="اختر دور..." />
+                  </SelectTrigger>
+                  <SelectContent dir="rtl">
+                    <SelectGroup dir="rtl">
+                      {[
+                        { value: "admin", text: "مسؤول" },
+                        { value: "client", text: "عميل" },
+                      ].map((role, index) => (
+                        <SelectItem
+                          dir="rtl"
+                          className="text-right transition-colors duration-150 hover:cursor-pointer focus:bg-zinc-200"
+                          key={index}
+                          value={role.value}
+                        >
+                          {role.text}
+                        </SelectItem>
+                      ))}
+                    </SelectGroup>
+                  </SelectContent>
+                </Select>
+              </div>
               <button
                 onClick={() => handleEdit()}
                 type="button"
@@ -429,7 +534,7 @@ const UserPage = () => {
                     : "border-blue-500 bg-blue-500 hover:text-blue-500",
                 )}
               >
-                {editText}
+                {isEditing ? "حفظ" : "تعديل"}
               </button>
             </div>
           </div>
@@ -440,7 +545,7 @@ const UserPage = () => {
             <div className="w-full text-right text-2xl font-semibold text-white">
               طلبات الحريف
             </div>
-            {user.orders.length > 0 ? (
+            {user.orders?.length > 0 ? (
               <div className="flex w-full flex-col gap-6">
                 {user.orders.map((order) => (
                   <div
@@ -456,7 +561,7 @@ const UserPage = () => {
                       </div>
                       <div className="text-sm text-neutral-300">
                         تاريخ الإنشاء:
-                        {new Date(order.created_At).toLocaleDateString("ar")}
+                        {formattedDate(order.created_At)}
                       </div>
                     </div>
                     <div className="mb-4 text-right">
@@ -525,15 +630,17 @@ const UserPage = () => {
           </div>
         )}
       </div>
-      <div className="flex w-full max-w-[600px] flex-row gap-2 px-4 min-[600px]:px-8">
-        <button
-          type="button"
-          onClick={() => deletePopUp()}
-          className="w-[120px] bg-red-900 py-3 text-lg font-semibold text-[#ffffff] transition-all duration-200 hover:bg-red-500"
-        >
-          حذف
-        </button>
-      </div>
+      {menu === 1 && (
+        <div className="flex w-full max-w-[600px] flex-row gap-2 px-4 min-[600px]:px-8">
+          <button
+            type="button"
+            onClick={() => deletePopUp()}
+            className="w-[120px] bg-red-900 py-3 text-lg font-semibold text-[#ffffff] transition-all duration-200 hover:bg-red-500"
+          >
+            حذف
+          </button>
+        </div>
+      )}
       <Dialog>
         <DialogTrigger ref={deleteRef} className="hidden" />
         <DialogContent
@@ -546,11 +653,12 @@ const UserPage = () => {
               تحذير
             </div>
             <div className="text-medium w-3/4 text-center text-xl text-white">
-              حذف هذا الحساب   سينجم عنه حذف كل البيانات المرتبطة بهذا الحساب 
+              حذف هذا الحساب سينجم عنه حذف كل البيانات المرتبطة بهذا الحساب
             </div>
             <button
               onClick={() => handleDelete()}
               type="button"
+              disabled={loadingUser}
               className={cn(
                 "mt-4 w-3/4 rounded-lg bg-red-900 py-2 text-lg font-semibold text-[#ffffff] transition-all duration-200 hover:bg-red-500",
               )}

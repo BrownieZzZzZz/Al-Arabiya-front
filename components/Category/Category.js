@@ -64,7 +64,7 @@ const Category = ({
           method: "PUT",
           headers: {
             "Content-Type": "application/json",
-            access_token: Cookies.get("admin_access_token"),
+            admin_access_token: Cookies.get("admin_access_token"),
           },
           body: JSON.stringify({
             name: categoryRef.current.value.trim(),
@@ -121,7 +121,7 @@ const Category = ({
           method: "DELETE",
           headers: {
             "Content-Type": "application/json",
-            access_token: Cookies.get("admin_access_token"),
+            admin_access_token: Cookies.get("admin_access_token"),
           },
         },
       );

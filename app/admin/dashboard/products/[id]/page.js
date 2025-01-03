@@ -251,7 +251,7 @@ const page = () => {
           method: "PUT",
           headers: {
             "Content-Type": "application/json",
-            access_token: Cookies.get("admin_access_token"),
+            admin_access_token: Cookies.get("admin_access_token"),
           },
           body: JSON.stringify(body),
         },
@@ -259,8 +259,8 @@ const page = () => {
 
       const data = await response.json();
       if (data.data == null) {
-        setLoadingProduct(false);
         if (data.message === "Product already exists") {
+          setLoadingProduct(false);
           toast({
             title: "خطأ",
             description: "إسم المنتوج موجود بالفعل",
@@ -298,7 +298,7 @@ const page = () => {
           method: "DELETE",
           headers: {
             "Content-Type": "application/json",
-            access_token: Cookies.get("admin_access_token"),
+            admin_access_token: Cookies.get("admin_access_token"),
           },
         },
       );
@@ -339,7 +339,7 @@ const page = () => {
           method: "GET",
           headers: {
             "Content-Type": "application/json",
-            access_token: Cookies.get("admin_access_token"),
+            admin_access_token: Cookies.get("admin_access_token"),
           },
         },
       );
@@ -372,7 +372,7 @@ const page = () => {
           method: "GET",
           headers: {
             "Content-Type": "application/json",
-            access_token: Cookies.get("admin_access_token"),
+            admin_access_token: Cookies.get("admin_access_token"),
           },
         },
       );
@@ -405,7 +405,7 @@ const page = () => {
           method: "GET",
           headers: {
             "Content-Type": "application/json",
-            access_token: Cookies.get("admin_access_token"),
+            admin_access_token: Cookies.get("admin_access_token"),
           },
         },
       );

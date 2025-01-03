@@ -44,7 +44,7 @@ const page = () => {
           method: "GET",
           headers: {
             "Content-Type": "application/json",
-            access_token: Cookies.get("admin_access_token"),
+            admin_access_token: Cookies.get("admin_access_token"),
           },
         },
       );
@@ -92,7 +92,7 @@ const page = () => {
           method: "PUT",
           headers: {
             "Content-Type": "application/json",
-            access_token: Cookies.get("admin_access_token"),
+            admin_access_token: Cookies.get("admin_access_token"),
           },
           body: JSON.stringify({
             featuredProducts: [
@@ -160,7 +160,7 @@ const page = () => {
           method: "PUT",
           headers: {
             "Content-Type": "application/json",
-            access_token: Cookies.get("admin_access_token"),
+            admin_access_token: Cookies.get("admin_access_token"),
           },
           body: JSON.stringify({
             featuredProducts: [
@@ -219,7 +219,7 @@ const page = () => {
           method: "PUT",
           headers: {
             "Content-Type": "application/json",
-            access_token: Cookies.get("admin_access_token"),
+            admin_access_token: Cookies.get("admin_access_token"),
           },
           body: JSON.stringify({
             brands: [
@@ -286,7 +286,7 @@ const page = () => {
           method: "PUT",
           headers: {
             "Content-Type": "application/json",
-            access_token: Cookies.get("admin_access_token"),
+            admin_access_token: Cookies.get("admin_access_token"),
           },
           body: JSON.stringify({
             brands: [
@@ -345,7 +345,7 @@ const page = () => {
           method: "PUT",
           headers: {
             "Content-Type": "application/json",
-            access_token: Cookies.get("admin_access_token"),
+            admin_access_token: Cookies.get("admin_access_token"),
           },
           body: JSON.stringify({
             categories: [
@@ -412,7 +412,7 @@ const page = () => {
           method: "PUT",
           headers: {
             "Content-Type": "application/json",
-            access_token: Cookies.get("admin_access_token"),
+            admin_access_token: Cookies.get("admin_access_token"),
           },
           body: JSON.stringify({
             categories: [
@@ -467,7 +467,7 @@ const page = () => {
           method: "PUT",
           headers: {
             "Content-Type": "application/json",
-            access_token: Cookies.get("admin_access_token"),
+            admin_access_token: Cookies.get("admin_access_token"),
           },
           body: JSON.stringify({
             deliveryPrice: Number(deliveryPrice),

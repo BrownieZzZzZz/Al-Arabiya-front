@@ -54,7 +54,7 @@ const page = () => {
           method: "PUT",
           headers: {
             "Content-Type": "application/json",
-            access_token: Cookies.get("admin_access_token"),
+            admin_access_token: Cookies.get("admin_access_token"),
           },
           body: JSON.stringify(body),
         },
@@ -167,7 +167,7 @@ const page = () => {
           method: "PUT",
           headers: {
             "Content-Type": "application/json",
-            access_token: Cookies.get("admin_access_token"),
+            admin_access_token: Cookies.get("admin_access_token"),
           },
           body: JSON.stringify(body),
         },
@@ -269,7 +269,7 @@ const page = () => {
         {
           method: "GET",
           headers: {
-            access_token: Cookies.get("admin_access_token"),
+            admin_access_token: Cookies.get("admin_access_token"),
             "Content-Type": "application/json",
           },
         },

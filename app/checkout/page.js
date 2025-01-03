@@ -17,6 +17,7 @@ import {
   validateEmail,
   validateNumberInput,
   cities,
+  formattedDate,
 } from "@/lib/utils";
 
 import Cookies from "js-cookie";
@@ -197,7 +198,7 @@ const Page = () => {
         duration: 10000,
       });
       ChangeUrl(
-        `/checkout/success?productId=${data.data.id}&productDate=${new Date(data.data.created_At).toLocaleDateString("ar")}`,
+        `/checkout/success?productId=${data.data.id}&productDate=${formattedDate(data.data.created_At)}`,
       );
     } catch (error) {
       setLoadingOrder(false);
