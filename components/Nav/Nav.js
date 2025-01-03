@@ -41,9 +41,7 @@ const Nav = () => {
   const [loadingUser, setLoadingUser] = useState(true);
   const [user, setUser] = useState({});
   const [signed, setSigned] = useState(false);
-  const [loadingAdmin, setLoadingAdmin] = useState(true);
-  const [Admin, setAdmin] = useState({});
-  const [Adminsigned, setAdminSigned] = useState(false);
+
   const [loadingPage, setLoadingPage] = useState(true);
   const [isPending, startTransition] = useTransition();
   const [items, setItems] = useState({});
@@ -59,37 +57,6 @@ const Nav = () => {
     Cookies.remove("access_token");
     setLoadingPage(true);
     location.href = "/sign-in";
-  };
-
-  const checkAdmin = async () => {
-    try {
-      setLoadingAdmin(true);
-
-      const response = await fetch(
-        `${process.env.NEXT_PUBLIC_API_URL}/admins/account`,
-        {
-          method: "GET",
-          headers: {
-            admin_access_token: Cookies.get("admin_access_token"),
-            "Content-Type": "application/json",
-          },
-        },
-      );
-      const data = await response.json();
-
-      if (data.data === null) {
-        throw new Error(data.message);
-      }
-
-      setLoadingAdmin(false);
-      setAdminSigned(true);
-      setAdmin(data.data);
-    } catch (error) {
-      console.error(error);
-
-      setLoadingAdmin(false);
-    }
-    setLoadingAdmin(false);
   };
 
   const checkUser = async () => {
@@ -147,26 +114,12 @@ const Nav = () => {
   const sumValues = (obj) => Object.values(obj).reduce((a, b) => a + b, 0);
 
   const ChangePath = () => {
-    if (pathname.includes("admin") && !loadingAdmin) {
-      if (pathname.includes("sign") || pathname.includes("reset")) {
-        if (Adminsigned) {
-          console.log("test");
-
-          ChangeUrl("/admin/dashboard");
-          return;
-        }
-      } else if (pathname.includes("dashboard")) {
-        if (!Adminsigned) {
-          ChangeUrl("/admin/sign-in");
-          return;
-        }
-      }
-    } else if (signed && !loadingUser) {
+    if (signed) {
       if (pathname.includes("sign") || pathname.includes("reset")) {
         ChangeUrl("/profile");
         return;
       }
-    } else if (!signed && !loadingUser) {
+    } else if (!signed) {
       if (pathname.includes("profile")) {
         ChangeUrl("/sign-in");
         return;
@@ -175,9 +128,7 @@ const Nav = () => {
   };
 
   useEffect(() => {
-    if (pathname.includes("admin")) {
-      checkAdmin();
-    } else {
+    if (!pathname.includes("admin")) {
       checkUser();
     }
   }, []);
@@ -196,25 +147,19 @@ const Nav = () => {
   }, [isPending]);
 
   useEffect(() => {
-    ChangePath();
+    if (!loadingUser && !pathname.includes("admin")) {
+      ChangePath();
+    }
 
     eventBus.on("updateCart", updateCart);
 
     return () => {
       eventBus.off("updateCart", updateCart);
     };
-  }, [signed, Adminsigned, loadingUser, loadingAdmin]);
+  }, [signed, loadingUser]);
 
   if (pathname.includes("admin")) {
-    return (
-      <>
-        {(loadingPage || loadingAdmin) && (
-          <div className="fixed inset-0 z-50 flex h-full w-full items-center justify-center bg-white/60 backdrop-blur-sm">
-            <div className="h-14 w-14 animate-spin rounded-full border-b-4 border-[var(--theme)]" />
-          </div>
-        )}
-      </>
-    );
+    return <></>;
   }
   if (pathname.includes("sign") || pathname.includes("reset")) {
     return (
