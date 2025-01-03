@@ -1,6 +1,6 @@
 "use client";
 
-import React, { useRef, useState, useTransition, useEffect } from "react";
+import  { useRef, useState, useTransition, useEffect } from "react";
 import { useParams, useRouter } from "next/navigation";
 
 import { cn, validatePercentageInput, validatePriceInput } from "@/lib/utils";

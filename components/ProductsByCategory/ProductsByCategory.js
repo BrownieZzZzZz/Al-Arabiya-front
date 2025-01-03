@@ -8,7 +8,7 @@ import {
   CarouselNext,
   CarouselPrevious,
 } from "@/components/ui/carousel";
-import React, { useEffect, useState } from "react";
+import  { useEffect, useState } from "react";
 import ProductCard from "../ProductCard/ProductCard";
 import { Skeleton } from "../ui/skeleton";
 
@@ -99,7 +99,7 @@ const ProductsByCategory = ({ ChangeUrl, loading, categories }) => {
         <div className="mb-2 flex w-full flex-row items-center justify-center gap-3">
           <div className="h-[2px] w-8 bg-[var(--theme)] md:w-12" />
           <span className="text-center text-4xl font-bold text-neutral-800">
-            منتجات حسب نوع المنتج
+            منتجات حسب الفئة
           </span>
           <div className="h-[2px] w-8 bg-[var(--theme)] md:w-12" />
         </div>

@@ -1,7 +1,7 @@
 "use client";
 import DashSearch from "@/components/DashSearch/DashSearch";
 import "./page.css";
-import React, { useState } from "react";
+import  { useState } from "react";
 import {
   Table,
   TableBody,

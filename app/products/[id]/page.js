@@ -8,7 +8,7 @@ import { toast } from "@/hooks/use-toast";
 import { cn, eventBus } from "@/lib/utils";
 
 import { useParams, useRouter } from "next/navigation";
-import React, { useEffect, useState, useTransition } from "react";
+import  { useEffect, useState, useTransition } from "react";
 
 const page = () => {
   const router = useRouter();

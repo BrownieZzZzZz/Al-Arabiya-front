@@ -7,7 +7,7 @@ import DashSignHeader from "@/components/DashSignHeader/DashSignHeader";
 import { cn, validateEmail } from "@/lib/utils";
 
 import Cookies from "js-cookie";
-import React, { useRef, useState, useTransition, useEffect } from "react";
+import  { useRef, useState, useTransition, useEffect } from "react";
 import { useRouter } from "next/navigation";
 import { useToast } from "@/hooks/use-toast";
 

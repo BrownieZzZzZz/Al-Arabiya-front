@@ -1,6 +1,6 @@
 "use client";
 
-import React, { useEffect, useState } from "react";
+import  { useEffect, useState } from "react";
 import SelectSortInterface from "../SelectSortInterface/SelectSortInterface";
 import CategorieItem from "../CategorieItem/CategorieItem";
 import { useSearchParams } from "next/navigation";

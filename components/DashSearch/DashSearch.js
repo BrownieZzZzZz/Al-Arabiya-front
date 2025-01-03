@@ -1,6 +1,6 @@
 "use client";
 import { cn } from "@/lib/utils";
-import React, { useRef, useState } from "react";
+import  { useRef, useState } from "react";
 
 const DashSearch = ({ placeholder, search }) => {
   const [searchState, setSearchState] = useState(false);

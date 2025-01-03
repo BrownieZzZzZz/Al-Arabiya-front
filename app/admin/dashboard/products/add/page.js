@@ -3,7 +3,7 @@ import DashBrandInterface from "@/components/DashBrandInterface/DashBrandInterfa
 import DashCategoryInterface from "@/components/DashCategoryInterface/DashCategoryInterface";
 import { toast } from "@/hooks/use-toast";
 import { cn, validatePercentageInput, validatePriceInput } from "@/lib/utils";
-import React, { useEffect, useRef, useState, useTransition } from "react";
+import  { useEffect, useRef, useState, useTransition } from "react";
 import Cookies from "js-cookie";
 import { useRouter } from "next/navigation";
 

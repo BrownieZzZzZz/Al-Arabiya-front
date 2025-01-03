@@ -2,7 +2,7 @@
 
 import "./page.css";
 
-import React, {
+import  {
   useEffect,
   useState,
   useTransition,

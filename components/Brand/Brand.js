@@ -1,6 +1,6 @@
 "use client";
 
-import React, { useRef, useState } from "react";
+import { useRef, useState } from "react";
 import {
   Dialog,
   DialogContent,
@@ -12,7 +12,14 @@ import { cn } from "@/lib/utils";
 import { useToast } from "@/hooks/use-toast";
 import Cookies from "js-cookie";
 
-const Brand = ({ brand, fetchBrands }) => {
+const Brand = ({
+  brand,
+  fetchBrands = null,
+  isAdd = false,
+  addBrand = null,
+  isDelete = false,
+  deleteBrand = null,
+}) => {
   const { toast } = useToast();
   const [isEditing, setIsEditing] = useState(false);
   const [editText, setEditText] = useState("تعديل");
@@ -22,6 +29,22 @@ const Brand = ({ brand, fetchBrands }) => {
   const imageRef = useRef(null);
   const fileInput = useRef(null);
   const confirmDeleteRef = useRef(null);
+
+  const handleAddBrand = async () => {
+    setLoadingBrand(true);
+    if (addBrand) {
+      await addBrand(brand.id);
+      setLoadingBrand(false);
+    }
+  };
+
+  const handleDeleteBrand = async () => {
+    setLoadingBrand(true);
+    if (deleteBrand) {
+      await deleteBrand(brand.id);
+      setLoadingBrand(false);
+    }
+  };
 
   const handleEdit = async () => {
     if (!isEditing) {
@@ -152,140 +175,189 @@ const Brand = ({ brand, fetchBrands }) => {
   };
 
   return (
-    <div className="h-full w-full">
-      <Dialog>
-        <DialogTrigger className="hidden">
-          <div ref={confirmDeleteRef} className="hidden"></div>
-        </DialogTrigger>
-        <DialogContent
-          closeClass="text-white"
-          className="flex items-center justify-center border-0 bg-[var(--dash-theme)] px-2 py-12"
-        >
-          <DialogTitle />
-          <div className="flex w-full flex-col items-center justify-center gap-4">
-            <div className="w-3/4 text-center text-3xl font-bold text-red-500">
-              تحذير
-            </div>
-            <div className="text-medium w-3/4 text-center text-xl text-white">
-              حذف هذه الماركة سينجم عنه حذف كل المنتوجات المرتبطة بهذه الماركة
-            </div>
-            <button
-              onClick={() => handleDelete()}
-              disabled={loadingBrand}
-              type="button"
-              className={cn(
-                "mt-4 w-3/4 rounded-lg border-2 bg-red-900 py-2 text-lg font-semibold text-[#ffffff] transition-all duration-200",
-                loadingBrand
-                  ? "opacity-50 hover:cursor-not-allowed"
-                  : "hover:bg-red-500",
-              )}
+    <>
+      {!(isAdd || isDelete) ? (
+        <>
+          <Dialog>
+            <DialogTrigger className="hidden">
+              <div ref={confirmDeleteRef} className="hidden"></div>
+            </DialogTrigger>
+            <DialogContent
+              closeClass="text-white"
+              className="flex items-center justify-center border-0 bg-[var(--dash-theme)] px-2 py-12"
             >
-              {loadingBrand ? (
-                <div className="flex items-center justify-center">
-                  <div className="h-5 w-5 animate-spin rounded-full border-b-2 border-white" />
+              <DialogTitle />
+              <div className="flex w-full flex-col items-center justify-center gap-4">
+                <div className="w-3/4 text-center text-3xl font-bold text-red-500">
+                  تحذير
                 </div>
-              ) : (
-                "أنا متأكد"
-              )}
-            </button>
-          </div>
-        </DialogContent>
-      </Dialog>
-      <Dialog>
-        <DialogTrigger
-          className="h-full w-full"
-          onClick={() => {
-            setIsEditing(false);
-            setEditText("تعديل");
-          }}
-        >
-          <div className="flex h-full w-full items-center justify-center rounded-xl bg-[var(--dash-theme2)] px-4 py-4 text-center text-2xl font-semibold text-neutral-300 transition-all duration-200 hover:scale-[1.02] hover:cursor-pointer hover:bg-[#2c2d33]">
+                <div className="text-medium w-3/4 text-center text-xl text-white">
+                  حذف هذه الماركة سينجم عنه حذف كل المنتوجات المرتبطة بهذه
+                  الماركة
+                </div>
+                <button
+                  onClick={() => handleDelete()}
+                  disabled={loadingBrand}
+                  type="button"
+                  className={cn(
+                    "mt-4 w-3/4 rounded-lg border-2 bg-red-900 py-2 text-lg font-semibold text-[#ffffff] transition-all duration-200",
+                    loadingBrand
+                      ? "opacity-50 hover:cursor-not-allowed"
+                      : "hover:bg-red-500",
+                  )}
+                >
+                  {loadingBrand ? (
+                    <div className="flex items-center justify-center">
+                      <div className="h-5 w-5 animate-spin rounded-full border-b-2 border-white" />
+                    </div>
+                  ) : (
+                    "أنا متأكد"
+                  )}
+                </button>
+              </div>
+            </DialogContent>
+          </Dialog>
+          <Dialog>
+            <DialogTrigger
+              className="h-full w-full"
+              onClick={() => {
+                setIsEditing(false);
+                setEditText("تعديل");
+              }}
+            >
+              <div className="flex h-full w-full items-center justify-center rounded-xl bg-[var(--dash-theme2)] px-4 py-4 text-center text-2xl font-semibold text-neutral-300 transition-all duration-200 hover:scale-[1.02] hover:cursor-pointer hover:bg-[#2c2d33]">
+                {brand.name}
+              </div>
+            </DialogTrigger>
+            <DialogContent
+              closeClass="text-white"
+              className="flex items-center justify-center border-0 bg-[var(--dash-theme)] px-2 py-12"
+            >
+              <DialogTitle />
+              <div className="flex w-full flex-col items-center justify-center gap-4">
+                <div className="text-2xl font-semibold text-white">
+                  إسم الفئة{" "}
+                </div>
+                <input
+                  ref={brandRef}
+                  readOnly={!isEditing}
+                  defaultValue={brand.name}
+                  dir="rtl"
+                  type="text"
+                  placeholder="Sheglam"
+                  disabled={!isEditing || loadingBrand}
+                  className={cn(
+                    "my-2 w-3/4 rounded-lg bg-[var(--dash-theme2)] p-3 text-lg font-medium text-white placeholder-neutral-500 outline-none outline-2",
+                    !isEditing && loadingBrand
+                      ? "hover:cursor-not-allowed"
+                      : "focus:bg-[var(--dash-theme4)] focus:outline-[var(--dash-theme6)]",
+                  )}
+                />
+                <input
+                  onChange={() => {
+                    const file = fileInput.current.files[0];
+                    const reader = new FileReader();
+                    reader.onloadend = () => {
+                      imageRef.current.src = reader.result;
+                    };
+                    reader.readAsDataURL(file);
+                  }}
+                  type="file"
+                  accept="image/*"
+                  className="hidden"
+                  ref={fileInput}
+                  disabled={!isEditing || loadingBrand}
+                />
+                <img
+                  onClick={() => {
+                    if (isEditing && !loadingBrand) {
+                      fileInput.current.click();
+                    }
+                  }}
+                  ref={imageRef}
+                  src={imageValue}
+                  alt={brand.name}
+                  className={cn(
+                    "mb-2 h-[150px] w-3/4 rounded-lg object-scale-down",
+                    isEditing
+                      ? "hover:cursor-pointer"
+                      : "hover:cursor-not-allowed",
+                  )}
+                ></img>
+                <div className="flex w-3/4 flex-row gap-4">
+                  <button
+                    onClick={() => handleEdit()}
+                    type="button"
+                    className={cn(
+                      "w-full rounded-lg border-2 py-2 text-lg font-semibold text-[#ffffff] transition-all duration-200",
+                      isEditing && !loadingBrand
+                        ? "border-emerald-500 bg-emerald-500 hover:bg-transparent hover:text-emerald-500"
+                        : "border-blue-500 bg-blue-500 hover:bg-transparent hover:text-blue-500",
+                    )}
+                  >
+                    {loadingBrand ? (
+                      <div className="flex items-center justify-center">
+                        <div className="h-5 w-5 animate-spin rounded-full border-b-2 border-white" />
+                      </div>
+                    ) : (
+                      editText
+                    )}
+                  </button>
+                  <button
+                    onClick={() => confirmDeletePopUp()}
+                    type="button"
+                    disabled={loadingBrand}
+                    className="w-full rounded-lg border-2 border-red-500 bg-red-500 py-2 text-lg font-semibold text-[#ffffff] transition-all duration-200 hover:bg-transparent hover:text-red-500"
+                  >
+                    إحذف{" "}
+                  </button>
+                </div>
+              </div>
+            </DialogContent>
+          </Dialog>
+        </>
+      ) : (
+        <div className="rounded-xl bg-[var(--dash-theme2)] transition-all duration-200 hover:scale-[1.02] hover:cursor-pointer hover:bg-[#2c2d33] flex flex-col justify-center items-center w-full h-full">
+          <div className="flex w-full items-center justify-center px-4 pb-1 pt-4 text-center text-2xl font-semibold text-neutral-300">
             {brand.name}
           </div>
-        </DialogTrigger>
-        <DialogContent
-          closeClass="text-white"
-          className="flex items-center justify-center border-0 bg-[var(--dash-theme)] px-2 py-12"
-        >
-          <DialogTitle />
-          <div className="flex w-full flex-col items-center justify-center gap-4">
-            <div className="text-2xl font-semibold text-white">إسم الفئة </div>
-            <input
-              ref={brandRef}
-              readOnly={!isEditing}
-              defaultValue={brand.name}
-              dir="rtl"
-              type="text"
-              placeholder="Sheglam"
-              disabled={!isEditing || loadingBrand}
-              className={cn(
-                "my-2 w-3/4 rounded-lg bg-[var(--dash-theme2)] p-3 text-lg font-medium text-white placeholder-neutral-500 outline-none outline-2",
-                !isEditing && loadingBrand
-                  ? "hover:cursor-not-allowed"
-                  : "focus:bg-[var(--dash-theme4)] focus:outline-[var(--dash-theme6)]",
-              )}
-            />
-            <input
-              onChange={() => {
-                const file = fileInput.current.files[0];
-                const reader = new FileReader();
-                reader.onloadend = () => {
-                  imageRef.current.src = reader.result;
-                };
-                reader.readAsDataURL(file);
-              }}
-              type="file"
-              accept="image/*"
-              className="hidden"
-              ref={fileInput}
-              disabled={!isEditing || loadingBrand}
-            />
-            <img
-              onClick={() => {
-                if (isEditing && !loadingBrand) {
-                  fileInput.current.click();
-                }
-              }}
-              ref={imageRef}
-              src={imageValue}
-              alt={brand.name}
-              className={cn(
-                "mb-2 h-[150px] w-3/4 rounded-lg object-scale-down",
-                isEditing ? "hover:cursor-pointer" : "hover:cursor-not-allowed",
-              )}
-            ></img>
-            <div className="flex w-3/4 flex-row gap-4">
+          <p
+            dir="rtl"
+            className="flex w-full flex-col items-center justify-center gap-3 px-2 pb-4 text-center text-sm font-semibold text-neutral-400"
+          >
+            {brand.products.length} منتوج
+            {(isAdd || isDelete) && (
               <button
-                onClick={() => handleEdit()}
+                disabled={loadingBrand}
+                onClick={() => {
+                  if (isAdd) handleAddBrand();
+                  if (isDelete) handleDeleteBrand();
+                }}
                 type="button"
                 className={cn(
-                  "w-full rounded-lg border-2 py-2 text-lg font-semibold text-[#ffffff] transition-all duration-200",
-                  isEditing && !loadingBrand
-                    ? "border-emerald-500 bg-emerald-500 hover:bg-transparent hover:text-emerald-500"
-                    : "border-blue-500 bg-blue-500 hover:bg-transparent hover:text-blue-500",
+                  "self-center rounded-lg bg-[var(--dash-theme6)] px-3 py-1 text-lg font-semibold text-[#ffffff] transition-all duration-200 hover:bg-[var(--dash-theme5)]",
+                  {
+                    "hover:cursor-not-allowed": loadingBrand,
+                    "bg-red-900 hover:bg-red-500": isDelete,
+                    "bg-emerald-700 hover:bg-emerald-500": isAdd,
+                  },
                 )}
               >
                 {loadingBrand ? (
                   <div className="flex items-center justify-center">
                     <div className="h-5 w-5 animate-spin rounded-full border-b-2 border-white" />
                   </div>
+                ) : isAdd && !isDelete ? (
+                  "أضف الماركة"
                 ) : (
-                  editText
+                  "إحذف الماركة"
                 )}
               </button>
-              <button
-                onClick={() => confirmDeletePopUp()}
-                type="button"
-                disabled={loadingBrand}
-                className="w-full rounded-lg border-2 border-red-500 bg-red-500 py-2 text-lg font-semibold text-[#ffffff] transition-all duration-200 hover:bg-transparent hover:text-red-500"
-              >
-                إحذف{" "}
-              </button>
-            </div>
-          </div>
-        </DialogContent>
-      </Dialog>
-    </div>
+            )}
+          </p>
+        </div>
+      )}
+    </>
   );
 };
 

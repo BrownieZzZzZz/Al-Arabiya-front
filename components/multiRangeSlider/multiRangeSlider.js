@@ -1,6 +1,6 @@
 "use client";
 
-import React, { useCallback, useEffect, useState, useRef } from "react";
+import  { useCallback, useEffect, useState, useRef } from "react";
 import "./multiRangeSlider.css";
 import { useSearchParams } from "next/navigation";
 

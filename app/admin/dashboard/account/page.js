@@ -1,6 +1,6 @@
 "use client";
 import { toast } from "@/hooks/use-toast";
-import React, { useEffect, useRef, useState } from "react";
+import  { useEffect, useRef, useState } from "react";
 import Cookies from "js-cookie";
 import { cn, validateEmail } from "@/lib/utils";
 

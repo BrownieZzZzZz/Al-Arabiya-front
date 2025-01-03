@@ -1,7 +1,7 @@
 "use client";
 
 import DashSearch from "@/components/DashSearch/DashSearch";
-import React, { useRef, useState, useEffect } from "react";
+import { useRef, useState, useEffect } from "react";
 import {
   Dialog,
   DialogContent,
@@ -9,14 +9,13 @@ import {
   DialogClose,
   DialogTrigger,
 } from "@/components/ui/dialog";
-import { useToast } from "@/hooks/use-toast";
+import { toast } from "@/hooks/use-toast";
 import { cn } from "@/lib/utils";
 import Brand from "@/components/Brand/Brand";
 import Cookies from "js-cookie";
 import { Skeleton } from "@/components/ui/skeleton";
 
 const page = () => {
-  const { toast } = useToast();
   const brandRef = useRef(null);
   const imageInput = useRef(null);
   const fileInput = useRef(null);

@@ -3,7 +3,7 @@
 import DashProductCard from "@/components/DashProductCard/DashProductCard";
 import DashSearch from "@/components/DashSearch/DashSearch";
 import { useRouter } from "next/navigation";
-import React, { useEffect, useState, useTransition } from "react";
+import  { useEffect, useState, useTransition } from "react";
 import Cookies from "js-cookie";
 import { toast } from "@/hooks/use-toast";
 import SkeletonDashProductCard from "@/components/DashProductCard/SkeletonDashProductCard";

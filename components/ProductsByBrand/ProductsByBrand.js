@@ -8,9 +8,10 @@ import {
   CarouselNext,
   CarouselPrevious,
 } from "@/components/ui/carousel";
-import React, { useEffect, useState } from "react";
+import { useEffect, useState } from "react";
 import ProductCard from "../ProductCard/ProductCard";
 import { Skeleton } from "../ui/skeleton";
+import { toast } from "@/hooks/use-toast";
 
 const ProductsByBrand = ({ ChangeUrl, loading, brands }) => {
   const [selectedBrand, setSelectedBrand] = useState(0);

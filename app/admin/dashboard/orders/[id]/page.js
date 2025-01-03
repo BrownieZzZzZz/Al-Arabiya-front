@@ -2,7 +2,7 @@
 import { useToast } from "@/hooks/use-toast";
 import { cn } from "@/lib/utils";
 import { useParams } from "next/navigation";
-import React, { useRef, useState } from "react";
+import  { useRef, useState } from "react";
 import {
   Dialog,
   DialogContent,
