@@ -152,6 +152,9 @@ const ProfilePage = () => {
             variant: "success",
             duration: 2000,
           });
+          if (data.data.full_name !== user.full_name) {
+            location.reload();
+          }
         }
         setLoadingUser(false);
       } catch (error) {
