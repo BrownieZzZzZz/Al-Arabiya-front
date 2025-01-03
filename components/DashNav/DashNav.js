@@ -41,7 +41,7 @@ const DashNav = () => {
       <div className="flex w-full items-center border-b border-[#2c2d33] bg-transparent p-5 md:hidden">
         <Sheet>
           <SheetTrigger asChild>
-            <i className="fa-solid fa-bars-staggered text-2xl text-white"/>
+            <i className="fa-solid fa-bars-staggered text-2xl text-[var(--dash-theme5)]"/>
           </SheetTrigger>
           <SheetContent dir="rtl"
             closeClass="text-white"
