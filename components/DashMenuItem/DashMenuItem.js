@@ -1,5 +1,6 @@
-import { cn } from "@/lib/utils";
 import Cookies from "js-cookie";
+
+import { cn } from "@/lib/utils";
 
 const DashMenuItem = ({
   title,
@@ -7,7 +8,6 @@ const DashMenuItem = ({
   icon,
   menuState,
   setMenuState,
-  closeButton,
   setLoadingPage,
   ChangeUrl,
 }) => {
@@ -15,9 +15,7 @@ const DashMenuItem = ({
 
   const menuTransition = (path) => {
     setMenuState(`/admin${path}`);
-    setTimeout(() => {
-      closeButton?.current?.click();
-    }, 400);
+
     ChangeUrl(`/admin${path}`);
   };
 

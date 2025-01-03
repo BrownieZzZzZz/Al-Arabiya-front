@@ -1,7 +1,7 @@
 "use client";
 
 import DashSearch from "@/components/DashSearch/DashSearch";
-import React, { useRef, useState, useEffect } from "react";
+import  { useRef, useState, useEffect } from "react";
 import {
   Dialog,
   DialogContent,

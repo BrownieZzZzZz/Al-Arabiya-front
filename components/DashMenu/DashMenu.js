@@ -1,9 +1,11 @@
 "use client";
-import  { useEffect, useState } from "react";
-import DashMenuItem from "../DashMenuItem/DashMenuItem";
+
+import { useState } from "react";
 import { usePathname } from "next/navigation";
 
-const DashMenu = ({ closeButton, ChangeUrl, setLoadingPage }) => {
+import DashMenuItem from "../DashMenuItem/DashMenuItem";
+
+const DashMenu = ({ ChangeUrl, setLoadingPage }) => {
   const pathname = usePathname();
   const [menuState, setMenuState] = useState("" || pathname);
 
@@ -21,7 +23,7 @@ const DashMenu = ({ closeButton, ChangeUrl, setLoadingPage }) => {
     {
       title: "الطلبات",
       path: "/orders",
-      icon: "fa-solid fa-shopping-cart"
+      icon: "fa-solid fa-shopping-cart",
     },
     {
       title: "منتجات",
@@ -54,6 +56,7 @@ const DashMenu = ({ closeButton, ChangeUrl, setLoadingPage }) => {
       icon: "fa-solid fa-arrow-right-from-bracket",
     },
   ];
+
   return (
     <div className="flex w-full flex-col items-center justify-center gap-4">
       {dashMenuItems.map((item, index) => (
@@ -65,7 +68,6 @@ const DashMenu = ({ closeButton, ChangeUrl, setLoadingPage }) => {
           icon={item.icon}
           menuState={menuState}
           setMenuState={setMenuState}
-          closeButton={closeButton}
           ChangeUrl={(url) => {
             ChangeUrl(url);
           }}

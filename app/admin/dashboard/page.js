@@ -17,12 +17,13 @@ import {
 import DashFeaturedProducts from "@/components/DashFeaturedProducts/DashFeaturedProducts";
 import DashProductsByBrand from "@/components/DashProductsByBrand/DashProductsByBrand";
 import DashProductsByCategory from "@/components/DashProductsByCategory/DashProductsByCategory";
+import DashOthers from "@/components/DashOthers/DashOthers";
 
 const page = () => {
   const router = useRouter();
   const [isPending, startTransition] = useTransition();
   const [loadingPage, setLoadingPage] = useState(false);
-  const [CustomizationData, setCustomizationData] = useState({});
+  const [customizationData, setCustomizationData] = useState({});
   const [featuredProducts, setFeaturedProducts] = useState([]);
   const [brands, setBrands] = useState([]);
   const [categories, setCategories] = useState([]);
@@ -86,7 +87,7 @@ const page = () => {
         description: "جاري إضافة المنتج إلى المنتجات الأكثر طلباً",
       });
       const response = await fetch(
-        `${process.env.NEXT_PUBLIC_API_URL}/admins/customization/${CustomizationData.id}`,
+        `${process.env.NEXT_PUBLIC_API_URL}/admins/customization/${customizationData.id}`,
         {
           method: "PUT",
           headers: {
@@ -154,7 +155,7 @@ const page = () => {
         description: "جاري مسح المنتج من المنتجات الأكثر طلباً",
       });
       const response = await fetch(
-        `${process.env.NEXT_PUBLIC_API_URL}/admins/customization/${CustomizationData.id}`,
+        `${process.env.NEXT_PUBLIC_API_URL}/admins/customization/${customizationData.id}`,
         {
           method: "PUT",
           headers: {
@@ -213,7 +214,7 @@ const page = () => {
         description: "جاري إضافة الماركة",
       });
       const response = await fetch(
-        `${process.env.NEXT_PUBLIC_API_URL}/admins/customization/${CustomizationData.id}`,
+        `${process.env.NEXT_PUBLIC_API_URL}/admins/customization/${customizationData.id}`,
         {
           method: "PUT",
           headers: {
@@ -280,7 +281,7 @@ const page = () => {
         description: "جاري مسح الماركة",
       });
       const response = await fetch(
-        `${process.env.NEXT_PUBLIC_API_URL}/admins/customization/${CustomizationData.id}`,
+        `${process.env.NEXT_PUBLIC_API_URL}/admins/customization/${customizationData.id}`,
         {
           method: "PUT",
           headers: {
@@ -339,7 +340,7 @@ const page = () => {
         description: "جاري إضافة الفئة",
       });
       const response = await fetch(
-        `${process.env.NEXT_PUBLIC_API_URL}/admins/customization/${CustomizationData.id}`,
+        `${process.env.NEXT_PUBLIC_API_URL}/admins/customization/${customizationData.id}`,
         {
           method: "PUT",
           headers: {
@@ -406,7 +407,7 @@ const page = () => {
         description: "جاري مسح الفئة",
       });
       const response = await fetch(
-        `${process.env.NEXT_PUBLIC_API_URL}/admins/customization/${CustomizationData.id}`,
+        `${process.env.NEXT_PUBLIC_API_URL}/admins/customization/${customizationData.id}`,
         {
           method: "PUT",
           headers: {
@@ -449,6 +450,55 @@ const page = () => {
     }
   };
 
+  const editDelivery = async (deliveryPrice) => {
+    if (!deliveryPrice) {
+      toast({ title: "الرجاء إدخال سعر التوصيل", variant: "destructive" });
+      return;
+    }
+    try {
+      setLoading(true);
+      toast({
+        title: "جاري الإضافة",
+        description: "جاري تعديل السعر",
+      });
+      const response = await fetch(
+        `${process.env.NEXT_PUBLIC_API_URL}/admins/customization/${customizationData.id}`,
+        {
+          method: "PUT",
+          headers: {
+            "Content-Type": "application/json",
+            access_token: Cookies.get("admin_access_token"),
+          },
+          body: JSON.stringify({
+            deliveryPrice: Number(deliveryPrice),
+          }),
+        },
+      );
+
+      const data = await response.json();
+      if (data.data === null) {
+        throw new Error(data.message);
+      }
+      toast({
+        title: "تمت العملية بنجاح",
+        description: "تم تعديل السعر",
+        variant: "success",
+        duration: 3000,
+      });
+      setLoading(false);
+      setCustomizationData(data.data);
+    } catch (error) {
+      setLoading(false);
+
+      console.error(error);
+      toast({
+        title: "خطأ في تعديل السعر",
+        description: "حدث خطأ ما، يرجى المحاولة مرة أخرى!",
+        variant: "destructive",
+      });
+    }
+  };
+
   useEffect(() => {
     fetchData();
   }, []);
@@ -464,7 +514,7 @@ const page = () => {
           <div className="h-14 w-14 animate-spin rounded-full border-b-4 border-[var(--theme)]" />
         </div>
       )}
-      <Accordion type="single" collapsible className="w-full">
+      <Accordion type="multiple" collapsible={"false"} className="w-full">
         <AccordionItem value="FeaturedProducts">
           <AccordionTrigger className="text-white">
             المنتجات الأكثر طلباً
@@ -481,8 +531,8 @@ const page = () => {
             />
           </AccordionContent>
         </AccordionItem>
-      </Accordion>
-      <Accordion type="single" collapsible className="w-full">
+        {/* </Accordion>
+      <Accordion type="single" collapsible className="w-full"> */}
         <AccordionItem value="ProductsByBrand">
           <AccordionTrigger className="text-white">
             منتجات حسب الماركة
@@ -499,8 +549,8 @@ const page = () => {
             />
           </AccordionContent>
         </AccordionItem>
-      </Accordion>
-      <Accordion type="single" collapsible className="w-full">
+        {/* </Accordion>
+      <Accordion type="single" collapsible className="w-full"> */}
         <AccordionItem value="ProductsByCategory">
           <AccordionTrigger className="text-white">
             منتجات حسب الفئة
@@ -514,6 +564,19 @@ const page = () => {
               setLoading={setLoading}
               addCategory={addCategory}
               deleteCategory={deleteCategory}
+            />
+          </AccordionContent>
+        </AccordionItem>
+        <AccordionItem value="others">
+          <AccordionTrigger className="text-white">أخرى</AccordionTrigger>
+          <AccordionContent className="text-white">
+            <DashOthers
+              ChangeUrl={ChangeUrl}
+              customizationData={customizationData}
+              setCustomizationData={setCustomizationData}
+              loading={loading}
+              setLoading={setLoading}
+              editDelivery={editDelivery}
             />
           </AccordionContent>
         </AccordionItem>

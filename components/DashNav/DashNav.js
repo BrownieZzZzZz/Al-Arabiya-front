@@ -1,6 +1,6 @@
 "use client";
 
-import  { useRef } from "react";
+import { useRef } from "react";
 import DashMenu from "../DashMenu/DashMenu";
 import { cn } from "@/lib/utils";
 import {
@@ -29,11 +29,17 @@ const DashNav = () => {
   useEffect(() => {
     setLoadingPage(isPending);
   }, [isPending]);
+
+  useEffect(() => {
+    if (closeButton.current) {
+      closeButton.current.click();
+    }
+  });
   return (
     <div className="relative">
       {loadingPage && (
         <div className="fixed inset-0 z-50 flex h-full w-full items-center justify-center bg-white/30 backdrop-blur-sm">
-          <div className="h-14 w-14 animate-spin rounded-full border-b-4 border-[var(--theme)]"/>
+          <div className="h-14 w-14 animate-spin rounded-full border-b-4 border-[var(--theme)]" />
         </div>
       )}
       {/* MOBILE SIDE NAV BELOW  */}
@@ -41,14 +47,15 @@ const DashNav = () => {
       <div className="flex w-full items-center border-b border-[#2c2d33] bg-transparent p-5 md:hidden">
         <Sheet>
           <SheetTrigger asChild>
-            <i className="fa-solid fa-bars-staggered text-2xl text-[var(--dash-theme5)]"/>
+            <i className="fa-solid fa-bars-staggered text-2xl text-[var(--dash-theme5)]" />
           </SheetTrigger>
-          <SheetContent dir="rtl"
+          <SheetContent
+            dir="rtl"
             closeClass="text-white"
             side="right"
-            className="w-[250px] border-transparent bg-[var(--dash-theme)]"
+            className="w-[250px] overflow-auto border-transparent bg-[var(--dash-theme)]"
           >
-            <SheetTitle/>
+            <SheetTitle />
             <div
               className={cn(
                 "flex flex-col items-center gap-8 bg-transparent py-4",
@@ -78,7 +85,6 @@ const DashNav = () => {
         <DashHeader />
         <DashMenu
           setLoadingPage={setLoadingPage}
-          closeButton={closeButton}
           ChangeUrl={(url) => {
             ChangeUrl(url);
           }}

@@ -71,12 +71,15 @@ const SideCartItem = ({
     fetchProduct();
   }, []);
 
+  useEffect(() => {
+    if (closeButton.current) {
+      closeButton.current.click();
+    }
+  });
+
   return (
     <div
       onClick={() => {
-        setTimeout(() => {
-          closeButton?.current?.click();
-        }, 500);
         ChangeUrl(`/products/${productId}`);
       }}
       className="flex flex-col"
@@ -94,7 +97,7 @@ const SideCartItem = ({
           }}
           className="group absolute left-2 top-1 z-10 grid size-6 place-items-center rounded-full border-[2px] border-transparent transition-colors duration-200 hover:cursor-pointer hover:border-yellow-600 hover:bg-zinc-100"
         >
-          <i className="fa-solid fa-x text-[10px] text-neutral-500 transition-colors duration-200 group-hover:text-yellow-600"/>
+          <i className="fa-solid fa-x text-[10px] text-neutral-500 transition-colors duration-200 group-hover:text-yellow-600" />
         </div>
         <div className="relative">
           {!loadingProduct && product.onSold && (
