@@ -14,9 +14,9 @@ const DashMenu = ({ closeButton, ChangeUrl, setLoadingPage }) => {
       icon: "fa-solid fa-gear",
     },
     {
-      title: "حسابك",
-      path: "/account",
-      icon: "fa-regular fa-user",
+      title: "عروض خاصة",
+      path: "/special-offers",
+      icon: "fas fa-th-large",
     },
     {
       title: "الطلبات",
@@ -37,6 +37,16 @@ const DashMenu = ({ closeButton, ChangeUrl, setLoadingPage }) => {
       title: "فئات",
       path: "/categories",
       icon: "fa-solid fa-sliders",
+    },
+    {
+      title: "المستخدمين",
+      path: "/users",
+      icon: "fa-solid fa-users",
+    },
+    {
+      title: "حسابك",
+      path: "/account",
+      icon: "fa-regular fa-user",
     },
     {
       title: "الخروج",

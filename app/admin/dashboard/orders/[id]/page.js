@@ -465,7 +465,7 @@ const page = () => {
               تحذير
             </div>
             <div className="text-medium w-3/4 text-center text-xl text-white">
-              حذف هذا المنتج سينجم عنه حذف كل البيانات المرتبطة بهذا المنتج
+              حذف هذا الطلب  سينجم عنه حذف كل البيانات المرتبطة بهذا المنتج
             </div>
             <button
               onClick={() => handleDelete()}
