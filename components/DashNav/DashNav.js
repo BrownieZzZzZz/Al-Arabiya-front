@@ -1,11 +1,11 @@
 "use client";
 
-import { useEffect, useTransition, useState, useRef } from "react";
+import { useEffect, useTransition, useState, useRef, useContext } from "react";
 import { useRouter, usePathname } from "next/navigation";
-import Cookies from "js-cookie";
 
 import { cn } from "@/lib/utils";
 import { toast } from "@/hooks/use-toast";
+import { AuthContext } from "@/contexts/AuthContext";
 
 import {
   Sheet,
@@ -17,15 +17,12 @@ import {
 import DashHeader from "../DashHeader/DashHeader";
 import DashMenu from "../DashMenu/DashMenu";
 
-const DashNav = () => {
+const DashNav = ({}) => {
   const router = useRouter();
   const pathname = usePathname();
   const closeButton = useRef(null);
-  const [loadingPage, setLoadingPage] = useState(false);
+  const [loadingPage, setLoadingPage] = useState(true);
   const [isPending, startTransition] = useTransition();
-  const [loadingAdmin, setLoadingAdmin] = useState(true);
-  const [Admin, setAdmin] = useState({});
-  const [Adminsigned, setAdminSigned] = useState(false);
 
   const ChangeUrl = (url, options = {}) => {
     startTransition(() => {
@@ -33,76 +30,9 @@ const DashNav = () => {
     });
   };
 
-  const ChangePath = () => {
-    if (Adminsigned) {
-      if (pathname.includes("sign") || pathname.includes("reset")) {
-        toast({
-          title: "تم تسجيل دخول المسؤول بالفعل",
-          description: "سيتم تحويلك إلى لوحة التحكم",
-          variant: "warning",
-          duration: 5000,
-        });
-        ChangeUrl("/admin/dashboard");
-        return;
-      }
-    } else if (!Adminsigned) {
-      if (pathname.includes("sign") || pathname.includes("reset")) return;
-
-      toast({
-        title: "صلاحيات المسؤول مطلوبة",
-        description: "يرجى تسجيل الدخول كمسؤول للمتابعة",
-        variant: "warning",
-        duration: 5000,
-      });
-      ChangeUrl("/admin/sign-in");
-      return;
-    }
-  };
-
-  const checkAdmin = async () => {
-    try {
-      setLoadingAdmin(true);
-
-      const response = await fetch(
-        `${process.env.NEXT_PUBLIC_API_URL}/admins/account`,
-        {
-          method: "GET",
-          headers: {
-            admin_access_token: Cookies.get("admin_access_token"),
-            "Content-Type": "application/json",
-          },
-        },
-      );
-      const data = await response.json();
-
-      if (data.data === null) {
-        throw new Error(data.message);
-      }
-
-      setLoadingAdmin(false);
-      setAdminSigned(true);
-      setAdmin(data.data);
-    } catch (error) {
-      console.error(error);
-
-      setLoadingAdmin(false);
-    }
-    setLoadingAdmin(false);
-  };
-
-  useEffect(() => {
-    if (!loadingAdmin) {
-      ChangePath();
-    }
-  }, [Adminsigned, loadingAdmin]);
-
   useEffect(() => {
     setLoadingPage(isPending);
   }, [isPending]);
-
-  useEffect(() => {
-    checkAdmin();
-  }, []);
 
   useEffect(() => {
     if (closeButton.current) {
@@ -113,7 +43,7 @@ const DashNav = () => {
   if (pathname.includes("sign") || pathname.includes("reset")) {
     return (
       <>
-        {(loadingPage || loadingAdmin) && (
+        {loadingPage && (
           <div className="fixed inset-0 z-50 flex h-full w-full items-center justify-center bg-white/60 backdrop-blur-sm">
             <div className="h-14 w-14 animate-spin rounded-full border-b-4 border-[var(--theme)]" />
           </div>
@@ -122,9 +52,13 @@ const DashNav = () => {
     );
   }
 
+  if (!pathname.includes("dashboard")) {
+    return <></>;
+  }
+
   return (
     <div className="relative">
-      {(loadingPage || loadingAdmin) && (
+      {loadingPage && (
         <div className="fixed inset-0 z-50 flex h-full w-full items-center justify-center bg-white/30 backdrop-blur-sm">
           <div className="h-14 w-14 animate-spin rounded-full border-b-4 border-[var(--theme)]" />
         </div>

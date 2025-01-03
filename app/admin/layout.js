@@ -1,4 +1,4 @@
-import DashNav from "@/components/DashNav/DashNav";
+import ClientLayout from "./ClientLayout";
 
 export const metadata = {
   title: "Al-Arabiya: Admin",
@@ -7,15 +7,5 @@ export const metadata = {
 };
 
 export default function RootLayout({ children }) {
-  return (
-    <>
-      <div
-        dir="rtl"
-        className="flex min-h-[100dvh] flex-col bg-[var(--dash-theme)] md:flex-row"
-      >
-        <DashNav />
-        <>{children}</>
-      </div>
-    </>
-  );
+  return <ClientLayout>{children}</ClientLayout>;
 }

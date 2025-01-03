@@ -9,16 +9,15 @@ import { cn, validateEmail } from "@/lib/utils";
 import Cookies from "js-cookie";
 import { useRef, useState, useTransition, useEffect } from "react";
 import { useRouter } from "next/navigation";
-import { useToast } from "@/hooks/use-toast";
+import { toast } from "@/hooks/use-toast";
 
 const page = () => {
   const router = useRouter();
-  const { toast } = useToast();
+  const [isPending, startTransition] = useTransition();
+  const [loadingPage, setLoadingPage] = useState(false);
   const emailInput = useRef(null);
   const passwordInput = useRef(null);
   const [check, setCheck] = useState(false);
-  const [isPending, startTransition] = useTransition();
-  const [loadingPage, setLoadingPage] = useState(false);
   const [loading, setLoading] = useState(false);
 
   const ChangeUrl = (url) => {
@@ -87,7 +86,9 @@ const page = () => {
           expires = 30;
         }
 
-        Cookies.set("admin_access_token", data.data.access_token, { expires });
+        Cookies.set("admin_access_token", data.data.admin_access_token, {
+          expires,
+        });
 
         toast({
           title: "نجاح",
