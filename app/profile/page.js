@@ -569,12 +569,12 @@ const ProfilePage = () => {
                       </div>
                       <div className="text-sm text-neutral-500">
                         تاريخ الإنشاء:
-                        {formattedDate(order.created_At)}
+                        {order.created_At && formattedDate(order.created_At)}
                       </div>
                     </div>
                     <div className="mb-4 text-right">
                       <div className="mb-2 text-lg font-semibold text-neutral-700">
-                        تفاصيل العميل
+                        تفاصيل الحريف
                       </div>
                       <div className="text-sm text-neutral-600">
                         الاسم: {order.first_name} {order.last_name}

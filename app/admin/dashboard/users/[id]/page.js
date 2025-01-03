@@ -40,6 +40,7 @@ const UserPage = () => {
   const [isEditing, setIsEditing] = useState(false);
   const [user, setUser] = useState({});
   const [selectedCity, setSelectedCity] = useState("");
+  const [formattedCreateAtDate, setFormattedCreateAtDate] = useState(null);
   const [role, setRole] = useState("");
   const firstNameRef = useRef(null);
   const lastNameRef = useRef(null);
@@ -245,6 +246,7 @@ const UserPage = () => {
       setUser(data.data);
       setRole(data.data.role);
       setSelectedCity(data.data.city);
+      setFormattedCreateAtDate(formattedDate(data.data.created_At));
       setLoadingUser(false);
     } catch (error) {
       console.error(error);
@@ -431,7 +433,7 @@ const UserPage = () => {
                   type="text"
                   readOnly
                   disabled
-                  defaultValue={formattedDate(user.created_At)}
+                  defaultValue={formattedCreateAtDate}
                   className="bg-[var(--dash-theme)] p-3 text-lg font-semibold text-white"
                 />
               </div>
@@ -509,7 +511,7 @@ const UserPage = () => {
                     <SelectGroup dir="rtl">
                       {[
                         { value: "admin", text: "مسؤول" },
-                        { value: "client", text: "عميل" },
+                        { value: "client", text: "حريف" },
                       ].map((role, index) => (
                         <SelectItem
                           dir="rtl"
@@ -561,12 +563,12 @@ const UserPage = () => {
                       </div>
                       <div className="text-sm text-neutral-300">
                         تاريخ الإنشاء:
-                        {formattedDate(order.created_At)}
+                        {order.created_At && formattedDate(order.created_At)}
                       </div>
                     </div>
                     <div className="mb-4 text-right">
                       <div className="mb-2 text-lg font-semibold text-white">
-                        تفاصيل العميل
+                        تفاصيل الحريف
                       </div>
                       <div className="text-sm text-neutral-300">
                         الاسم: {order.first_name} {order.last_name}

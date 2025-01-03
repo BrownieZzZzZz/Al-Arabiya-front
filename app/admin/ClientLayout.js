@@ -16,6 +16,7 @@ export default function ClientLayout({ children }) {
   const [isAdminSigned, setIsAdminSigned] = useState(false);
   const [loadingAdmin, setLoadingAdmin] = useState(true);
   const [loadingPage, setLoadingPage] = useState(true);
+  const [adminData, setAdminData] = useState({});
   const [isPending, startTransition] = useTransition();
 
   const ChangeUrl = (url, options = {}) => {
@@ -40,6 +41,7 @@ export default function ClientLayout({ children }) {
       if (data.data === null) {
         throw new Error(data.message);
       }
+      setAdminData(data.data);
       setIsAdminSigned(true);
       setLoadingAdmin(false);
     } catch (error) {
@@ -122,7 +124,13 @@ export default function ClientLayout({ children }) {
 
   return (
     <AuthContext.Provider
-      value={{ isAdminSigned, loadingAdmin, setIsAdminSigned }}
+      value={{
+        isAdminSigned,
+        loadingAdmin,
+        setIsAdminSigned,
+        adminData,
+        setAdminData,
+      }}
     >
       <div
         dir="rtl"

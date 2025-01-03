@@ -404,7 +404,9 @@ const page = () => {
                 type="text"
                 readOnly
                 disabled
-                defaultValue={formattedDate(order.created_At)}
+                defaultValue={
+                  order.created_At && formattedDate(order.created_At)
+                }
                 className="bg-[var(--dash-theme)] p-3 text-lg font-semibold text-white"
               />
             </div>

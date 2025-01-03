@@ -986,7 +986,7 @@ const page = () => {
             >
               <TableCell className="font-medium">{order.id}</TableCell>
               <TableCell className="font-medium">
-                {formattedDate(order.created_At)}
+                {order.created_At && formattedDate(order.created_At)}
               </TableCell>
               <TableCell className="font-medium">{order.first_name}</TableCell>
               <TableCell className="font-medium">{order.last_name}</TableCell>

@@ -2,14 +2,24 @@
 
 import "./page.css";
 
-import { useState, useEffect, useTransition } from "react";
+import { useState, useEffect, useTransition, useContext } from "react";
 import { useRouter } from "next/navigation";
 
 import Cookies from "js-cookie";
 
-import { cn, formattedDate } from "@/lib/utils";
+import { cities, cn, formattedDate } from "@/lib/utils";
 import { toast } from "@/hooks/use-toast";
+import { AuthContext } from "@/contexts/AuthContext";
 
+import {
+  Pagination,
+  PaginationContent,
+  PaginationEllipsis,
+  PaginationItem,
+  PaginationLink,
+  PaginationNext,
+  PaginationPrevious,
+} from "@/components/ui/pagination";
 import {
   Table,
   TableBody,
@@ -23,16 +33,26 @@ import DashSearch from "@/components/DashSearch/DashSearch";
 
 const page = () => {
   const router = useRouter();
+  const { adminData } = useContext(AuthContext);
   const [loadingPage, setLoadingPage] = useState(false);
   const [isPending, startTransition] = useTransition();
   const [loadingUsers, setLoadingUsers] = useState(true);
   const [users, setUsers] = useState([]);
-  const [openedAccountID, setOpenedAccountID] = useState("");
+  const [totalItems, setTotalItems] = useState(0);
+  const [totalPages, setTotalPages] = useState(1);
+  const [CurrentPage, setCurrentPage] = useState(1);
+  const [limit, setLimit] = useState(10);
+  const [pages, setPages] = useState([]);
+  const [selectedSort, setSelectedSort] = useState("name");
+  const [sortDirection, setSortDirection] = useState("asc");
+  const [searchQuery, setSearchQuery] = useState("");
+  const maxVisiblePages = 5;
 
   const fetchUsers = async () => {
+    setLoadingUsers(true);
     try {
       const response = await fetch(
-        `${process.env.NEXT_PUBLIC_API_URL}/admins/user`,
+        `${process.env.NEXT_PUBLIC_API_URL}/admins/user?${searchQuery ? `search=${searchQuery}&` : ""}sort=${selectedSort}&order=${sortDirection}&page=${CurrentPage}&limit=${limit}`,
         {
           method: "GET",
           headers: {
@@ -66,37 +86,46 @@ const page = () => {
     });
   };
 
-  const checkUser = async () => {
-    try {
-      const response = await fetch(
-        `${process.env.NEXT_PUBLIC_API_URL}/admins/account`,
-        {
-          method: "GET",
-          headers: {
-            admin_access_token: Cookies.get("admin_access_token"),
-            "Content-Type": "application/json",
-          },
-        },
-      );
-      const data = await response.json();
+  const changeSortOrder = (sort) => {
+    console.log(sort);
 
-      if (data.data === null) {
-        throw new Error(data.message);
-      }
-
-      setOpenedAccountID(data.data.id);
-    } catch (error) {
-      console.error(error);
-      toast({
-        title: "خطأ",
-        description: "حدث خطأ أثناء جلب البيانات",
-        variant: "destructive",
-      });
+    if (selectedSort === sort) {
+      setSortDirection(sortDirection === "asc" ? "desc" : "asc");
+    } else {
+      setSelectedSort(sort);
+      setSortDirection("asc");
     }
   };
 
+  const handlePageChange = (page) => {
+    if (page > 0 && page <= totalPages) {
+      setCurrentPage(page);
+    }
+  };
+
+  const createPageNumbers = () => {
+    let startPage = Math.max(1, CurrentPage - Math.floor(maxVisiblePages / 2));
+    let endPage = Math.min(totalPages, startPage + maxVisiblePages - 1);
+
+    if (endPage - startPage + 1 < maxVisiblePages) {
+      startPage = Math.max(1, endPage - maxVisiblePages + 1);
+    }
+
+    const newPages = [];
+    for (let i = startPage; i <= endPage; i++) {
+      newPages.push(i);
+    }
+
+    setPages(newPages);
+  };
+
   useEffect(() => {
-    checkUser().then(() => fetchUsers());
+    fetchUsers();
+    createPageNumbers();
+  }, [CurrentPage, totalPages, searchQuery, selectedSort, sortDirection]);
+
+  useEffect(() => {
+    fetchUsers();
   }, []);
 
   useEffect(() => {
@@ -110,7 +139,10 @@ const page = () => {
           <div className="h-14 w-14 animate-spin rounded-full border-b-4 border-[var(--theme)]" />
         </div>
       )}
-      <DashSearch placeholder="بحث عن حريف، بل إسم أو لقب أو رقم الهاتف " />
+      <DashSearch
+        placeholder="بحث عن حريف، بل إسم أو لقب أو رقم الهاتف"
+        setSearchQuery={setSearchQuery}
+      />
       <Table>
         <TableCaption></TableCaption>
         <TableHeader>
@@ -118,16 +150,31 @@ const page = () => {
             <TableHead className="text-start text-lg text-[var(--dash-theme5)]">
               معرف
             </TableHead>
-            <TableHead className="flex flex-row items-center justify-start gap-2 text-lg text-[var(--dash-theme5)]">
-              <span>تاريخ الصنع </span>
-              <i
-                className={cn(
-                  "fa-solid fa-up-down mt-1 text-lg text-[var(--dash-theme5)] transition-all duration-200 hover:cursor-pointer",
-                )}
-              ></i>
+            <TableHead className="w-full text-start text-lg text-[var(--dash-theme5)]">
+              <div
+                onClick={() => changeSortOrder("created_At")}
+                className="flex w-full items-center justify-center gap-3 transition-all duration-200 hover:scale-105 hover:cursor-pointer"
+              >
+                <span>تاريخ الصنع </span>
+                <i
+                  className={cn(
+                    "fa-solid fa-up-down mt-1 text-lg text-[var(--dash-theme5)] transition-all duration-200 hover:cursor-pointer",
+                  )}
+                />
+              </div>
             </TableHead>
-            <TableHead className="text-start text-lg text-[var(--dash-theme5)]">
-              الاسم
+            <TableHead className="w-full text-start text-lg text-[var(--dash-theme5)]">
+              <div
+                onClick={() => changeSortOrder("name")}
+                className="flex w-full items-center justify-center gap-3 transition-all duration-200 hover:scale-105 hover:cursor-pointer"
+              >
+                <span>الاسم</span>
+                <i
+                  className={cn(
+                    "fa-solid fa-up-down mt-1 text-lg text-[var(--dash-theme5)] transition-all duration-200 hover:cursor-pointer",
+                  )}
+                />
+              </div>
             </TableHead>
             <TableHead className="text-start text-lg text-[var(--dash-theme5)]">
               اللقب
@@ -138,18 +185,38 @@ const page = () => {
             <TableHead className="text-start text-lg text-[var(--dash-theme5)]">
               البريد الالكتروني
             </TableHead>
-            <TableHead className="text-start text-lg text-[var(--dash-theme5)]">
-              الولاية
+            <TableHead className="w-full text-start text-lg text-[var(--dash-theme5)]">
+              <div
+                onClick={() => changeSortOrder("city")}
+                className="flex w-full items-center justify-center gap-3 transition-all duration-200 hover:scale-105 hover:cursor-pointer"
+              >
+                <span>الولاية</span>
+                <i
+                  className={cn(
+                    "fa-solid fa-up-down mt-1 text-lg text-[var(--dash-theme5)] transition-all duration-200 hover:cursor-pointer",
+                  )}
+                />
+              </div>
             </TableHead>
-            <TableHead className="text-end text-lg text-[var(--dash-theme5)]">
-              الدور
+            <TableHead className="w-full text-start text-lg text-[var(--dash-theme5)]">
+              <div
+                onClick={() => changeSortOrder("role")}
+                className="flex w-full items-center justify-center gap-3 transition-all duration-200 hover:scale-105 hover:cursor-pointer"
+              >
+                <span>الدور</span>
+                <i
+                  className={cn(
+                    "fa-solid fa-up-down mt-1 text-lg text-[var(--dash-theme5)] transition-all duration-200 hover:cursor-pointer",
+                  )}
+                />
+              </div>
             </TableHead>
           </TableRow>
         </TableHeader>
         <TableBody>
           {users.map(
             (user, index) =>
-              user.id !== openedAccountID && (
+              user.id !== adminData.id && (
                 <TableRow
                   onClick={() =>
                     window.open(`/admin/dashboard/users/${user.id}`)
@@ -159,7 +226,7 @@ const page = () => {
                 >
                   <TableCell className="font-medium">{user.id}</TableCell>
                   <TableCell className="font-medium">
-                    {formattedDate(user.created_At)}
+                    {user.created_At && formattedDate(user.created_At)}
                   </TableCell>
                   <TableCell className="font-medium">
                     {user.full_name.split(" ")[0]}
@@ -171,9 +238,11 @@ const page = () => {
                   </TableCell>
                   <TableCell className="font-medium">{user.phone}</TableCell>
                   <TableCell className="font-medium">{user.email}</TableCell>
-                  <TableCell className="font-medium">{user.city}</TableCell>
+                  <TableCell className="font-medium">
+                    {cities.find((city) => city.value === user.city).text}
+                  </TableCell>
                   <TableCell className="text-end font-medium">
-                    {user.role}
+                    {user.role === "admin" ? "مسؤول" : "حريف"}
                   </TableCell>
                 </TableRow>
               ),
