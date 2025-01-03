@@ -2,13 +2,12 @@
 
 import "./Nav.css";
 
-import { usePathname, useRouter } from "next/navigation";
 import { useState, useEffect, useRef, useTransition } from "react";
-import { cn, eventBus } from "@/lib/utils";
+import { usePathname, useRouter } from "next/navigation";
 import Cookies from "js-cookie";
 
-import SideCartItem from "../SideCartItem/SideCartItem";
-import Menu from "../Menu/Menu";
+import { cn, eventBus } from "@/lib/utils";
+
 import {
   Sheet,
   SheetClose,
@@ -29,6 +28,8 @@ import {
   TooltipProvider,
   TooltipTrigger,
 } from "@/components/ui/tooltip";
+import SideCartItem from "../SideCartItem/SideCartItem";
+import Menu from "../Menu/Menu";
 
 const Nav = () => {
   const router = useRouter();
@@ -41,7 +42,6 @@ const Nav = () => {
   const [loadingUser, setLoadingUser] = useState(true);
   const [user, setUser] = useState({});
   const [signed, setSigned] = useState(false);
-
   const [loadingPage, setLoadingPage] = useState(true);
   const [isPending, startTransition] = useTransition();
   const [items, setItems] = useState({});
@@ -161,6 +161,7 @@ const Nav = () => {
   if (pathname.includes("admin")) {
     return <></>;
   }
+
   if (pathname.includes("sign") || pathname.includes("reset")) {
     return (
       <>
@@ -172,6 +173,7 @@ const Nav = () => {
       </>
     );
   }
+
   return (
     <div
       className={cn(

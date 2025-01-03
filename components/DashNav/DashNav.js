@@ -94,6 +94,7 @@ const DashNav = () => {
       closeButton.current.click();
     }
   });
+
   return (
     <div className="relative">
       {(loadingPage || loadingAdmin) && (
