@@ -3,7 +3,7 @@
 import DashProductCard from "@/components/DashProductCard/DashProductCard";
 import DashSearch from "@/components/DashSearch/DashSearch";
 import { useRouter } from "next/navigation";
-import  { useEffect, useState, useTransition } from "react";
+import { useEffect, useState, useTransition } from "react";
 import Cookies from "js-cookie";
 import { toast } from "@/hooks/use-toast";
 import SkeletonDashProductCard from "@/components/DashProductCard/SkeletonDashProductCard";
@@ -86,7 +86,7 @@ const page = () => {
               <div className="mb-1">+</div>
             </div>
             <div className="text-center text-xl font-semibold text-neutral-300">
-              أضف منتوج جديدة{" "}
+              أضف منتوج جديدة
             </div>
           </div>
         </div>

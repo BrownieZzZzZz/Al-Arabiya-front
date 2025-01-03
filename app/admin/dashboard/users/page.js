@@ -85,7 +85,7 @@ const page = () => {
               ></i>
             </TableHead>
             <TableHead className="text-start text-lg text-[var(--dash-theme5)]">
-              الاسم{" "}
+              الاسم
             </TableHead>
             <TableHead className="text-start text-lg text-[var(--dash-theme5)]">
               اللقب

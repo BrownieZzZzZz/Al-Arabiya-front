@@ -246,7 +246,7 @@ const page = () => {
             )}
           >
             <span className="text-xl font-semibold text-neutral-200">
-              الطلب{" "}
+              الطلب
             </span>
           </div>
         </div>

@@ -319,7 +319,7 @@ const page = () => {
             )}
           </div>
           <div className="text-xl font-semibold text-neutral-700">
-            سعر بالتفصيل{" "}
+            سعر بالتفصيل
           </div>
           <div className="-mt-2 flex flex-row gap-2">
             {loadingProduct ? (
@@ -344,7 +344,7 @@ const page = () => {
             )}
           </div>
           <div className="text-xl font-semibold text-neutral-700">
-            سعر بالجملة{" "}
+            سعر بالجملة
             <font className="text-[15px] font-normal tracking-wide text-neutral-500">
               5 منتوجات وما فوق
             </font>
@@ -376,11 +376,11 @@ const page = () => {
             <Skeleton className={"h-6 w-[200px] bg-neutral-300"} />
           ) : product.in_Stock ? (
             <div className="-mb-2 font-medium text-emerald-500">
-              منتج متوفر{" "}
+              منتج متوفر
             </div>
           ) : (
             <div className="-mb-2 font-medium text-red-500">
-              منتج غير متوفر{" "}
+              منتج غير متوفر
             </div>
           )}
           <div className="text-2xl font-bold text-neutral-900">كمية:</div>

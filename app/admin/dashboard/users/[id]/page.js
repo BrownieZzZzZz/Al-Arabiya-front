@@ -260,7 +260,7 @@ const UserPage = () => {
             )}
           >
             <span className="text-xl font-semibold text-neutral-200">
-              طلباته{" "}
+              طلباته
             </span>
           </div>
         </div>
@@ -294,7 +294,7 @@ const UserPage = () => {
                 </div>
                 <div className="flex w-full flex-col gap-1">
                   <div className="text-lg font-semibold text-[var(--dash-theme5)]">
-                    اللقب{" "}
+                    اللقب
                   </div>
                   <input
                     defaultValue={
@@ -359,7 +359,7 @@ const UserPage = () => {
 
               <div className="flex flex-col gap-1">
                 <div className="text-lg font-semibold text-[var(--dash-theme5)]">
-                  عنوان السكن{" "}
+                  عنوان السكن
                 </div>
                 <input
                   ref={addressRef}
@@ -378,7 +378,7 @@ const UserPage = () => {
               </div>
               <div className="flex flex-col gap-1">
                 <div className="text-lg font-semibold text-[var(--dash-theme5)]">
-                  المدينة{" "}
+                  المدينة
                 </div>
 
                 <Select
@@ -429,7 +429,7 @@ const UserPage = () => {
                     : "border-blue-500 bg-blue-500 hover:text-blue-500",
                 )}
               >
-                {editText}{" "}
+                {editText}
               </button>
             </div>
           </div>
@@ -455,7 +455,7 @@ const UserPage = () => {
                         الحالة: {order.state}
                       </div>
                       <div className="text-sm text-neutral-300">
-                        تاريخ الإنشاء:{" "}
+                        تاريخ الإنشاء:
                         {new Date(order.created_At).toLocaleDateString("ar")}
                       </div>
                     </div>

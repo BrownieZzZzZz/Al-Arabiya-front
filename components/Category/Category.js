@@ -214,7 +214,7 @@ const Category = ({
               <DialogTitle />
               <div className="flex w-full flex-col items-center justify-center gap-4">
                 <div className="text-2xl font-semibold text-white">
-                  إسم الفئة{" "}
+                  إسم الفئة
                 </div>
                 <input
                   ref={categoryRef}

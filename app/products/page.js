@@ -129,7 +129,7 @@ const ProductPage = () => {
                 dir="rtl"
                 className="text-xl font-semibold text-neutral-800"
               >
-                ترتيب{" "}
+                ترتيب
               </span>
               <div dir="rtl" className="px-2">
                 <SelectSortInterface
@@ -425,7 +425,7 @@ const ProductPage = () => {
                 dir="rtl"
                 className="text-xl font-semibold text-neutral-800"
               >
-                ترتيب{" "}
+                ترتيب
               </span>
               <div dir="rtl" className="px-2">
                 <SelectSortInterface

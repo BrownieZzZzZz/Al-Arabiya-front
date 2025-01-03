@@ -220,7 +220,7 @@ const Footer = () => {
 
         <div className="border-mask mt-8 h-[3px] w-full bg-[var(--theme2)] min-[950px]:mt-0"/>
         <div dir="rtl" className="py-3 text-center text-black">
-          حقوق الطبع والنشر © 2024{" "}
+          حقوق الطبع والنشر © 2024
           <a
             onClick={() => {
               ChangeUrl("/");

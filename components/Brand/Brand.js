@@ -236,7 +236,7 @@ const Brand = ({
               <DialogTitle />
               <div className="flex w-full flex-col items-center justify-center gap-4">
                 <div className="text-2xl font-semibold text-white">
-                  إسم الفئة{" "}
+                  إسم الفئة
                 </div>
                 <input
                   ref={brandRef}
@@ -309,7 +309,7 @@ const Brand = ({
                     disabled={loadingBrand}
                     className="w-full rounded-lg border-2 border-red-500 bg-red-500 py-2 text-lg font-semibold text-[#ffffff] transition-all duration-200 hover:bg-transparent hover:text-red-500"
                   >
-                    إحذف{" "}
+                    إحذف
                   </button>
                 </div>
               </div>

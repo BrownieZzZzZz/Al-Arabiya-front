@@ -337,7 +337,7 @@ const ProfilePage = () => {
             )}
           >
             <span className="text-xl font-semibold text-neutral-700">
-              طلباتك{" "}
+              طلباتك
             </span>
           </div>
         </div>
@@ -496,7 +496,7 @@ const ProfilePage = () => {
                     : "border-blue-500 bg-blue-500 hover:text-blue-500",
                 )}
               >
-                {editText}{" "}
+                {editText}
               </button>
               <div className="mb-4 mt-4 self-start text-2xl font-semibold text-neutral-700">
                 كلمة المرور
@@ -554,7 +554,7 @@ const ProfilePage = () => {
                         الحالة: {order.state}
                       </div>
                       <div className="text-sm text-neutral-500">
-                        تاريخ الإنشاء:{" "}
+                        تاريخ الإنشاء:
                         {new Date(order.created_At).toLocaleDateString("ar")}
                       </div>
                     </div>

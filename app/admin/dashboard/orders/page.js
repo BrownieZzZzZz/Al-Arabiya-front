@@ -903,7 +903,7 @@ const page = () => {
              <i className={cn("fa-solid fa-up-down text-[var(--dash-theme5)] mt-1 hover:cursor-pointer transition-all duration-200  text-lg")}></i>
             </TableHead>
             <TableHead className="text-start text-lg text-[var(--dash-theme5)]">
-              الاسم{" "}
+              الاسم
             </TableHead>
             <TableHead className="text-start text-lg text-[var(--dash-theme5)]">
               اللقب

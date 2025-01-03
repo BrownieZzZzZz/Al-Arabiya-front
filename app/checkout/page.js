@@ -435,7 +435,7 @@ const Page = () => {
           <div className="h-[1px] w-full bg-neutral-300" />
           <div className="font-cairo text-neutral-500">
             سيتم استخدام بياناتك الشخصية لمعالجة طلبك ودعم تجربتك خلال هذا
-            الموقع ولأغراض أخرى موضحة في{" "}
+            الموقع ولأغراض أخرى موضحة في
             <font
               onClick={() => {
                 ChangeUrl("/terms-and-conditions#privacy");

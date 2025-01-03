@@ -27,11 +27,11 @@ const ProductCard = ({ product, ChangeUrl }) => {
       <div className="flex flex-1 flex-col p-4">
         {product.in_Stock ? (
           <div dir="rtl" className="text-sm font-medium text-emerald-500">
-            منتج متوفر{" "}
+            منتج متوفر
           </div>
         ) : (
           <div dir="rtl" className="text-sm font-medium text-red-500">
-            منتج غير متوفر{" "}
+            منتج غير متوفر
           </div>
         )}
         <h2 dir="rtl" className="text-lg font-bold text-gray-800">

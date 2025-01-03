@@ -143,7 +143,7 @@ const page = () => {
                   <div className="mb-1">+</div>
                 </div>
                 <div className="text-center text-xl font-semibold text-neutral-300">
-                  أضف فئة جديدة{" "}
+                  أضف فئة جديدة
                 </div>
               </div>
             </div>
@@ -155,7 +155,7 @@ const page = () => {
             <DialogTitle />
             <div className="flex w-full flex-col items-center justify-center gap-4">
               <div className="text-2xl font-semibold text-white">
-                إسم الفئة{" "}
+                إسم الفئة
               </div>
               <input
                 ref={categoryRef}
