@@ -217,6 +217,45 @@ const page = () => {
             </TableHead>
             <TableHead className="w-full text-start text-lg text-[var(--dash-theme5)]">
               <div
+                onClick={() => changeSortOrder("state")}
+                className="flex w-full items-center justify-center gap-3 transition-all duration-200 hover:scale-105 hover:cursor-pointer"
+              >
+                <span>الحالة</span>
+                <i
+                  className={cn(
+                    "fa-solid fa-up-down mt-1 text-lg text-[var(--dash-theme5)] transition-all duration-200 hover:cursor-pointer",
+                  )}
+                />
+              </div>
+            </TableHead>
+            <TableHead className="w-full text-start text-lg text-[var(--dash-theme5)]">
+              <div
+                onClick={() => changeSortOrder("order_Products")}
+                className="flex w-full items-center justify-center gap-3 transition-all duration-200 hover:scale-105 hover:cursor-pointer"
+              >
+                <span>المنتجات</span>
+                <i
+                  className={cn(
+                    "fa-solid fa-up-down mt-1 text-lg text-[var(--dash-theme5)] transition-all duration-200 hover:cursor-pointer",
+                  )}
+                />
+              </div>
+            </TableHead>
+            <TableHead className="w-full text-start text-lg text-[var(--dash-theme5)]">
+              <div
+                onClick={() => changeSortOrder("total_Price")}
+                className="flex w-full items-center justify-center gap-3 transition-all duration-200 hover:scale-105 hover:cursor-pointer"
+              >
+                <span>المبلغ</span>
+                <i
+                  className={cn(
+                    "fa-solid fa-up-down mt-1 text-lg text-[var(--dash-theme5)] transition-all duration-200 hover:cursor-pointer",
+                  )}
+                />
+              </div>
+            </TableHead>
+            <TableHead className="w-full text-start text-lg text-[var(--dash-theme5)]">
+              <div
                 onClick={() => changeSortOrder("created_At")}
                 className="flex w-full items-center justify-center gap-3 transition-all duration-200 hover:scale-105 hover:cursor-pointer"
               >
@@ -273,45 +312,6 @@ const page = () => {
             <TableHead className="text-start text-lg text-[var(--dash-theme5)]">
               العنوان
             </TableHead>
-            <TableHead className="w-full text-start text-lg text-[var(--dash-theme5)]">
-              <div
-                onClick={() => changeSortOrder("order_Products")}
-                className="flex w-full items-center justify-center gap-3 transition-all duration-200 hover:scale-105 hover:cursor-pointer"
-              >
-                <span>المنتجات</span>
-                <i
-                  className={cn(
-                    "fa-solid fa-up-down mt-1 text-lg text-[var(--dash-theme5)] transition-all duration-200 hover:cursor-pointer",
-                  )}
-                />
-              </div>
-            </TableHead>
-            <TableHead className="w-full text-start text-lg text-[var(--dash-theme5)]">
-              <div
-                onClick={() => changeSortOrder("state")}
-                className="flex w-full items-center justify-center gap-3 transition-all duration-200 hover:scale-105 hover:cursor-pointer"
-              >
-                <span>الحالة</span>
-                <i
-                  className={cn(
-                    "fa-solid fa-up-down mt-1 text-lg text-[var(--dash-theme5)] transition-all duration-200 hover:cursor-pointer",
-                  )}
-                />
-              </div>
-            </TableHead>
-            <TableHead className="w-full text-start text-lg text-[var(--dash-theme5)]">
-              <div
-                onClick={() => changeSortOrder("total_Price")}
-                className="flex w-full items-center justify-center gap-3 transition-all duration-200 hover:scale-105 hover:cursor-pointer"
-              >
-                <span>المبلغ</span>
-                <i
-                  className={cn(
-                    "fa-solid fa-up-down mt-1 text-lg text-[var(--dash-theme5)] transition-all duration-200 hover:cursor-pointer",
-                  )}
-                />
-              </div>
-            </TableHead>
           </TableRow>
         </TableHeader>
         <TableBody>
@@ -323,6 +323,20 @@ const page = () => {
             >
               <TableCell className="font-medium">{order.id}</TableCell>
               <TableCell className="font-medium">
+                {parseButton(order.state)}
+              </TableCell>
+              <TableCell className="text-center font-medium">
+                {order.order_Products?.length}
+              </TableCell>
+              <TableCell className="text-center text-lg font-bold text-neutral-200">
+                {order.order_Products?.reduce(
+                  (acc, product) => acc + product.price * product.quantity,
+                  0,
+                ) +
+                  order.deliveryPrice +
+                  "DT"}
+              </TableCell>
+              <TableCell className="font-medium">
                 {order.created_At && formattedDate(order.created_At)}
               </TableCell>
               <TableCell className="font-medium">{order.first_name}</TableCell>
@@ -332,20 +346,6 @@ const page = () => {
                 {cities.find((city) => city.value == order.city).text}
               </TableCell>
               <TableCell className="font-medium">{order.address}</TableCell>
-              <TableCell className="text-center font-medium">
-                {order.order_Products?.length}
-              </TableCell>
-              <TableCell className="font-medium">
-                {parseButton(order.state)}
-              </TableCell>
-              <TableCell className="text-end text-lg font-bold text-neutral-200">
-                {order.order_Products?.reduce(
-                  (acc, product) => acc + product.price * product.quantity,
-                  0,
-                ) +
-                  order.deliveryPrice +
-                  "DT"}
-              </TableCell>
             </TableRow>
           ))}
         </TableBody>

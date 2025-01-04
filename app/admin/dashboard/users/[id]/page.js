@@ -48,9 +48,11 @@ const UserPage = () => {
   const phoneRef = useRef(null);
   const addressRef = useRef(null);
   const deleteRef = useRef(null);
+
   const deletePopUp = () => {
     deleteRef.current.click();
   };
+
   const handleEdit = async () => {
     if (isEditing) {
       var errorTest = false;
@@ -132,7 +134,7 @@ const UserPage = () => {
       try {
         setLoadingUser(true);
         const response = await fetch(
-          `${process.env.NEXT_PUBLIC_API_URL}/admins/user/${user.id}`,
+          `${process.env.NEXT_PUBLIC_API_URL}/admins/user/${id}`,
           {
             method: "PUT",
             headers: {
@@ -192,7 +194,7 @@ const UserPage = () => {
         description: "يرجى الانتظار...",
       });
       const response = await fetch(
-        `${process.env.NEXT_PUBLIC_API_URL}/admins/user/${user.id}`,
+        `${process.env.NEXT_PUBLIC_API_URL}/admins/user/${id}`,
         {
           method: "DELETE",
           headers: {
@@ -286,9 +288,7 @@ const UserPage = () => {
       <div className="flex w-full max-w-[600px] flex-col rounded-lg bg-[var(--dash-theme2)] shadow-lg min-[600px]:mx-4">
         <div className="flex items-center justify-center gap-6 border-b-2 border-[var(--dash-theme)]">
           <div
-            onClick={() =>
-              ChangeUrl(`/admin/dashboard/users/${user.id}?menu=1`)
-            }
+            onClick={() => ChangeUrl(`/admin/dashboard/users/${id}?menu=1`)}
             className={cn(
               "border-b-4 border-neutral-200 p-3 transition-all duration-200 hover:cursor-pointer hover:border-neutral-500",
               menu === 1 &&
@@ -300,9 +300,7 @@ const UserPage = () => {
             </span>
           </div>
           <div
-            onClick={() =>
-              ChangeUrl(`/admin/dashboard/users/${user.id}?menu=2`)
-            }
+            onClick={() => ChangeUrl(`/admin/dashboard/users/${id}?menu=2`)}
             className={cn(
               "border-b-4 border-neutral-200 p-3 transition-all duration-200 hover:cursor-pointer hover:border-neutral-500",
               menu === 2 &&
