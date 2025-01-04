@@ -5,7 +5,7 @@ import { useRouter } from "next/navigation";
 
 import Cookies from "js-cookie";
 
-import { cities, cn, formattedDate } from "@/lib/utils";
+import { cities, cn, eventBus, formattedDate } from "@/lib/utils";
 import { toast } from "@/hooks/use-toast";
 
 import {
@@ -40,8 +40,8 @@ const page = () => {
   const [CurrentPage, setCurrentPage] = useState(1);
   const [limit, setLimit] = useState(8);
   const [pages, setPages] = useState([]);
-  const [selectedSort, setSelectedSort] = useState("first_name");
-  const [sortDirection, setSortDirection] = useState("ASC");
+  const [selectedSort, setSelectedSort] = useState("created_At");
+  const [sortDirection, setSortDirection] = useState("DESC");
   const [searchQuery, setSearchQuery] = useState("");
   const maxVisiblePages = 5;
 
@@ -78,6 +78,36 @@ const page = () => {
         description: "حدث خطأ أثناء جلب البيانات",
         variant: "destructive",
       });
+    }
+  };
+
+  const NewOrder = async () => {
+
+    if (CurrentPage === 1) {
+      try {
+        const response = await fetch(
+          `${process.env.NEXT_PUBLIC_API_URL}/admins/order?${searchQuery ? `search=${searchQuery}&` : ""}state=${orderState}&sort=${selectedSort}&order=${sortDirection}&page=${CurrentPage}&limit=${limit}`,
+          {
+            method: "GET",
+            headers: {
+              admin_access_token: Cookies.get("admin_access_token"),
+              "Content-Type": "application/json",
+            },
+          },
+        );
+        const data = await response.json();
+
+        if (data.data === null) {
+          throw new Error(data.message);
+        }
+
+        setOrders(data.data.data);
+        setTotalItems(data.data.totalItems);
+        setTotalPages(data.data.totalPages);
+        setCurrentPage(Number(data.data.currentPage));
+      } catch (error) {
+        console.error(error);
+      }
     }
   };
 
@@ -155,6 +185,12 @@ const page = () => {
 
   useEffect(() => {
     fetchOrders();
+
+    eventBus.on("NewOrder", NewOrder);
+
+    return () => {
+      eventBus.off("NewOrder", NewOrder);
+    };
   }, []);
 
   useEffect(() => {

@@ -9,6 +9,7 @@ import { toast } from "@/hooks/use-toast";
 import { AuthContext } from "@/contexts/AuthContext";
 
 import DashNav from "@/components/DashNav/DashNav";
+import NewOrder from "@/notifications/NewOrder/NewOrder";
 
 export default function ClientLayout({ children }) {
   const router = useRouter();
@@ -143,6 +144,7 @@ export default function ClientLayout({ children }) {
         )}
         <DashNav />
         {children}
+        {isAdminSigned && <NewOrder />}
       </div>
     </AuthContext.Provider>
   );

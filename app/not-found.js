@@ -3,7 +3,7 @@
 import { useState, useEffect, useTransition } from "react";
 import { useRouter } from "next/navigation";
 
-export default function Error({ error, reset }) {
+export default function Error() {
   const router = useRouter();
   const [isPending, startTransition] = useTransition();
   const [loadingPage, setLoadingPage] = useState(false);
