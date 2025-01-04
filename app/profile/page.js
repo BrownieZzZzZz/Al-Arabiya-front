@@ -312,6 +312,21 @@ const ProfilePage = () => {
     });
   };
 
+  const parseButton = (state) => {
+    if (state === "Waiting to get Accepted...")
+      return (
+        <span className="py-1.5 font-semibold text-blue-500">قيد الانتظار</span>
+      );
+    if (state === "Accepted")
+      return (
+        <span className="py-1.5 font-semibold text-green-500">تم القبول</span>
+      );
+    if (state === "Cancelled")
+      return (
+        <span className="py-1.5 font-semibold text-red-500">تم الالغاء</span>
+      );
+  };
+
   useEffect(() => {
     checkUser();
   }, []);
@@ -565,7 +580,7 @@ const ProfilePage = () => {
                         الطلب رقم: {order.id}
                       </div>
                       <div className="text-sm text-neutral-500">
-                        الحالة: {order.state}
+                        الحالة: {parseButton(order.state)}
                       </div>
                       <div className="text-sm text-neutral-500">
                         تاريخ الإنشاء:
@@ -591,9 +606,9 @@ const ProfilePage = () => {
                       <div className="text-sm text-neutral-600">
                         العنوان: {order.address}
                       </div>
-                      <div className="text-sm text-neutral-600">
+                      {/* <div className="text-sm text-neutral-600">
                         نوع الطلب: {order.type}
-                      </div>
+                      </div> */}
                     </div>
                     <div className="text-right">
                       <div className="mb-2 text-lg font-semibold text-neutral-700">

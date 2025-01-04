@@ -43,8 +43,8 @@ const page = () => {
   const [CurrentPage, setCurrentPage] = useState(1);
   const [limit, setLimit] = useState(10);
   const [pages, setPages] = useState([]);
-  const [selectedSort, setSelectedSort] = useState("name");
-  const [sortDirection, setSortDirection] = useState("asc");
+  const [selectedSort, setSelectedSort] = useState("created_At");
+  const [sortDirection, setSortDirection] = useState("ASC");
   const [searchQuery, setSearchQuery] = useState("");
   const maxVisiblePages = 5;
 
@@ -67,7 +67,11 @@ const page = () => {
         throw new Error(data.message);
       }
 
-      setUsers(data.data);
+      setUsers(data.data.data);
+      setTotalItems(data.data.totalItems);
+      setTotalPages(data.data.totalPages);
+      setCurrentPage(Number(data.data.currentPage));
+
       setLoadingUsers(false);
     } catch (error) {
       console.error(error);
@@ -90,10 +94,10 @@ const page = () => {
     console.log(sort);
 
     if (selectedSort === sort) {
-      setSortDirection(sortDirection === "asc" ? "desc" : "asc");
+      setSortDirection(sortDirection === "ASC" ? "DESC" : "ASC");
     } else {
       setSelectedSort(sort);
-      setSortDirection("asc");
+      setSortDirection("ASC");
     }
   };
 
@@ -165,7 +169,7 @@ const page = () => {
             </TableHead>
             <TableHead className="w-full text-start text-lg text-[var(--dash-theme5)]">
               <div
-                onClick={() => changeSortOrder("name")}
+                onClick={() => changeSortOrder("full_name")}
                 className="flex w-full items-center justify-center gap-3 transition-all duration-200 hover:scale-105 hover:cursor-pointer"
               >
                 <span>الاسم</span>
@@ -214,41 +218,120 @@ const page = () => {
           </TableRow>
         </TableHeader>
         <TableBody>
-          {users.map(
-            (user, index) =>
-              user.id !== adminData.id && (
-                <TableRow
-                  onClick={() =>
-                    window.open(`/admin/dashboard/users/${user.id}`)
-                  }
-                  key={index}
-                  className="border-[#2c2d33] text-white hover:cursor-pointer hover:bg-muted/10"
-                >
-                  <TableCell className="font-medium">{user.id}</TableCell>
-                  <TableCell className="font-medium">
-                    {user.created_At && formattedDate(user.created_At)}
-                  </TableCell>
-                  <TableCell className="font-medium">
-                    {user.full_name.split(" ")[0]}
-                  </TableCell>
-                  <TableCell className="font-medium">
-                    {user.full_name.split(" ").length > 1
-                      ? user.full_name.split(" ")[1]
-                      : ""}
-                  </TableCell>
-                  <TableCell className="font-medium">{user.phone}</TableCell>
-                  <TableCell className="font-medium">{user.email}</TableCell>
-                  <TableCell className="font-medium">
-                    {cities.find((city) => city.value === user.city).text}
-                  </TableCell>
-                  <TableCell className="text-end font-medium">
-                    {user.role === "admin" ? "مسؤول" : "حريف"}
-                  </TableCell>
-                </TableRow>
-              ),
-          )}
+          {users.map((user, index) => (
+            <TableRow
+              onClick={() => window.open(`/admin/dashboard/users/${user.id}`)}
+              key={index}
+              className="border-[#2c2d33] text-white hover:cursor-pointer hover:bg-muted/10"
+            >
+              <TableCell className="font-medium">{user.id}</TableCell>
+              <TableCell className="font-medium">
+                {user.created_At && formattedDate(user.created_At)}
+              </TableCell>
+              <TableCell className="font-medium">
+                {user.full_name.split(" ")[0]}
+              </TableCell>
+              <TableCell className="font-medium">
+                {user.full_name.split(" ").length > 1
+                  ? user.full_name.split(" ")[1]
+                  : ""}
+              </TableCell>
+              <TableCell className="font-medium">{user.phone}</TableCell>
+              <TableCell className="font-medium">{user.email}</TableCell>
+              <TableCell className="font-medium">
+                {cities.find((city) => city.value === user.city).text}
+              </TableCell>
+              <TableCell className="text-end font-medium">
+                {user.role === "admin" ? "مسؤول" : "حريف"}
+              </TableCell>
+            </TableRow>
+          ))}
         </TableBody>
       </Table>
+      {/* <PaginationComp /> */}
+      {!loadingUsers && users.length > 0 && (
+        <Pagination dir="rtl">
+          <PaginationContent className="flex items-center justify-center gap-2">
+            {/* Previous Button */}
+            <PaginationItem>
+              <PaginationPrevious
+                className={cn(
+                  "rounded-md border-0 bg-[var(--dash-theme2)] px-3 py-2 font-semibold text-[var(--dash-theme6)] transition-all duration-200 hover:cursor-pointer",
+                  CurrentPage === 1
+                    ? "hover:cursor-not-allowed hover:bg-[var(--dash-theme2)] hover:text-[var(--dash-theme6)]"
+                    : "hover:bg-[var(--dash-theme6)] hover:text-white",
+                )}
+                onClick={() => handlePageChange(CurrentPage - 1)}
+                disabled={CurrentPage === 1}
+              />
+            </PaginationItem>
+
+            {/* First Page and Ellipsis */}
+            {pages[0] > 1 && (
+              <>
+                <PaginationItem>
+                  <PaginationLink
+                    className="rounded-md border-0 bg-[var(--dash-theme2)] px-3 py-2 text-[var(--dash-theme6)] transition-all duration-200 hover:cursor-pointer hover:bg-[var(--theme)] hover:text-white"
+                    onClick={() => handlePageChange(1)}
+                  >
+                    ١
+                  </PaginationLink>
+                </PaginationItem>
+                {pages[0] > 2 && <PaginationEllipsis>...</PaginationEllipsis>}
+              </>
+            )}
+
+            {/* Page Numbers */}
+            {pages.map((page) => (
+              <PaginationItem key={page}>
+                <PaginationLink
+                  className={cn(
+                    "rounded-md border-0 px-3 py-2 transition-all duration-200 hover:cursor-pointer",
+                    page === CurrentPage
+                      ? "bg-[var(--dash-theme6)] text-white hover:cursor-not-allowed hover:bg-[var(--dash-theme6)] hover:text-white"
+                      : "bg-[var(--dash-theme2)] text-[var(--dash-theme6)] hover:bg-[var(--dash-theme6)] hover:text-white",
+                  )}
+                  isActive={page === CurrentPage}
+                  onClick={() => handlePageChange(page)}
+                >
+                  {page}
+                </PaginationLink>
+              </PaginationItem>
+            ))}
+
+            {/* Last Page and Ellipsis */}
+            {pages[pages.length - 1] < totalPages && (
+              <>
+                {pages[pages.length - 1] < totalPages - 1 && (
+                  <PaginationEllipsis>...</PaginationEllipsis>
+                )}
+                <PaginationItem>
+                  <PaginationLink
+                    className="rounded-md border-0 bg-[var(--dash-theme2)] px-3 py-2 text-[var(--dash-theme6)] transition-all duration-200 hover:cursor-pointer hover:bg-[var(--theme)] hover:text-white"
+                    onClick={() => handlePageChange(totalPages)}
+                  >
+                    {totalPages}
+                  </PaginationLink>
+                </PaginationItem>
+              </>
+            )}
+
+            {/* Next Button */}
+            <PaginationItem>
+              <PaginationNext
+                className={cn(
+                  "rounded-md border-0 bg-[var(--dash-theme2)] px-3 py-2 font-semibold text-[var(--dash-theme6)] transition-all duration-200 hover:cursor-pointer",
+                  CurrentPage === totalPages
+                    ? "hover:cursor-not-allowed hover:bg-[var(--dash-theme2)] hover:text-[var(--dash-theme6)]"
+                    : "hover:bg-[var(--dash-theme6)] hover:text-white",
+                )}
+                onClick={() => handlePageChange(CurrentPage + 1)}
+                disabled={CurrentPage === totalPages}
+              />
+            </PaginationItem>
+          </PaginationContent>
+        </Pagination>
+      )}
     </div>
   );
 };

@@ -1,7 +1,22 @@
 "use client";
-import DashSearch from "@/components/DashSearch/DashSearch";
 import "./page.css";
-import { useState } from "react";
+import { useState, useEffect, useTransition } from "react";
+import { useRouter } from "next/navigation";
+
+import Cookies from "js-cookie";
+
+import { cities, cn, formattedDate } from "@/lib/utils";
+import { toast } from "@/hooks/use-toast";
+
+import {
+  Pagination,
+  PaginationContent,
+  PaginationEllipsis,
+  PaginationItem,
+  PaginationLink,
+  PaginationNext,
+  PaginationPrevious,
+} from "@/components/ui/pagination";
 import {
   Table,
   TableBody,
@@ -11,853 +26,99 @@ import {
   TableHeader,
   TableRow,
 } from "@/components/ui/table";
-import { cn, formattedDate } from "@/lib/utils";
+import DashSearch from "@/components/DashSearch/DashSearch";
 
 const page = () => {
-  const [orderState, setOrderState] = useState(1);
-  const [orders, setOrders] = useState([
-    {
-      id: "5a0de12b-33ba-413c-98cf-35e82a4255f9",
-      state: "Waiting to get Accepted...",
-      created_At: "2024-12-30T21:42:35.210Z",
-      first_name: "jawhar",
-      last_name: "hmidis",
-      phone: "+21650974080",
-      email: "jawharhmidi01@gmail.com",
-      city: "mannouba",
-      address: "medneine, Lessifr",
-      deliveryPrice: 0,
-      type: "delivery",
-      order_Products: [
+  const [orderState, setOrderState] = useState("");
+  const router = useRouter();
+  const [loadingPage, setLoadingPage] = useState(false);
+  const [isPending, startTransition] = useTransition();
+  const [loadingOrders, setLoadingOrders] = useState(true);
+  const [orders, setOrders] = useState([]);
+  const [totalItems, setTotalItems] = useState(0);
+  const [totalPages, setTotalPages] = useState(1);
+  const [CurrentPage, setCurrentPage] = useState(1);
+  const [limit, setLimit] = useState(8);
+  const [pages, setPages] = useState([]);
+  const [selectedSort, setSelectedSort] = useState("first_name");
+  const [sortDirection, setSortDirection] = useState("ASC");
+  const [searchQuery, setSearchQuery] = useState("");
+  const maxVisiblePages = 5;
+
+  const fetchOrders = async () => {
+    setLoadingOrders(true);
+    try {
+      const response = await fetch(
+        `${process.env.NEXT_PUBLIC_API_URL}/admins/order?${searchQuery ? `search=${searchQuery}&` : ""}state=${orderState}&sort=${selectedSort}&order=${sortDirection}&page=${CurrentPage}&limit=${limit}`,
         {
-          id: "b3e78bf8-d013-4a96-9ee2-67836919aff6",
-          quantity: 2,
-          price: 80,
-          product: {
-            id: "77733c30-be54-48c7-8963-71d3c4621c70",
-            name: "زيت الأرغان للعناية بالشعر",
-            description: "زيت أرغان نقي لتغذية الشعر وتقويته.",
-            img: [
-              "/images/product2.jpg",
-              "/images/product1.jpg",
-              "/images/product2.jpg",
-              "/images/product3.jpg",
-              "/images/product4.jpg",
-              "/images/product5.jpg",
-              "/images/product6.jpg",
-            ],
-            onSold: false,
-            soldPercentage: 0,
-            normalSinglePrice: 80,
-            soldSinglePrice: 80,
-            normalMultiPrice: 200,
-            soldMultiPrice: 200,
-            in_Stock: true,
-            created_At: "2024-12-27T23:17:08.320Z",
+          method: "GET",
+          headers: {
+            admin_access_token: Cookies.get("admin_access_token"),
+            "Content-Type": "application/json",
           },
         },
-      ],
-    },
-    {
-      id: "5a0de12b-33ba-413c-98cf-35e82a4255f9",
-      state: "Accepted",
-      created_At: "2024-12-30T21:42:35.210Z",
-      first_name: "jawhar",
-      last_name: "hmidis",
-      phone: "+21650974080",
-      email: "jawharhmidi01@gmail.com",
-      city: "mannouba",
-      address: "medneine, Lessifr",
-      deliveryPrice: 0,
-      type: "delivery",
-      order_Products: [
-        {
-          id: "b3e78bf8-d013-4a96-9ee2-67836919aff6",
-          quantity: 2,
-          price: 80,
-          product: {
-            id: "77733c30-be54-48c7-8963-71d3c4621c70",
-            name: "زيت الأرغان للعناية بالشعر",
-            description: "زيت أرغان نقي لتغذية الشعر وتقويته.",
-            img: [
-              "/images/product2.jpg",
-              "/images/product1.jpg",
-              "/images/product2.jpg",
-              "/images/product3.jpg",
-              "/images/product4.jpg",
-              "/images/product5.jpg",
-              "/images/product6.jpg",
-            ],
-            onSold: false,
-            soldPercentage: 0,
-            normalSinglePrice: 80,
-            soldSinglePrice: 80,
-            normalMultiPrice: 200,
-            soldMultiPrice: 200,
-            in_Stock: true,
-            created_At: "2024-12-27T23:17:08.320Z",
-          },
-        },
-      ],
-    },
-    {
-      id: "5a0de12b-33ba-413c-98cf-35e82a4255f9",
-      state: "Cancelled",
-      created_At: "2024-12-30T21:42:35.210Z",
-      first_name: "jawhar",
-      last_name: "hmidis",
-      phone: "+21650974080",
-      email: "jawharhmidi01@gmail.com",
-      city: "mannouba",
-      address: "medneine, Lessifr",
-      deliveryPrice: 0,
-      type: "delivery",
-      order_Products: [
-        {
-          id: "b3e78bf8-d013-4a96-9ee2-67836919aff6",
-          quantity: 2,
-          price: 80,
-          product: {
-            id: "77733c30-be54-48c7-8963-71d3c4621c70",
-            name: "زيت الأرغان للعناية بالشعر",
-            description: "زيت أرغان نقي لتغذية الشعر وتقويته.",
-            img: [
-              "/images/product2.jpg",
-              "/images/product1.jpg",
-              "/images/product2.jpg",
-              "/images/product3.jpg",
-              "/images/product4.jpg",
-              "/images/product5.jpg",
-              "/images/product6.jpg",
-            ],
-            onSold: false,
-            soldPercentage: 0,
-            normalSinglePrice: 80,
-            soldSinglePrice: 80,
-            normalMultiPrice: 200,
-            soldMultiPrice: 200,
-            in_Stock: true,
-            created_At: "2024-12-27T23:17:08.320Z",
-          },
-        },
-      ],
-    },
-    {
-      id: "5a0de12b-33ba-413c-98cf-35e82a4255f9",
-      state: "Waiting to get Accepted...",
-      created_At: "2024-12-30T21:42:35.210Z",
-      first_name: "jawhar",
-      last_name: "hmidis",
-      phone: "+21650974080",
-      email: "jawharhmidi01@gmail.com",
-      city: "mannouba",
-      address: "medneine, Lessifr",
-      deliveryPrice: 0,
-      type: "delivery",
-      order_Products: [
-        {
-          id: "b3e78bf8-d013-4a96-9ee2-67836919aff6",
-          quantity: 2,
-          price: 80,
-          product: {
-            id: "77733c30-be54-48c7-8963-71d3c4621c70",
-            name: "زيت الأرغان للعناية بالشعر",
-            description: "زيت أرغان نقي لتغذية الشعر وتقويته.",
-            img: [
-              "/images/product2.jpg",
-              "/images/product1.jpg",
-              "/images/product2.jpg",
-              "/images/product3.jpg",
-              "/images/product4.jpg",
-              "/images/product5.jpg",
-              "/images/product6.jpg",
-            ],
-            onSold: false,
-            soldPercentage: 0,
-            normalSinglePrice: 80,
-            soldSinglePrice: 80,
-            normalMultiPrice: 200,
-            soldMultiPrice: 200,
-            in_Stock: true,
-            created_At: "2024-12-27T23:17:08.320Z",
-          },
-        },
-      ],
-    },
-    {
-      id: "5a0de12b-33ba-413c-98cf-35e82a4255f9",
-      state: "Waiting to get Accepted...",
-      created_At: "2024-12-30T21:42:35.210Z",
-      first_name: "jawhar",
-      last_name: "hmidis",
-      phone: "+21650974080",
-      email: "jawharhmidi01@gmail.com",
-      city: "mannouba",
-      address: "medneine, Lessifr",
-      deliveryPrice: 0,
-      type: "delivery",
-      order_Products: [
-        {
-          id: "b3e78bf8-d013-4a96-9ee2-67836919aff6",
-          quantity: 2,
-          price: 80,
-          product: {
-            id: "77733c30-be54-48c7-8963-71d3c4621c70",
-            name: "زيت الأرغان للعناية بالشعر",
-            description: "زيت أرغان نقي لتغذية الشعر وتقويته.",
-            img: [
-              "/images/product2.jpg",
-              "/images/product1.jpg",
-              "/images/product2.jpg",
-              "/images/product3.jpg",
-              "/images/product4.jpg",
-              "/images/product5.jpg",
-              "/images/product6.jpg",
-            ],
-            onSold: false,
-            soldPercentage: 0,
-            normalSinglePrice: 80,
-            soldSinglePrice: 80,
-            normalMultiPrice: 200,
-            soldMultiPrice: 200,
-            in_Stock: true,
-            created_At: "2024-12-27T23:17:08.320Z",
-          },
-        },
-      ],
-    },
-    {
-      id: "5a0de12b-33ba-413c-98cf-35e82a4255f9",
-      state: "Accepted",
-      created_At: "2024-12-30T21:42:35.210Z",
-      first_name: "jawhar",
-      last_name: "hmidis",
-      phone: "+21650974080",
-      email: "jawharhmidi01@gmail.com",
-      city: "mannouba",
-      address: "medneine, Lessifr",
-      deliveryPrice: 0,
-      type: "delivery",
-      order_Products: [
-        {
-          id: "b3e78bf8-d013-4a96-9ee2-67836919aff6",
-          quantity: 2,
-          price: 80,
-          product: {
-            id: "77733c30-be54-48c7-8963-71d3c4621c70",
-            name: "زيت الأرغان للعناية بالشعر",
-            description: "زيت أرغان نقي لتغذية الشعر وتقويته.",
-            img: [
-              "/images/product2.jpg",
-              "/images/product1.jpg",
-              "/images/product2.jpg",
-              "/images/product3.jpg",
-              "/images/product4.jpg",
-              "/images/product5.jpg",
-              "/images/product6.jpg",
-            ],
-            onSold: false,
-            soldPercentage: 0,
-            normalSinglePrice: 80,
-            soldSinglePrice: 80,
-            normalMultiPrice: 200,
-            soldMultiPrice: 200,
-            in_Stock: true,
-            created_At: "2024-12-27T23:17:08.320Z",
-          },
-        },
-      ],
-    },
-    {
-      id: "5a0de12b-33ba-413c-98cf-35e82a4255f9",
-      state: "Cancelled",
-      created_At: "2024-12-30T21:42:35.210Z",
-      first_name: "jawhar",
-      last_name: "hmidis",
-      phone: "+21650974080",
-      email: "jawharhmidi01@gmail.com",
-      city: "mannouba",
-      address: "medneine, Lessifr",
-      deliveryPrice: 0,
-      type: "delivery",
-      order_Products: [
-        {
-          id: "b3e78bf8-d013-4a96-9ee2-67836919aff6",
-          quantity: 2,
-          price: 80,
-          product: {
-            id: "77733c30-be54-48c7-8963-71d3c4621c70",
-            name: "زيت الأرغان للعناية بالشعر",
-            description: "زيت أرغان نقي لتغذية الشعر وتقويته.",
-            img: [
-              "/images/product2.jpg",
-              "/images/product1.jpg",
-              "/images/product2.jpg",
-              "/images/product3.jpg",
-              "/images/product4.jpg",
-              "/images/product5.jpg",
-              "/images/product6.jpg",
-            ],
-            onSold: false,
-            soldPercentage: 0,
-            normalSinglePrice: 80,
-            soldSinglePrice: 80,
-            normalMultiPrice: 200,
-            soldMultiPrice: 200,
-            in_Stock: true,
-            created_At: "2024-12-27T23:17:08.320Z",
-          },
-        },
-      ],
-    },
-    {
-      id: "5a0de12b-33ba-413c-98cf-35e82a4255f9",
-      state: "Waiting to get Accepted...",
-      created_At: "2024-12-30T21:42:35.210Z",
-      first_name: "jawhar",
-      last_name: "hmidis",
-      phone: "+21650974080",
-      email: "jawharhmidi01@gmail.com",
-      city: "mannouba",
-      address: "medneine, Lessifr",
-      deliveryPrice: 0,
-      type: "delivery",
-      order_Products: [
-        {
-          id: "b3e78bf8-d013-4a96-9ee2-67836919aff6",
-          quantity: 2,
-          price: 80,
-          product: {
-            id: "77733c30-be54-48c7-8963-71d3c4621c70",
-            name: "زيت الأرغان للعناية بالشعر",
-            description: "زيت أرغان نقي لتغذية الشعر وتقويته.",
-            img: [
-              "/images/product2.jpg",
-              "/images/product1.jpg",
-              "/images/product2.jpg",
-              "/images/product3.jpg",
-              "/images/product4.jpg",
-              "/images/product5.jpg",
-              "/images/product6.jpg",
-            ],
-            onSold: false,
-            soldPercentage: 0,
-            normalSinglePrice: 80,
-            soldSinglePrice: 80,
-            normalMultiPrice: 200,
-            soldMultiPrice: 200,
-            in_Stock: true,
-            created_At: "2024-12-27T23:17:08.320Z",
-          },
-        },
-      ],
-    },
-    {
-      id: "5a0de12b-33ba-413c-98cf-35e82a4255f9",
-      state: "Waiting to get Accepted...",
-      created_At: "2024-12-30T21:42:35.210Z",
-      first_name: "jawhar",
-      last_name: "hmidis",
-      phone: "+21650974080",
-      email: "jawharhmidi01@gmail.com",
-      city: "mannouba",
-      address: "medneine, Lessifr",
-      deliveryPrice: 0,
-      type: "delivery",
-      order_Products: [
-        {
-          id: "b3e78bf8-d013-4a96-9ee2-67836919aff6",
-          quantity: 2,
-          price: 80,
-          product: {
-            id: "77733c30-be54-48c7-8963-71d3c4621c70",
-            name: "زيت الأرغان للعناية بالشعر",
-            description: "زيت أرغان نقي لتغذية الشعر وتقويته.",
-            img: [
-              "/images/product2.jpg",
-              "/images/product1.jpg",
-              "/images/product2.jpg",
-              "/images/product3.jpg",
-              "/images/product4.jpg",
-              "/images/product5.jpg",
-              "/images/product6.jpg",
-            ],
-            onSold: false,
-            soldPercentage: 0,
-            normalSinglePrice: 80,
-            soldSinglePrice: 80,
-            normalMultiPrice: 200,
-            soldMultiPrice: 200,
-            in_Stock: true,
-            created_At: "2024-12-27T23:17:08.320Z",
-          },
-        },
-      ],
-    },
-    {
-      id: "5a0de12b-33ba-413c-98cf-35e82a4255f9",
-      state: "Accepted",
-      created_At: "2024-12-30T21:42:35.210Z",
-      first_name: "jawhar",
-      last_name: "hmidis",
-      phone: "+21650974080",
-      email: "jawharhmidi01@gmail.com",
-      city: "mannouba",
-      address: "medneine, Lessifr",
-      deliveryPrice: 0,
-      type: "delivery",
-      order_Products: [
-        {
-          id: "b3e78bf8-d013-4a96-9ee2-67836919aff6",
-          quantity: 2,
-          price: 80,
-          product: {
-            id: "77733c30-be54-48c7-8963-71d3c4621c70",
-            name: "زيت الأرغان للعناية بالشعر",
-            description: "زيت أرغان نقي لتغذية الشعر وتقويته.",
-            img: [
-              "/images/product2.jpg",
-              "/images/product1.jpg",
-              "/images/product2.jpg",
-              "/images/product3.jpg",
-              "/images/product4.jpg",
-              "/images/product5.jpg",
-              "/images/product6.jpg",
-            ],
-            onSold: false,
-            soldPercentage: 0,
-            normalSinglePrice: 80,
-            soldSinglePrice: 80,
-            normalMultiPrice: 200,
-            soldMultiPrice: 200,
-            in_Stock: true,
-            created_At: "2024-12-27T23:17:08.320Z",
-          },
-        },
-      ],
-    },
-    {
-      id: "5a0de12b-33ba-413c-98cf-35e82a4255f9",
-      state: "Cancelled",
-      created_At: "2024-12-30T21:42:35.210Z",
-      first_name: "jawhar",
-      last_name: "hmidis",
-      phone: "+21650974080",
-      email: "jawharhmidi01@gmail.com",
-      city: "mannouba",
-      address: "medneine, Lessifr",
-      deliveryPrice: 0,
-      type: "delivery",
-      order_Products: [
-        {
-          id: "b3e78bf8-d013-4a96-9ee2-67836919aff6",
-          quantity: 2,
-          price: 80,
-          product: {
-            id: "77733c30-be54-48c7-8963-71d3c4621c70",
-            name: "زيت الأرغان للعناية بالشعر",
-            description: "زيت أرغان نقي لتغذية الشعر وتقويته.",
-            img: [
-              "/images/product2.jpg",
-              "/images/product1.jpg",
-              "/images/product2.jpg",
-              "/images/product3.jpg",
-              "/images/product4.jpg",
-              "/images/product5.jpg",
-              "/images/product6.jpg",
-            ],
-            onSold: false,
-            soldPercentage: 0,
-            normalSinglePrice: 80,
-            soldSinglePrice: 80,
-            normalMultiPrice: 200,
-            soldMultiPrice: 200,
-            in_Stock: true,
-            created_At: "2024-12-27T23:17:08.320Z",
-          },
-        },
-      ],
-    },
-    {
-      id: "5a0de12b-33ba-413c-98cf-35e82a4255f9",
-      state: "Waiting to get Accepted...",
-      created_At: "2024-12-30T21:42:35.210Z",
-      first_name: "jawhar",
-      last_name: "hmidis",
-      phone: "+21650974080",
-      email: "jawharhmidi01@gmail.com",
-      city: "mannouba",
-      address: "medneine, Lessifr",
-      deliveryPrice: 0,
-      type: "delivery",
-      order_Products: [
-        {
-          id: "b3e78bf8-d013-4a96-9ee2-67836919aff6",
-          quantity: 2,
-          price: 80,
-          product: {
-            id: "77733c30-be54-48c7-8963-71d3c4621c70",
-            name: "زيت الأرغان للعناية بالشعر",
-            description: "زيت أرغان نقي لتغذية الشعر وتقويته.",
-            img: [
-              "/images/product2.jpg",
-              "/images/product1.jpg",
-              "/images/product2.jpg",
-              "/images/product3.jpg",
-              "/images/product4.jpg",
-              "/images/product5.jpg",
-              "/images/product6.jpg",
-            ],
-            onSold: false,
-            soldPercentage: 0,
-            normalSinglePrice: 80,
-            soldSinglePrice: 80,
-            normalMultiPrice: 200,
-            soldMultiPrice: 200,
-            in_Stock: true,
-            created_At: "2024-12-27T23:17:08.320Z",
-          },
-        },
-      ],
-    },
-    {
-      id: "5a0de12b-33ba-413c-98cf-35e82a4255f9",
-      state: "Waiting to get Accepted...",
-      created_At: "2024-12-30T21:42:35.210Z",
-      first_name: "jawhar",
-      last_name: "hmidis",
-      phone: "+21650974080",
-      email: "jawharhmidi01@gmail.com",
-      city: "mannouba",
-      address: "medneine, Lessifr",
-      deliveryPrice: 0,
-      type: "delivery",
-      order_Products: [
-        {
-          id: "b3e78bf8-d013-4a96-9ee2-67836919aff6",
-          quantity: 2,
-          price: 80,
-          product: {
-            id: "77733c30-be54-48c7-8963-71d3c4621c70",
-            name: "زيت الأرغان للعناية بالشعر",
-            description: "زيت أرغان نقي لتغذية الشعر وتقويته.",
-            img: [
-              "/images/product2.jpg",
-              "/images/product1.jpg",
-              "/images/product2.jpg",
-              "/images/product3.jpg",
-              "/images/product4.jpg",
-              "/images/product5.jpg",
-              "/images/product6.jpg",
-            ],
-            onSold: false,
-            soldPercentage: 0,
-            normalSinglePrice: 80,
-            soldSinglePrice: 80,
-            normalMultiPrice: 200,
-            soldMultiPrice: 200,
-            in_Stock: true,
-            created_At: "2024-12-27T23:17:08.320Z",
-          },
-        },
-      ],
-    },
-    {
-      id: "5a0de12b-33ba-413c-98cf-35e82a4255f9",
-      state: "Accepted",
-      created_At: "2024-12-30T21:42:35.210Z",
-      first_name: "jawhar",
-      last_name: "hmidis",
-      phone: "+21650974080",
-      email: "jawharhmidi01@gmail.com",
-      city: "mannouba",
-      address: "medneine, Lessifr",
-      deliveryPrice: 0,
-      type: "delivery",
-      order_Products: [
-        {
-          id: "b3e78bf8-d013-4a96-9ee2-67836919aff6",
-          quantity: 2,
-          price: 80,
-          product: {
-            id: "77733c30-be54-48c7-8963-71d3c4621c70",
-            name: "زيت الأرغان للعناية بالشعر",
-            description: "زيت أرغان نقي لتغذية الشعر وتقويته.",
-            img: [
-              "/images/product2.jpg",
-              "/images/product1.jpg",
-              "/images/product2.jpg",
-              "/images/product3.jpg",
-              "/images/product4.jpg",
-              "/images/product5.jpg",
-              "/images/product6.jpg",
-            ],
-            onSold: false,
-            soldPercentage: 0,
-            normalSinglePrice: 80,
-            soldSinglePrice: 80,
-            normalMultiPrice: 200,
-            soldMultiPrice: 200,
-            in_Stock: true,
-            created_At: "2024-12-27T23:17:08.320Z",
-          },
-        },
-      ],
-    },
-    {
-      id: "5a0de12b-33ba-413c-98cf-35e82a4255f9",
-      state: "Cancelled",
-      created_At: "2024-12-30T21:42:35.210Z",
-      first_name: "jawhar",
-      last_name: "hmidis",
-      phone: "+21650974080",
-      email: "jawharhmidi01@gmail.com",
-      city: "mannouba",
-      address: "medneine, Lessifr",
-      deliveryPrice: 0,
-      type: "delivery",
-      order_Products: [
-        {
-          id: "b3e78bf8-d013-4a96-9ee2-67836919aff6",
-          quantity: 2,
-          price: 80,
-          product: {
-            id: "77733c30-be54-48c7-8963-71d3c4621c70",
-            name: "زيت الأرغان للعناية بالشعر",
-            description: "زيت أرغان نقي لتغذية الشعر وتقويته.",
-            img: [
-              "/images/product2.jpg",
-              "/images/product1.jpg",
-              "/images/product2.jpg",
-              "/images/product3.jpg",
-              "/images/product4.jpg",
-              "/images/product5.jpg",
-              "/images/product6.jpg",
-            ],
-            onSold: false,
-            soldPercentage: 0,
-            normalSinglePrice: 80,
-            soldSinglePrice: 80,
-            normalMultiPrice: 200,
-            soldMultiPrice: 200,
-            in_Stock: true,
-            created_At: "2024-12-27T23:17:08.320Z",
-          },
-        },
-      ],
-    },
-    {
-      id: "5a0de12b-33ba-413c-98cf-35e82a4255f9",
-      state: "Waiting to get Accepted...",
-      created_At: "2024-12-30T21:42:35.210Z",
-      first_name: "jawhar",
-      last_name: "hmidis",
-      phone: "+21650974080",
-      email: "jawharhmidi01@gmail.com",
-      city: "mannouba",
-      address: "medneine, Lessifr",
-      deliveryPrice: 0,
-      type: "delivery",
-      order_Products: [
-        {
-          id: "b3e78bf8-d013-4a96-9ee2-67836919aff6",
-          quantity: 2,
-          price: 80,
-          product: {
-            id: "77733c30-be54-48c7-8963-71d3c4621c70",
-            name: "زيت الأرغان للعناية بالشعر",
-            description: "زيت أرغان نقي لتغذية الشعر وتقويته.",
-            img: [
-              "/images/product2.jpg",
-              "/images/product1.jpg",
-              "/images/product2.jpg",
-              "/images/product3.jpg",
-              "/images/product4.jpg",
-              "/images/product5.jpg",
-              "/images/product6.jpg",
-            ],
-            onSold: false,
-            soldPercentage: 0,
-            normalSinglePrice: 80,
-            soldSinglePrice: 80,
-            normalMultiPrice: 200,
-            soldMultiPrice: 200,
-            in_Stock: true,
-            created_At: "2024-12-27T23:17:08.320Z",
-          },
-        },
-      ],
-    },
-    {
-      id: "5a0de12b-33ba-413c-98cf-35e82a4255f9",
-      state: "Waiting to get Accepted...",
-      created_At: "2024-12-30T21:42:35.210Z",
-      first_name: "jawhar",
-      last_name: "hmidis",
-      phone: "+21650974080",
-      email: "jawharhmidi01@gmail.com",
-      city: "mannouba",
-      address: "medneine, Lessifr",
-      deliveryPrice: 0,
-      type: "delivery",
-      order_Products: [
-        {
-          id: "b3e78bf8-d013-4a96-9ee2-67836919aff6",
-          quantity: 2,
-          price: 80,
-          product: {
-            id: "77733c30-be54-48c7-8963-71d3c4621c70",
-            name: "زيت الأرغان للعناية بالشعر",
-            description: "زيت أرغان نقي لتغذية الشعر وتقويته.",
-            img: [
-              "/images/product2.jpg",
-              "/images/product1.jpg",
-              "/images/product2.jpg",
-              "/images/product3.jpg",
-              "/images/product4.jpg",
-              "/images/product5.jpg",
-              "/images/product6.jpg",
-            ],
-            onSold: false,
-            soldPercentage: 0,
-            normalSinglePrice: 80,
-            soldSinglePrice: 80,
-            normalMultiPrice: 200,
-            soldMultiPrice: 200,
-            in_Stock: true,
-            created_At: "2024-12-27T23:17:08.320Z",
-          },
-        },
-      ],
-    },
-    {
-      id: "5a0de12b-33ba-413c-98cf-35e82a4255f9",
-      state: "Accepted",
-      created_At: "2024-12-30T21:42:35.210Z",
-      first_name: "jawhar",
-      last_name: "hmidis",
-      phone: "+21650974080",
-      email: "jawharhmidi01@gmail.com",
-      city: "mannouba",
-      address: "medneine, Lessifr",
-      deliveryPrice: 0,
-      type: "delivery",
-      order_Products: [
-        {
-          id: "b3e78bf8-d013-4a96-9ee2-67836919aff6",
-          quantity: 2,
-          price: 80,
-          product: {
-            id: "77733c30-be54-48c7-8963-71d3c4621c70",
-            name: "زيت الأرغان للعناية بالشعر",
-            description: "زيت أرغان نقي لتغذية الشعر وتقويته.",
-            img: [
-              "/images/product2.jpg",
-              "/images/product1.jpg",
-              "/images/product2.jpg",
-              "/images/product3.jpg",
-              "/images/product4.jpg",
-              "/images/product5.jpg",
-              "/images/product6.jpg",
-            ],
-            onSold: false,
-            soldPercentage: 0,
-            normalSinglePrice: 80,
-            soldSinglePrice: 80,
-            normalMultiPrice: 200,
-            soldMultiPrice: 200,
-            in_Stock: true,
-            created_At: "2024-12-27T23:17:08.320Z",
-          },
-        },
-      ],
-    },
-    {
-      id: "5a0de12b-33ba-413c-98cf-35e82a4255f9",
-      state: "Cancelled",
-      created_At: "2024-12-30T21:42:35.210Z",
-      first_name: "jawhar",
-      last_name: "hmidis",
-      phone: "+21650974080",
-      email: "jawharhmidi01@gmail.com",
-      city: "mannouba",
-      address: "medneine, Lessifr",
-      deliveryPrice: 0,
-      type: "delivery",
-      order_Products: [
-        {
-          id: "b3e78bf8-d013-4a96-9ee2-67836919aff6",
-          quantity: 2,
-          price: 80,
-          product: {
-            id: "77733c30-be54-48c7-8963-71d3c4621c70",
-            name: "زيت الأرغان للعناية بالشعر",
-            description: "زيت أرغان نقي لتغذية الشعر وتقويته.",
-            img: [
-              "/images/product2.jpg",
-              "/images/product1.jpg",
-              "/images/product2.jpg",
-              "/images/product3.jpg",
-              "/images/product4.jpg",
-              "/images/product5.jpg",
-              "/images/product6.jpg",
-            ],
-            onSold: false,
-            soldPercentage: 0,
-            normalSinglePrice: 80,
-            soldSinglePrice: 80,
-            normalMultiPrice: 200,
-            soldMultiPrice: 200,
-            in_Stock: true,
-            created_At: "2024-12-27T23:17:08.320Z",
-          },
-        },
-      ],
-    },
-    {
-      id: "5a0de12b-33ba-413c-98cf-35e82a4255f9",
-      state: "Waiting to get Accepted...",
-      created_At: "2024-12-30T21:42:35.210Z",
-      first_name: "jawhar",
-      last_name: "hmidis",
-      phone: "+21650974080",
-      email: "jawharhmidi01@gmail.com",
-      city: "mannouba",
-      address: "medneine, Lessifr",
-      deliveryPrice: 0,
-      type: "delivery",
-      order_Products: [
-        {
-          id: "b3e78bf8-d013-4a96-9ee2-67836919aff6",
-          quantity: 2,
-          price: 80,
-          product: {
-            id: "77733c30-be54-48c7-8963-71d3c4621c70",
-            name: "زيت الأرغان للعناية بالشعر",
-            description: "زيت أرغان نقي لتغذية الشعر وتقويته.",
-            img: [
-              "/images/product2.jpg",
-              "/images/product1.jpg",
-              "/images/product2.jpg",
-              "/images/product3.jpg",
-              "/images/product4.jpg",
-              "/images/product5.jpg",
-              "/images/product6.jpg",
-            ],
-            onSold: false,
-            soldPercentage: 0,
-            normalSinglePrice: 80,
-            soldSinglePrice: 80,
-            normalMultiPrice: 200,
-            soldMultiPrice: 200,
-            in_Stock: true,
-            created_At: "2024-12-27T23:17:08.320Z",
-          },
-        },
-      ],
-    },
-  ]);
-  const [sortDate, setSortDate] = useState(false);
+      );
+      const data = await response.json();
+
+      if (data.data === null) {
+        throw new Error(data.message);
+      }
+
+      setOrders(data.data.data);
+      setTotalItems(data.data.totalItems);
+      setTotalPages(data.data.totalPages);
+      setCurrentPage(Number(data.data.currentPage));
+
+      setLoadingOrders(false);
+    } catch (error) {
+      console.error(error);
+      setLoadingOrders(false);
+      toast({
+        title: "خطأ",
+        description: "حدث خطأ أثناء جلب البيانات",
+        variant: "destructive",
+      });
+    }
+  };
+
+  const ChangeUrl = (url) => {
+    startTransition(() => {
+      router.push(url);
+    });
+  };
+
+  const changeSortOrder = (sort) => {
+    console.log(sort);
+
+    if (selectedSort === sort) {
+      setSortDirection(sortDirection === "ASC" ? "DESC" : "ASC");
+    } else {
+      setSelectedSort(sort);
+      setSortDirection("ASC");
+    }
+  };
+
+  const handlePageChange = (page) => {
+    if (page > 0 && page <= totalPages) {
+      setCurrentPage(page);
+    }
+  };
+
+  const createPageNumbers = () => {
+    let startPage = Math.max(1, CurrentPage - Math.floor(maxVisiblePages / 2));
+    let endPage = Math.min(totalPages, startPage + maxVisiblePages - 1);
+
+    if (endPage - startPage + 1 < maxVisiblePages) {
+      startPage = Math.max(1, endPage - maxVisiblePages + 1);
+    }
+
+    const newPages = [];
+    for (let i = startPage; i <= endPage; i++) {
+      newPages.push(i);
+    }
+
+    setPages(newPages);
+  };
 
   const parseButton = (state) => {
     if (state === "Waiting to get Accepted...")
@@ -879,43 +140,68 @@ const page = () => {
         </button>
       );
   };
+
+  useEffect(() => {
+    fetchOrders();
+    createPageNumbers();
+  }, [
+    CurrentPage,
+    totalPages,
+    searchQuery,
+    selectedSort,
+    sortDirection,
+    orderState,
+  ]);
+
+  useEffect(() => {
+    fetchOrders();
+  }, []);
+
+  useEffect(() => {
+    setLoadingPage(isPending);
+  }, [isPending]);
+
   return (
     <div className="table-scroll flex w-full flex-col gap-10 overflow-x-auto px-5 pb-10 pt-5 md:px-0 md:pl-10 md:pt-8 lg:pl-20 lg:pt-10">
-      <DashSearch placeholder="بحث عن طلب " />
-
+      {(loadingPage || loadingOrders) && (
+        <div className="fixed inset-0 z-50 flex h-full w-full items-center justify-center bg-white/60 backdrop-blur-sm">
+          <div className="h-14 w-14 animate-spin rounded-full border-b-4 border-[var(--theme)]" />
+        </div>
+      )}
+      <DashSearch placeholder="بحث عن طلب " setSearchQuery={setSearchQuery} />
       <div className="flex w-full max-w-[500px] items-center justify-between gap-4 overflow-x-auto rounded-lg bg-[var(--dash-theme2)] px-1 py-2 sm:gap-1">
         <div
-          onClick={() => setOrderState(1)}
+          onClick={() => setOrderState("")}
           className={cn(
             "w-full text-nowrap rounded-xl bg-transparent px-2 py-2 text-center text-lg font-medium text-white transition-all duration-200 hover:cursor-pointer",
-            orderState === 1 && "bg-gray-500/50",
+            orderState === "" && "bg-gray-500/50",
           )}
         >
           كل الطلبات
         </div>
         <div
-          onClick={() => setOrderState(2)}
+          onClick={() => setOrderState("Accepted")}
           className={cn(
             "w-full text-nowrap rounded-xl bg-transparent px-2 py-2 text-center text-lg font-medium text-white transition-all duration-200 hover:cursor-pointer",
-            orderState === 2 && "bg-gray-500/50",
+            orderState === "Accepted" && "bg-gray-500/50",
           )}
         >
           تم القبول
         </div>
         <div
-          onClick={() => setOrderState(3)}
+          onClick={() => setOrderState("Waiting to get Accepted...")}
           className={cn(
             "w-full text-nowrap rounded-xl bg-transparent px-2 py-2 text-center text-lg font-medium text-white transition-all duration-200 hover:cursor-pointer",
-            orderState === 3 && "bg-gray-500/50",
+            orderState === "Waiting to get Accepted..." && "bg-gray-500/50",
           )}
         >
           قيد الانتظار
         </div>
         <div
-          onClick={() => setOrderState(4)}
+          onClick={() => setOrderState("Cancelled")}
           className={cn(
             "w-full text-nowrap rounded-xl bg-transparent px-2 py-2 text-center text-lg font-medium text-white transition-all duration-200 hover:cursor-pointer",
-            orderState === 4 && "bg-gray-500/50",
+            orderState === "Cancelled" && "bg-gray-500/50",
           )}
         >
           تم الالغاء
@@ -929,51 +215,102 @@ const page = () => {
             <TableHead className="text-start text-lg text-[var(--dash-theme5)]">
               معرف
             </TableHead>
-            <TableHead className="flex flex-row items-center justify-start gap-2 text-lg text-[var(--dash-theme5)]">
-              <span>تاريخ الطلب</span>
-              <i
-                className={cn(
-                  "fa-solid fa-up-down mt-1 text-lg text-[var(--dash-theme5)] transition-all duration-200 hover:cursor-pointer",
-                )}
-              ></i>
+            <TableHead className="w-full text-start text-lg text-[var(--dash-theme5)]">
+              <div
+                onClick={() => changeSortOrder("created_At")}
+                className="flex w-full items-center justify-center gap-3 transition-all duration-200 hover:scale-105 hover:cursor-pointer"
+              >
+                <span>تاريخ الطلب</span>
+                <i
+                  className={cn(
+                    "fa-solid fa-up-down mt-1 text-lg text-[var(--dash-theme5)] transition-all duration-200 hover:cursor-pointer",
+                  )}
+                />
+              </div>
             </TableHead>
-            <TableHead className="text-start text-lg text-[var(--dash-theme5)]">
-              الاسم
+            <TableHead className="w-full text-start text-lg text-[var(--dash-theme5)]">
+              <div
+                onClick={() => changeSortOrder("first_name")}
+                className="flex w-full items-center justify-center gap-3 transition-all duration-200 hover:scale-105 hover:cursor-pointer"
+              >
+                <span>الاسم</span>
+                <i
+                  className={cn(
+                    "fa-solid fa-up-down mt-1 text-lg text-[var(--dash-theme5)] transition-all duration-200 hover:cursor-pointer",
+                  )}
+                />
+              </div>
             </TableHead>
-            <TableHead className="text-start text-lg text-[var(--dash-theme5)]">
-              اللقب
+            <TableHead className="w-full text-start text-lg text-[var(--dash-theme5)]">
+              <div
+                onClick={() => changeSortOrder("last_name")}
+                className="flex w-full items-center justify-center gap-3 transition-all duration-200 hover:scale-105 hover:cursor-pointer"
+              >
+                <span>اللقب</span>
+                <i
+                  className={cn(
+                    "fa-solid fa-up-down mt-1 text-lg text-[var(--dash-theme5)] transition-all duration-200 hover:cursor-pointer",
+                  )}
+                />
+              </div>
             </TableHead>
             <TableHead className="text-start text-lg text-[var(--dash-theme5)]">
               رقم الهاتف
             </TableHead>
-            <TableHead className="text-start text-lg text-[var(--dash-theme5)]">
-              البريد الالكتروني
-            </TableHead>
-            <TableHead className="text-start text-lg text-[var(--dash-theme5)]">
-              الولاية
+            <TableHead className="w-full text-start text-lg text-[var(--dash-theme5)]">
+              <div
+                onClick={() => changeSortOrder("city")}
+                className="flex w-full items-center justify-center gap-3 transition-all duration-200 hover:scale-105 hover:cursor-pointer"
+              >
+                <span>الولاية</span>
+                <i
+                  className={cn(
+                    "fa-solid fa-up-down mt-1 text-lg text-[var(--dash-theme5)] transition-all duration-200 hover:cursor-pointer",
+                  )}
+                />
+              </div>
             </TableHead>
             <TableHead className="text-start text-lg text-[var(--dash-theme5)]">
               العنوان
             </TableHead>
-            <TableHead className="flex flex-row items-center justify-start gap-2 text-lg text-[var(--dash-theme5)]">
-              <span>المنتجات</span>
-              <i
-                className={cn(
-                  "fa-solid fa-up-down mt-1 text-lg text-[var(--dash-theme5)] transition-all duration-200 hover:cursor-pointer",
-                )}
-              ></i>
+            <TableHead className="w-full text-start text-lg text-[var(--dash-theme5)]">
+              <div
+                onClick={() => changeSortOrder("order_Products")}
+                className="flex w-full items-center justify-center gap-3 transition-all duration-200 hover:scale-105 hover:cursor-pointer"
+              >
+                <span>المنتجات</span>
+                <i
+                  className={cn(
+                    "fa-solid fa-up-down mt-1 text-lg text-[var(--dash-theme5)] transition-all duration-200 hover:cursor-pointer",
+                  )}
+                />
+              </div>
             </TableHead>
-
-            <TableHead className="text-start text-lg text-[var(--dash-theme5)]">
-              الحالة
+            <TableHead className="w-full text-start text-lg text-[var(--dash-theme5)]">
+              <div
+                onClick={() => changeSortOrder("state")}
+                className="flex w-full items-center justify-center gap-3 transition-all duration-200 hover:scale-105 hover:cursor-pointer"
+              >
+                <span>الحالة</span>
+                <i
+                  className={cn(
+                    "fa-solid fa-up-down mt-1 text-lg text-[var(--dash-theme5)] transition-all duration-200 hover:cursor-pointer",
+                  )}
+                />
+              </div>
             </TableHead>
-            <TableHead className="flex flex-row items-center justify-start gap-2 text-lg text-[var(--dash-theme5)]">
-              <span>المبلغ</span>
-              <i
-                className={cn(
-                  "fa-solid fa-up-down mt-1 text-lg text-[var(--dash-theme5)] transition-all duration-200 hover:cursor-pointer",
-                )}
-              ></i>
+            <TableHead className="w-full text-start text-lg text-[var(--dash-theme5)]">
+              <div
+                onClick={() => changeSortOrder("total_Price")}
+                className="flex w-full items-center justify-center gap-3 transition-all duration-200 hover:scale-105 hover:cursor-pointer"
+              >
+                <span>المبلغ</span>
+                <i
+                  className={cn(
+                    "fa-solid fa-up-down mt-1 text-lg text-[var(--dash-theme5)] transition-all duration-200 hover:cursor-pointer",
+                  )}
+                />
+              </div>
             </TableHead>
           </TableRow>
         </TableHeader>
@@ -991,17 +328,18 @@ const page = () => {
               <TableCell className="font-medium">{order.first_name}</TableCell>
               <TableCell className="font-medium">{order.last_name}</TableCell>
               <TableCell className="font-medium">{order.phone}</TableCell>
-              <TableCell className="font-medium">{order.email}</TableCell>
-              <TableCell className="font-medium">{order.city}</TableCell>
-              <TableCell className="font-medium">{order.address}</TableCell>
               <TableCell className="font-medium">
-                {order.order_Products.length}
+                {cities.find((city) => city.value == order.city).text}
+              </TableCell>
+              <TableCell className="font-medium">{order.address}</TableCell>
+              <TableCell className="text-center font-medium">
+                {order.order_Products?.length}
               </TableCell>
               <TableCell className="font-medium">
                 {parseButton(order.state)}
               </TableCell>
               <TableCell className="text-end text-lg font-bold text-neutral-200">
-                {order.order_Products.reduce(
+                {order.order_Products?.reduce(
                   (acc, product) => acc + product.price * product.quantity,
                   0,
                 ) +
@@ -1012,6 +350,90 @@ const page = () => {
           ))}
         </TableBody>
       </Table>
+      {/* <PaginationComp /> */}
+      {!loadingOrders && orders.length > 0 && (
+        <Pagination dir="rtl">
+          <PaginationContent className="flex items-center justify-center gap-2">
+            {/* Previous Button */}
+            <PaginationItem>
+              <PaginationPrevious
+                className={cn(
+                  "rounded-md border-0 bg-[var(--dash-theme2)] px-3 py-2 font-semibold text-[var(--dash-theme6)] transition-all duration-200 hover:cursor-pointer",
+                  CurrentPage === 1
+                    ? "hover:cursor-not-allowed hover:bg-[var(--dash-theme2)] hover:text-[var(--dash-theme6)]"
+                    : "hover:bg-[var(--dash-theme6)] hover:text-white",
+                )}
+                onClick={() => handlePageChange(CurrentPage - 1)}
+                disabled={CurrentPage === 1}
+              />
+            </PaginationItem>
+
+            {/* First Page and Ellipsis */}
+            {pages[0] > 1 && (
+              <>
+                <PaginationItem>
+                  <PaginationLink
+                    className="rounded-md border-0 bg-[var(--dash-theme2)] px-3 py-2 text-[var(--dash-theme6)] transition-all duration-200 hover:cursor-pointer hover:bg-[var(--theme)] hover:text-white"
+                    onClick={() => handlePageChange(1)}
+                  >
+                    ١
+                  </PaginationLink>
+                </PaginationItem>
+                {pages[0] > 2 && <PaginationEllipsis>...</PaginationEllipsis>}
+              </>
+            )}
+
+            {/* Page Numbers */}
+            {pages.map((page) => (
+              <PaginationItem key={page}>
+                <PaginationLink
+                  className={cn(
+                    "rounded-md border-0 px-3 py-2 transition-all duration-200 hover:cursor-pointer",
+                    page === CurrentPage
+                      ? "bg-[var(--dash-theme6)] text-white hover:cursor-not-allowed hover:bg-[var(--dash-theme6)] hover:text-white"
+                      : "bg-[var(--dash-theme2)] text-[var(--dash-theme6)] hover:bg-[var(--dash-theme6)] hover:text-white",
+                  )}
+                  isActive={page === CurrentPage}
+                  onClick={() => handlePageChange(page)}
+                >
+                  {page}
+                </PaginationLink>
+              </PaginationItem>
+            ))}
+
+            {/* Last Page and Ellipsis */}
+            {pages[pages.length - 1] < totalPages && (
+              <>
+                {pages[pages.length - 1] < totalPages - 1 && (
+                  <PaginationEllipsis>...</PaginationEllipsis>
+                )}
+                <PaginationItem>
+                  <PaginationLink
+                    className="rounded-md border-0 bg-[var(--dash-theme2)] px-3 py-2 text-[var(--dash-theme6)] transition-all duration-200 hover:cursor-pointer hover:bg-[var(--theme)] hover:text-white"
+                    onClick={() => handlePageChange(totalPages)}
+                  >
+                    {totalPages}
+                  </PaginationLink>
+                </PaginationItem>
+              </>
+            )}
+
+            {/* Next Button */}
+            <PaginationItem>
+              <PaginationNext
+                className={cn(
+                  "rounded-md border-0 bg-[var(--dash-theme2)] px-3 py-2 font-semibold text-[var(--dash-theme6)] transition-all duration-200 hover:cursor-pointer",
+                  CurrentPage === totalPages
+                    ? "hover:cursor-not-allowed hover:bg-[var(--dash-theme2)] hover:text-[var(--dash-theme6)]"
+                    : "hover:bg-[var(--dash-theme6)] hover:text-white",
+                )}
+                onClick={() => handlePageChange(CurrentPage + 1)}
+                disabled={CurrentPage === totalPages}
+              />
+            </PaginationItem>
+          </PaginationContent>
+        </Pagination>
+      )}
     </div>
   );
 };
