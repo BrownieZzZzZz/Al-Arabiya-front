@@ -15,6 +15,45 @@ const NewOrder = () => {
   const { adminData } = useContext(AuthContext);
   const audioRef = useRef(new Audio("/sounds/LikeNotification.mp3"));
   const [permissionState, setPermissionState] = useState("prompt");
+  const socketRef = useRef(null);
+
+  const connectSocket = () => {
+    if (!adminData?.id || socketRef.current?.connected) return;
+
+    const socket = io(process.env.NEXT_PUBLIC_API_URL || "", {
+      transports: ["websocket", "polling"], // Try WebSocket first, fallback to polling
+      reconnection: true,
+      reconnectionAttempts: 5,
+      reconnectionDelay: 1000,
+      timeout: 20000,
+      query: { id: adminData.id },
+      withCredentials: true,
+    });
+
+    socket.on("connect", () => {
+      console.log("تم الاتصال بالخادم");
+    });
+
+    socket.on("connect_error", (error) => {
+      console.error("خطأ في الاتصال:", error);
+      toast({
+        title: "خطأ في الاتصال",
+        description: "جاري إعادة المحاولة...",
+        duration: 3000,
+      });
+    });
+
+    socket.on("disconnect", () => {
+      console.log("تم قطع الاتصال عن الخادم");
+    });
+
+    socket.on("NewOrder", (data) => {
+      playNotificationSound();
+      eventBus.emit("NewOrder", data);
+    });
+
+    socketRef.current = socket;
+  };
 
   const openBrowserSettings = () => {
     const isFirefox = navigator.userAgent.toLowerCase().indexOf("firefox") > -1;
@@ -118,28 +157,14 @@ const NewOrder = () => {
 
     audioRef.current.load();
 
-    if (adminData?.id) {
-      const ioSocket = io(
-        `${process.env.NEXT_PUBLIC_API_URL}?id=${adminData.id}`,
-      );
+    connectSocket();
 
-      ioSocket.on("connect", () => {
-        console.info("تم الاتصال بالخادم");
-      });
-
-      ioSocket.on("disconnect", () => {
-        console.info("تم قطع الاتصال عن الخادم");
-      });
-
-      ioSocket.on("NewOrder", (data) => {
-        playNotificationSound();
-        eventBus.emit("NewOrder", data);
-      });
-
-      return () => {
-        ioSocket.disconnect();
-      };
-    }
+    return () => {
+      if (socketRef.current) {
+        socketRef.current.disconnect();
+        socketRef.current = null;
+      }
+    };
   }, [adminData]);
 
   if (permissionState === "denied") {
