@@ -82,8 +82,9 @@ const DashNav = ({}) => {
                 "flex flex-col items-center gap-8 bg-transparent py-4",
               )}
             >
-              <DashHeader />
+              <DashHeader setLoadingPage={setLoadingPage} />
               <DashMenu
+                setLoadingPage={setLoadingPage}
                 closeButton={closeButton}
                 ChangeUrl={(url) => {
                   ChangeUrl(url);
@@ -103,7 +104,7 @@ const DashNav = ({}) => {
           "sticky left-0 top-0 ml-10 hidden min-h-[100vh] w-[250px] flex-col items-center gap-8 border-l border-[#2c2d33] bg-transparent px-5 py-8 md:flex lg:ml-20",
         )}
       >
-        <DashHeader />
+        <DashHeader setLoadingPage={setLoadingPage} />
         <DashMenu
           setLoadingPage={setLoadingPage}
           ChangeUrl={(url) => {

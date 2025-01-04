@@ -142,11 +142,6 @@ const Nav = () => {
   };
 
   const calculateTotalPrice = (product, quantity) => {
-    console.log("product");
-    console.log(product);
-    console.log("quantity");
-    console.log(quantity);
-
     return (
       (product.onSold
         ? quantity >= 5
