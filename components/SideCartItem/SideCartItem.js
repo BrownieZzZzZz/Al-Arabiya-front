@@ -5,14 +5,7 @@ import { useEffect, useState } from "react";
 import { toast } from "@/hooks/use-toast";
 import { Skeleton } from "../ui/skeleton";
 import { eventBus } from "@/lib/utils";
-const SideCartItem = ({
-  productId,
-  quantity,
-  closeButton,
-  index,
-  ChangeUrl,
-  setTotalPrice,
-}) => {
+const SideCartItem = ({ productId, quantity, index, ChangeUrl }) => {
   const [product, setProduct] = useState({});
 
   const [loadingProduct, setLoadingProduct] = useState(true);
@@ -32,19 +25,6 @@ const SideCartItem = ({
       }
 
       setProduct(data.data);
-
-      setTotalPrice((prev) => {
-        const returnObject = { ...prev };
-        returnObject[data.data.id] =
-          (data.data.onSold
-            ? quantity >= 5
-              ? data.data.soldMultiPrice
-              : data.data.soldSinglePrice
-            : quantity >= 5
-              ? data.data.normalMultiPrice
-              : data.data.normalSinglePrice) * quantity;
-        return returnObject;
-      });
 
       setLoadingProduct(false);
     } catch (error) {
@@ -71,12 +51,6 @@ const SideCartItem = ({
     fetchProduct();
   }, []);
 
-  useEffect(() => {
-    if (closeButton.current) {
-      closeButton.current.click();
-    }
-  });
-
   return (
     <div
       onClick={() => {
@@ -91,8 +65,6 @@ const SideCartItem = ({
       >
         <div
           onClick={(e) => {
-            e.preventDefault();
-            e.stopPropagation();
             removeItem();
           }}
           className="group absolute left-2 top-1 z-10 grid size-6 place-items-center rounded-full border-[2px] border-transparent transition-colors duration-200 hover:cursor-pointer hover:border-yellow-600 hover:bg-zinc-100"

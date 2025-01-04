@@ -14,6 +14,7 @@ import {
   SheetTitle,
   SheetContent,
   SheetTrigger,
+  SheetDescription,
 } from "@/components/ui/sheet";
 import {
   Dialog,
@@ -46,7 +47,7 @@ const Nav = () => {
   const [loadingPage, setLoadingPage] = useState(true);
   const [isPending, startTransition] = useTransition();
   const [items, setItems] = useState({});
-  const [totalPrice, setTotalPrice] = useState({});
+  const [totalPrice, setTotalPrice] = useState(0);
 
   const ChangeUrl = (url, options = {}) => {
     startTransition(() => {
@@ -140,6 +141,55 @@ const Nav = () => {
     }
   };
 
+  const calculateTotalPrice = (product, quantity) => {
+    console.log("product");
+    console.log(product);
+    console.log("quantity");
+    console.log(quantity);
+
+    return (
+      (product.onSold
+        ? quantity >= 5
+          ? product.soldMultiPrice
+          : product.soldSinglePrice
+        : quantity >= 5
+          ? product.normalMultiPrice
+          : product.normalSinglePrice) * quantity
+    );
+  };
+
+  const fetchProductById = async (productId) => {
+    try {
+      const res = await fetch(
+        `${process.env.NEXT_PUBLIC_API_URL}/product/byid/${productId}`,
+        {
+          method: "GET",
+        },
+      );
+      const data = await res.json();
+      if (data.data === null) {
+        throw new Error(data.message);
+      }
+      return data.data;
+    } catch (error) {
+      console.error(error);
+      return null;
+    }
+  };
+
+  const UpdatePriceFunction = async () => {
+    const updatedPrices = {};
+    for (let id of Object.keys(items)) {
+      const product = await fetchProductById(id);
+      updatedPrices[id] = calculateTotalPrice(product, items[id]);
+    }
+    setTotalPrice(updatedPrices);
+  };
+
+  useEffect(() => {
+    UpdatePriceFunction();
+  }, [items]);
+
   useEffect(() => {
     if (!pathname.includes("admin")) {
       checkUser();
@@ -152,6 +202,9 @@ const Nav = () => {
     }
     if (closeDialog.current) {
       closeDialog.current.click();
+    }
+    if (closeCartButton.current) {
+      closeCartButton.current.click();
     }
   });
 
@@ -216,6 +269,7 @@ const Nav = () => {
           }}
         />
       </div>
+
       <div className="flex flex-row-reverse gap-3">
         {!pathname.includes("products") && (
           <div className="mr-1 hidden flex-row items-center gap-2 rounded-md border px-2 py-2 min-[800px]:mr-4 min-[880px]:flex">
@@ -238,6 +292,7 @@ const Nav = () => {
             </button>
           </div>
         )}
+
         {!pathname.includes("products") && (
           <Dialog>
             <DialogTrigger>
@@ -286,7 +341,7 @@ const Nav = () => {
         {/* CART  */}
 
         {!pathname.includes("checkout") && !pathname.includes("cart") && (
-          <Sheet>
+          <Sheet key={"CartSheet"}>
             <SheetTrigger asChild className="cart md:mx-2 md:my-1">
               <button className="cart">
                 <div className="relative">
@@ -308,6 +363,7 @@ const Nav = () => {
             </SheetTrigger>
             <SheetContent side="left" className="w-[300px] p-0">
               <SheetTitle />
+              <SheetDescription />
               <div className="flex h-full flex-col justify-between">
                 <div className="border-b-[1px] border-neutral-300 py-3 text-center">
                   <span className="font-lato text-2xl font-semibold text-neutral-800">
@@ -320,12 +376,10 @@ const Nav = () => {
                       key={index}
                       productId={id}
                       quantity={items[id]}
-                      closeButton={closeCartButton}
                       index={index}
                       ChangeUrl={(url) => {
                         ChangeUrl(url);
                       }}
-                      setTotalPrice={(param) => setTotalPrice(param)}
                     />
                   ))}
                 </div>
@@ -342,7 +396,6 @@ const Nav = () => {
                     type="button"
                     className="bg-zinc-200 py-3 text-sm font-bold text-neutral-700 transition-colors duration-200 hover:bg-zinc-300"
                     onClick={() => {
-                      closeCartButton.current.click();
                       ChangeUrl("/cart");
                     }}
                   >
@@ -352,7 +405,6 @@ const Nav = () => {
                     type="button"
                     className="bg-[var(--theme)] py-3 text-sm font-bold text-[#ffffff] transition-colors duration-200 hover:bg-[var(--theme)]"
                     onClick={() => {
-                      closeCartButton.current.click();
                       ChangeUrl("/checkout");
                     }}
                   >
