@@ -231,7 +231,7 @@ const page = () => {
         onSold,
         brand: { id: selectedBrand },
         category: { id: selectedCategory },
-        in_Stock: true,
+        in_Stock: in_Stock,
       };
       if (onSold) {
         body["soldPercentage"] = Number(
