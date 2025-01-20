@@ -116,7 +116,7 @@ const page = () => {
               <li className="mr-10 mt-4">
                 يمكنك التواصل معنا عبر:
                 <span className="font-semibold text-[var(--theme)]">
-                  {process.env.NEXT_PUBLIC_EMAIL_RECEIVER}
+                  example@domain.com
                 </span>{" "}
                 أو عبر الهاتف: +216 XXXXXXXX
               </li>
